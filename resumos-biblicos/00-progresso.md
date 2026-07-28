@@ -1,0 +1,71 @@
+# Progresso — Resumos Históricos da Bíblia
+
+## Antigo Testamento
+- [x] 01 Gênesis
+- [x] 02 Êxodo
+- [x] 03 Levítico
+- [x] 04 Números
+- [x] 05 Deuteronômio
+- [x] 06 Josué
+- [x] 07 Juízes
+- [x] 08 Rute
+- [x] 09 1 Samuel
+- [x] 10 2 Samuel
+- [x] 11 1 Reis
+- [x] 12 2 Reis
+- [x] 13 1 Crônicas
+- [x] 14 2 Crônicas
+- [x] 15 Esdras
+- [x] 16 Neemias
+- [x] 17 Ester
+- [x] 18 Jó
+- [x] 19 Salmos
+- [x] 20 Provérbios
+- [x] 21 Eclesiastes
+- [x] 22 Cantares
+- [x] 23 Isaías
+- [x] 24 Jeremias
+- [x] 25 Lamentações
+- [x] 26 Ezequiel
+- [x] 27 Daniel
+- [x] 28 Oséias
+- [x] 29 Joel
+- [x] 30 Amós
+- [x] 31 Obadias
+- [x] 32 Jonas
+- [x] 33 Miquéias
+- [x] 34 Naum
+- [x] 35 Habacuque
+- [x] 36 Sofonias
+- [x] 37 Ageu
+- [x] 38 Zacarias
+- [x] 39 Malaquias
+
+## Novo Testamento
+- [x] 40 Mateus
+- [x] 41 Marcos
+- [x] 42 Lucas
+- [x] 43 João
+- [x] 44 Atos
+- [x] 45 Romanos
+- [x] 46 1 Coríntios
+- [x] 47 2 Coríntios
+- [x] 48 Gálatas
+- [x] 49 Efésios
+- [x] 50 Filipenses
+- [x] 51 Colossenses
+- [x] 52 1 Tessalonicenses
+- [x] 53 2 Tessalonicenses
+- [x] 54 1 Timóteo
+- [x] 55 2 Timóteo
+- [x] 56 Tito
+- [x] 57 Filemom
+- [x] 58 Hebreus
+- [x] 59 Tiago
+- [x] 60 1 Pedro
+- [x] 61 2 Pedro
+- [x] 62 1 João
+- [x] 63 2 João
+- [x] 64 3 João
+- [x] 65 Judas
+- [x] 66 Apocalipse
