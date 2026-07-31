@@ -436,6 +436,46 @@ main .bloco {
   }
 }
 
+.acoes-fim-livro {
+  max-width: var(--largura-leitura);
+  margin: 0 auto 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--cor-borda);
+  text-align: center;
+}
+
+.acoes-fim-rotulo {
+  margin: 0 0 0.75rem;
+  color: var(--cor-texto-suave);
+  font-size: 0.95rem;
+}
+
+.acoes-fim-livro .controle.marcar-lido {
+  min-height: 44px;
+  padding: 0.65rem 1.3rem;
+  font-size: 0.95rem;
+}
+
+.sugestao-proximo {
+  max-width: 420px;
+  margin: 0.9rem auto 0;
+  padding: 0.75rem 1rem;
+  background: var(--cor-destaque-fundo);
+  border-radius: 0.6rem;
+  color: var(--cor-texto);
+  font-size: 0.9rem;
+}
+
+.sugestao-proximo a {
+  color: var(--cor-destaque);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sugestao-proximo a:hover {
+  text-decoration: underline;
+}
+
 /* Navegação entre livros */
 
 .navegacao-livros {

@@ -1,16 +1,17 @@
 // Controles de leitura e botão "copiar link" nas páginas de livro.
 (function () {
   const botao = document.querySelector(".copiar-link");
-  const botaoLido = document.querySelector(".marcar-lido");
+  const botoesLido = Array.from(document.querySelectorAll(".marcar-lido"));
+  const sugestao = document.getElementById("sugestao-proximo");
   const botaoMenos = document.querySelector(".fonte-menos");
   const botaoMais = document.querySelector(".fonte-mais");
   const botaoTopo = document.querySelector(".voltar-topo");
   const barraPagina = document.querySelector(".progresso-pagina span");
   const raiz = document.documentElement;
 
-  if (botaoLido) {
+  if (botoesLido.length) {
     try {
-      localStorage.setItem("biblia-ultimo-livro", botaoLido.getAttribute("data-slug"));
+      localStorage.setItem("biblia-ultimo-livro", botoesLido[0].getAttribute("data-slug"));
     } catch (e) {}
   }
 
@@ -54,8 +55,8 @@
   });
   aplicarTamanho();
 
-  if (botaoLido) {
-    const slug = botaoLido.getAttribute("data-slug");
+  if (botoesLido.length) {
+    const slug = botoesLido[0].getAttribute("data-slug");
     let lidos = [];
     try {
       lidos = JSON.parse(localStorage.getItem("biblia-livros-lidos") || "[]");
@@ -63,19 +64,24 @@
 
     function atualizarLido() {
       const estaLido = lidos.includes(slug);
-      botaoLido.classList.toggle("is-ativo", estaLido);
-      botaoLido.setAttribute("aria-pressed", String(estaLido));
-      botaoLido.textContent = estaLido ? "✓ Livro lido" : "✓ Marcar como lido";
+      botoesLido.forEach(function (botaoLido) {
+        botaoLido.classList.toggle("is-ativo", estaLido);
+        botaoLido.setAttribute("aria-pressed", String(estaLido));
+        botaoLido.textContent = estaLido ? "✓ Livro lido" : "✓ Marcar como lido";
+      });
+      if (sugestao) sugestao.hidden = !estaLido;
     }
 
-    botaoLido.addEventListener("click", function () {
-      lidos = lidos.includes(slug) ? lidos.filter(function (item) {
-        return item !== slug;
-      }) : lidos.concat(slug);
-      try {
-        localStorage.setItem("biblia-livros-lidos", JSON.stringify(lidos));
-      } catch (e) {}
-      atualizarLido();
+    botoesLido.forEach(function (botaoLido) {
+      botaoLido.addEventListener("click", function () {
+        lidos = lidos.includes(slug) ? lidos.filter(function (item) {
+          return item !== slug;
+        }) : lidos.concat(slug);
+        try {
+          localStorage.setItem("biblia-livros-lidos", JSON.stringify(lidos));
+        } catch (e) {}
+        atualizarLido();
+      });
     });
     atualizarLido();
   }

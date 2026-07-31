@@ -49,6 +49,11 @@ const SECTION_IDS = {
   porQueImporta: "por-que-importa",
 };
 
+function contarPalavras(texto) {
+  const matches = texto.replace(/[#*_>-]/g, " ").trim().match(/\S+/g);
+  return matches ? matches.length : 0;
+}
+
 function escapeHtml(text) {
   return text
     .replace(/&/g, "&amp;")
@@ -129,12 +134,23 @@ function parseBook(filePath, testamento) {
 
   const slug = path.basename(filePath, ".md");
 
+  const totalPalavras = [
+    sections.panoDeFundo.body,
+    sections.linhaDoTempo.body,
+    sections.autorPropósito.body,
+    sections.resumoConteudo.body,
+    sections.curiosidades.body,
+    sections.porQueImporta.body,
+  ].reduce((soma, texto) => soma + contarPalavras(texto), 0);
+  const tempoLeituraMin = Math.max(1, Math.round(totalPalavras / 200));
+
   return {
     slug,
     numero,
     nome,
     testamento,
     genero: generoDoLivro(numero),
+    tempoLeituraMin,
     fichaRapidaHtml: parseFichaRapida(sections.fichaRapida.body),
     blocos: [
       { id: SECTION_IDS.panoDeFundo, titulo: sections.panoDeFundo.header, html: parseProse(sections.panoDeFundo.body) },
@@ -333,6 +349,10 @@ ${bloco.html}
 
   const url = `${BASE_URL}livros/${book.slug}.html`;
 
+  const sugestaoHtml = next
+    ? `Marcado como lido! <a href="${next.slug}.html">Continuar para ${escapeHtml(next.nome)} →</a>`
+    : `Marcado como lido! Você concluiu os 66 livros 🎉 <a href="../index.html">Ver seu progresso →</a>`;
+
   const body = `  <header class="topo topo-livro">
     <div class="progresso-pagina" aria-hidden="true"><span></span></div>
     <div class="topo-acoes">
@@ -346,7 +366,7 @@ ${bloco.html}
       </div>
     </div>
     <h1>${escapeHtml(book.nome)}</h1>
-    <p class="subtitulo">Livro ${book.numero} de 66 — ${book.testamento} · <span class="genero">${book.genero}</span></p>
+    <p class="subtitulo">Livro ${book.numero} de 66 — ${book.testamento} · <span class="genero">${book.genero}</span> · ${book.tempoLeituraMin} min de leitura</p>
   </header>
   <nav class="indice" aria-label="Índice do livro">
 ${indiceHtml}
@@ -358,6 +378,11 @@ ${book.fichaRapidaHtml}
     </section>
 ${blocosHtml}
   </main>
+  <div class="acoes-fim-livro">
+    <p class="acoes-fim-rotulo">Terminou de ler ${escapeHtml(book.nome)}?</p>
+    <button type="button" class="controle marcar-lido" data-slug="${book.slug}" aria-pressed="false">✓ Marcar como lido</button>
+    <p id="sugestao-proximo" class="sugestao-proximo" hidden>${sugestaoHtml}</p>
+  </div>
   <nav class="navegacao-livros">
     ${navAnterior}
     ${navProximo}

@@ -11,6 +11,61 @@ Após alterar o conteúdo ou os templates, execute:
 node scripts/gerar-site.js
 ```
 
+## Usabilidade e design de UI — elaborado
+
+Ideias detalhadas focadas especificamente em interface e ergonomia de uso,
+não só em funcionalidade nova. Cada item explica o problema que resolve.
+
+**Fim de leitura como um momento de decisão**
+- [x] Botão "Marcar como lido" também no rodapé de cada livro, sincronizado
+  com o do topo — antes só existia no topo, obrigando rolar a página toda
+  de volta para registrar a leitura.
+- [x] Ao marcar como lido no rodapé, mostrar de imediato um cartão com o
+  link direto para o próximo livro (ou mensagem de conclusão no Apocalipse)
+  — reduz a fricção de "o que eu faço agora" e incentiva continuar a
+  sequência de leitura.
+- [x] Tempo estimado de leitura (calculado por contagem de palavras) ao
+  lado do gênero no subtítulo — ajuda a decidir se dá para ler agora ou
+  depois, antes mesmo de rolar a página.
+- [ ] Transformar os links "anterior/próximo" do rodapé em cartões maiores
+  (com número e nome em destaque, não só texto sublinhado) — hoje são
+  discretos demais para o convite visual de "continue lendo" que deveriam
+  passar.
+
+**Hierarquia visual dentro da leitura**
+- [ ] Redesenhar a Ficha Rápida com um ícone por campo (autor, data,
+  gênero, local) em vez de só rótulo em negrito — fica mais rápido de
+  escanear visualmente antes de começar a ler o texto corrido.
+- [ ] Marcar no índice fixo qual seção está em foco na tela no momento
+  (usando IntersectionObserver) — hoje o índice é estático e não dá
+  nenhuma pista de onde o leitor está dentro do artigo.
+- [ ] Recolher o índice de seções em uma faixa mais compacta no mobile
+  (hoje ele ocupa uma faixa fixa inteira no topo, roubando espaço de tela
+  pequena) — por exemplo, um botão "Índice ☰" que abre a lista por cima.
+
+**Descoberta e progresso na home**
+- [ ] Destacar visualmente o próximo livro não lido na grade (borda ou
+  selo "Continue aqui"), complementando o card "Continuar leitura" do
+  topo — no scroll da grade inteira, hoje não há nenhuma pista visual de
+  onde o leitor parou.
+- [ ] Pequena confirmação visual (não intrusiva) na home quando um livro é
+  marcado como lido pela primeira vez — hoje a mudança de estado do card é
+  silenciosa, sem nenhum feedback de "conquista".
+- [ ] Estado vazio da busca mais útil: além do texto "nenhum livro
+  encontrado", oferecer um botão "Limpar filtros" diretamente ali, sem
+  precisar procurar o botão lá em cima.
+
+**Consistência e acessibilidade como parte do design**
+- [ ] Auditar o contraste dos selos de gênero no tema escuro — as cores
+  foram calibradas para o card no tema claro; vale conferir se continuam
+  legíveis com o fundo escuro.
+- [ ] Garantir que todo elemento clicável novo (cards, chips de gênero,
+  botões de controle) tenha um estado de foco visível e consistente ao
+  navegar só por teclado, não só ao passar o mouse.
+- [ ] Padronizar o tamanho mínimo de toque (44px) em todos os botões
+  pequenos novos (chips de gênero, botão de limpar busca) — alguns hoje
+  ficam abaixo desse mínimo recomendado para uso confortável no celular.
+
 ## Próxima etapa — alto impacto
 
 - [ ] PWA leve: `manifest.json`, ícones e service worker para instalação e leitura offline
