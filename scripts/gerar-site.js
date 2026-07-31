@@ -17,6 +17,7 @@ const CONTENT_DIRS = [
 ];
 const OUT_DIR = path.join(REPO_ROOT, "docs");
 const SITE_TITLE = "Resumo dos 66 Livros da Bíblia";
+const BASE_URL = "https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/";
 
 const SECTION_KEYS = [
   "fichaRapida",
@@ -27,6 +28,15 @@ const SECTION_KEYS = [
   "curiosidades",
   "porQueImporta",
 ];
+
+const SECTION_IDS = {
+  panoDeFundo: "pano-de-fundo",
+  linhaDoTempo: "linha-do-tempo",
+  autorPropósito: "autor-proposito",
+  resumoConteudo: "resumo-conteudo",
+  curiosidades: "curiosidades",
+  porQueImporta: "por-que-importa",
+};
 
 function escapeHtml(text) {
   return text
@@ -115,12 +125,12 @@ function parseBook(filePath, testamento) {
     testamento,
     fichaRapidaHtml: parseFichaRapida(sections.fichaRapida.body),
     blocos: [
-      { titulo: sections.panoDeFundo.header, html: parseProse(sections.panoDeFundo.body) },
-      { titulo: sections.linhaDoTempo.header, html: parseProse(sections.linhaDoTempo.body) },
-      { titulo: sections.autorPropósito.header, html: parseProse(sections.autorPropósito.body) },
-      { titulo: sections.resumoConteudo.header, html: parseProse(sections.resumoConteudo.body) },
-      { titulo: sections.curiosidades.header, html: parseBulletList(sections.curiosidades.body) },
-      { titulo: sections.porQueImporta.header, html: parseProse(sections.porQueImporta.body) },
+      { id: SECTION_IDS.panoDeFundo, titulo: sections.panoDeFundo.header, html: parseProse(sections.panoDeFundo.body) },
+      { id: SECTION_IDS.linhaDoTempo, titulo: sections.linhaDoTempo.header, html: parseProse(sections.linhaDoTempo.body) },
+      { id: SECTION_IDS.autorPropósito, titulo: sections.autorPropósito.header, html: parseProse(sections.autorPropósito.body) },
+      { id: SECTION_IDS.resumoConteudo, titulo: sections.resumoConteudo.header, html: parseProse(sections.resumoConteudo.body) },
+      { id: SECTION_IDS.curiosidades, titulo: sections.curiosidades.header, html: parseBulletList(sections.curiosidades.body) },
+      { id: SECTION_IDS.porQueImporta, titulo: sections.porQueImporta.header, html: parseProse(sections.porQueImporta.body) },
     ],
   };
 }
@@ -140,7 +150,7 @@ function loadAllBooks() {
   return books;
 }
 
-function pageShell({ title, basePath, bodyHtml, description }) {
+function pageShell({ title, basePath, bodyHtml, description, url, ogType }) {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -148,6 +158,13 @@ function pageShell({ title, basePath, bodyHtml, description }) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="${escapeHtml(description)}">
+<link rel="canonical" href="${url}">
+<meta property="og:type" content="${ogType || "website"}">
+<meta property="og:site_name" content="${escapeHtml(SITE_TITLE)}">
+<meta property="og:title" content="${escapeHtml(title)}">
+<meta property="og:description" content="${escapeHtml(description)}">
+<meta property="og:url" content="${url}">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="${basePath}assets/style.css">
 </head>
 <body>
@@ -162,13 +179,13 @@ function renderIndex(books) {
     const doGrupo = books.filter((b) => b.testamento === testamento);
     const cards = doGrupo
       .map(
-        (b) => `      <a class="card" href="livros/${b.slug}.html" data-nome="${escapeHtml(b.nome.toLowerCase())}">
+        (b) => `      <a class="card" href="livros/${b.slug}.html" data-nome="${escapeHtml(b.nome.toLowerCase())}" data-testamento="${escapeHtml(testamento)}">
         <span class="card-numero">${b.numero}</span>
         <span class="card-nome">${escapeHtml(b.nome)}</span>
       </a>`
       )
       .join("\n");
-    return `    <section class="grupo">
+    return `    <section class="grupo" data-testamento="${escapeHtml(testamento)}">
       <h2>${testamento} <span class="contagem">(${doGrupo.length} livros)</span></h2>
       <div class="grade">
 ${cards}
@@ -181,6 +198,12 @@ ${cards}
     <p class="intro">Resumos históricos dos 66 livros da Bíblia — contexto, autoria,
     cronologia e curiosidades, em linguagem simples para leitura rápida.</p>
     <input type="search" id="busca" class="busca" placeholder="Buscar um livro pelo nome..." aria-label="Buscar livro">
+    <div class="filtros" role="group" aria-label="Filtrar por testamento">
+      <button type="button" class="filtro-botao is-ativo" data-testamento="todos">Todos</button>
+      <button type="button" class="filtro-botao" data-testamento="Antigo Testamento">Antigo Testamento</button>
+      <button type="button" class="filtro-botao" data-testamento="Novo Testamento">Novo Testamento</button>
+    </div>
+    <button type="button" id="aleatorio" class="botao-secundario">🎲 Livro aleatório</button>
     <p id="busca-vazia" class="busca-vazia" hidden>Nenhum livro encontrado.</p>
   </header>
   <main>
@@ -196,17 +219,22 @@ ${grupos.join("\n")}
     basePath: "",
     bodyHtml: body,
     description: "Resumos históricos dos 66 livros da Bíblia, organizados por Antigo e Novo Testamento.",
+    url: BASE_URL,
   });
 }
 
 function renderLivro(book, prev, next) {
   const blocosHtml = book.blocos
     .map(
-      (bloco) => `    <section class="bloco">
+      (bloco) => `    <section class="bloco" id="${bloco.id}">
       <h2>${escapeHtml(bloco.titulo)}</h2>
 ${bloco.html}
     </section>`
     )
+    .join("\n");
+
+  const indiceHtml = [{ id: "ficha-rapida", titulo: "Ficha Rápida" }, ...book.blocos]
+    .map((item) => `      <a href="#${item.id}">${escapeHtml(item.titulo)}</a>`)
     .join("\n");
 
   const navAnterior = prev
@@ -216,13 +244,21 @@ ${bloco.html}
     ? `<a class="nav-link nav-proximo" href="${next.slug}.html">${escapeHtml(next.nome)} →</a>`
     : `<span class="nav-link nav-desabilitado"></span>`;
 
+  const url = `${BASE_URL}livros/${book.slug}.html`;
+
   const body = `  <header class="topo topo-livro">
-    <a class="voltar" href="../index.html">← Todos os livros</a>
+    <div class="topo-acoes">
+      <a class="voltar" href="../index.html">← Todos os livros</a>
+      <button type="button" class="copiar-link" data-url="${url}">🔗 Copiar link</button>
+    </div>
     <h1>${escapeHtml(book.nome)}</h1>
     <p class="subtitulo">Livro ${book.numero} de 66 — ${book.testamento}</p>
   </header>
+  <nav class="indice" aria-label="Índice do livro">
+${indiceHtml}
+  </nav>
   <main>
-    <section class="bloco">
+    <section class="bloco" id="ficha-rapida">
       <h2>Ficha Rápida</h2>
 ${book.fichaRapidaHtml}
     </section>
@@ -234,14 +270,22 @@ ${blocosHtml}
   </nav>
   <footer class="rodape">
     <p><a href="../index.html">← Voltar para todos os livros</a></p>
-  </footer>`;
+  </footer>
+  <script src="../assets/livro.js"></script>`;
 
   return pageShell({
     title: `${book.nome} — ${SITE_TITLE}`,
     basePath: "../",
     bodyHtml: body,
     description: `Resumo histórico de ${book.nome}: contexto, autoria, cronologia e conteúdo.`,
+    url,
+    ogType: "article",
   });
+}
+
+function renderSitemap(urls) {
+  const items = urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>\n`;
 }
 
 function main() {
@@ -260,7 +304,10 @@ function main() {
     fs.writeFileSync(path.join(OUT_DIR, "livros", `${book.slug}.html`), renderLivro(book, prev, next), "utf8");
   });
 
-  console.log(`Gerado: docs/index.html + ${books.length} páginas em docs/livros/`);
+  const urls = [BASE_URL, ...books.map((b) => `${BASE_URL}livros/${b.slug}.html`)];
+  fs.writeFileSync(path.join(OUT_DIR, "sitemap.xml"), renderSitemap(urls), "utf8");
+
+  console.log(`Gerado: docs/index.html + ${books.length} páginas em docs/livros/ + sitemap.xml`);
 }
 
 main();

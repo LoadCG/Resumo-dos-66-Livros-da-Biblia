@@ -82,6 +82,49 @@ main {
   margin-top: 1rem;
 }
 
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.filtro-botao {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 999px;
+  background: var(--cor-fundo-elevado);
+  color: var(--cor-texto);
+  cursor: pointer;
+  min-height: 36px;
+}
+
+.filtro-botao.is-ativo {
+  background: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  color: var(--cor-fundo-elevado);
+  font-weight: 600;
+}
+
+.botao-secundario {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.95rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 999px;
+  background: var(--cor-fundo-elevado);
+  color: var(--cor-texto);
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.botao-secundario:hover {
+  border-color: var(--cor-destaque);
+}
+
 /* Grade de livros */
 
 .grupo {
@@ -158,6 +201,14 @@ main {
   padding-top: 1.5rem;
 }
 
+.topo-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .voltar {
   color: var(--cor-destaque);
   text-decoration: none;
@@ -165,6 +216,47 @@ main {
 }
 
 .voltar:hover {
+  text-decoration: underline;
+}
+
+.copiar-link {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 999px;
+  background: var(--cor-fundo-elevado);
+  color: var(--cor-texto);
+  cursor: pointer;
+  min-height: 36px;
+  white-space: nowrap;
+}
+
+.copiar-link:hover {
+  border-color: var(--cor-destaque);
+}
+
+.indice {
+  max-width: var(--largura-leitura);
+  margin: 1.25rem auto 0;
+  padding: 0.85rem 1.1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  background: var(--cor-fundo-elevado);
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.6rem;
+  font-size: 0.85rem;
+  position: sticky;
+  top: 0.5rem;
+  z-index: 1;
+}
+
+.indice a {
+  color: var(--cor-destaque);
+  text-decoration: none;
+}
+
+.indice a:hover {
   text-decoration: underline;
 }
 
@@ -181,6 +273,7 @@ main {
 main .bloco {
   max-width: var(--largura-leitura);
   margin: 0 auto 2rem;
+  scroll-margin-top: 3.5rem;
 }
 
 .bloco h2 {

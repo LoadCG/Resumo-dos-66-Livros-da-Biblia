@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Resumo dos 66 Livros da Bíblia</title>
 <meta name="description" content="Resumos históricos dos 66 livros da Bíblia, organizados por Antigo e Novo Testamento.">
+<link rel="canonical" href="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Resumo dos 66 Livros da Bíblia">
+<meta property="og:title" content="Resumo dos 66 Livros da Bíblia">
+<meta property="og:description" content="Resumos históricos dos 66 livros da Bíblia, organizados por Antigo e Novo Testamento.">
+<meta property="og:url" content="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -13,278 +20,284 @@
     <p class="intro">Resumos históricos dos 66 livros da Bíblia — contexto, autoria,
     cronologia e curiosidades, em linguagem simples para leitura rápida.</p>
     <input type="search" id="busca" class="busca" placeholder="Buscar um livro pelo nome..." aria-label="Buscar livro">
+    <div class="filtros" role="group" aria-label="Filtrar por testamento">
+      <button type="button" class="filtro-botao is-ativo" data-testamento="todos">Todos</button>
+      <button type="button" class="filtro-botao" data-testamento="Antigo Testamento">Antigo Testamento</button>
+      <button type="button" class="filtro-botao" data-testamento="Novo Testamento">Novo Testamento</button>
+    </div>
+    <button type="button" id="aleatorio" class="botao-secundario">🎲 Livro aleatório</button>
     <p id="busca-vazia" class="busca-vazia" hidden>Nenhum livro encontrado.</p>
   </header>
   <main>
-    <section class="grupo">
+    <section class="grupo" data-testamento="Antigo Testamento">
       <h2>Antigo Testamento <span class="contagem">(39 livros)</span></h2>
       <div class="grade">
-      <a class="card" href="livros/01-genesis.html" data-nome="gênesis">
+      <a class="card" href="livros/01-genesis.html" data-nome="gênesis" data-testamento="Antigo Testamento">
         <span class="card-numero">1</span>
         <span class="card-nome">Gênesis</span>
       </a>
-      <a class="card" href="livros/02-exodo.html" data-nome="êxodo">
+      <a class="card" href="livros/02-exodo.html" data-nome="êxodo" data-testamento="Antigo Testamento">
         <span class="card-numero">2</span>
         <span class="card-nome">Êxodo</span>
       </a>
-      <a class="card" href="livros/03-levitico.html" data-nome="levítico">
+      <a class="card" href="livros/03-levitico.html" data-nome="levítico" data-testamento="Antigo Testamento">
         <span class="card-numero">3</span>
         <span class="card-nome">Levítico</span>
       </a>
-      <a class="card" href="livros/04-numeros.html" data-nome="números">
+      <a class="card" href="livros/04-numeros.html" data-nome="números" data-testamento="Antigo Testamento">
         <span class="card-numero">4</span>
         <span class="card-nome">Números</span>
       </a>
-      <a class="card" href="livros/05-deuteronomio.html" data-nome="deuteronômio">
+      <a class="card" href="livros/05-deuteronomio.html" data-nome="deuteronômio" data-testamento="Antigo Testamento">
         <span class="card-numero">5</span>
         <span class="card-nome">Deuteronômio</span>
       </a>
-      <a class="card" href="livros/06-josue.html" data-nome="josué">
+      <a class="card" href="livros/06-josue.html" data-nome="josué" data-testamento="Antigo Testamento">
         <span class="card-numero">6</span>
         <span class="card-nome">Josué</span>
       </a>
-      <a class="card" href="livros/07-juizes.html" data-nome="juízes">
+      <a class="card" href="livros/07-juizes.html" data-nome="juízes" data-testamento="Antigo Testamento">
         <span class="card-numero">7</span>
         <span class="card-nome">Juízes</span>
       </a>
-      <a class="card" href="livros/08-rute.html" data-nome="rute">
+      <a class="card" href="livros/08-rute.html" data-nome="rute" data-testamento="Antigo Testamento">
         <span class="card-numero">8</span>
         <span class="card-nome">Rute</span>
       </a>
-      <a class="card" href="livros/09-1-samuel.html" data-nome="1 samuel">
+      <a class="card" href="livros/09-1-samuel.html" data-nome="1 samuel" data-testamento="Antigo Testamento">
         <span class="card-numero">9</span>
         <span class="card-nome">1 Samuel</span>
       </a>
-      <a class="card" href="livros/10-2-samuel.html" data-nome="2 samuel">
+      <a class="card" href="livros/10-2-samuel.html" data-nome="2 samuel" data-testamento="Antigo Testamento">
         <span class="card-numero">10</span>
         <span class="card-nome">2 Samuel</span>
       </a>
-      <a class="card" href="livros/11-1-reis.html" data-nome="1 reis">
+      <a class="card" href="livros/11-1-reis.html" data-nome="1 reis" data-testamento="Antigo Testamento">
         <span class="card-numero">11</span>
         <span class="card-nome">1 Reis</span>
       </a>
-      <a class="card" href="livros/12-2-reis.html" data-nome="2 reis">
+      <a class="card" href="livros/12-2-reis.html" data-nome="2 reis" data-testamento="Antigo Testamento">
         <span class="card-numero">12</span>
         <span class="card-nome">2 Reis</span>
       </a>
-      <a class="card" href="livros/13-1-cronicas.html" data-nome="1 crônicas">
+      <a class="card" href="livros/13-1-cronicas.html" data-nome="1 crônicas" data-testamento="Antigo Testamento">
         <span class="card-numero">13</span>
         <span class="card-nome">1 Crônicas</span>
       </a>
-      <a class="card" href="livros/14-2-cronicas.html" data-nome="2 crônicas">
+      <a class="card" href="livros/14-2-cronicas.html" data-nome="2 crônicas" data-testamento="Antigo Testamento">
         <span class="card-numero">14</span>
         <span class="card-nome">2 Crônicas</span>
       </a>
-      <a class="card" href="livros/15-esdras.html" data-nome="esdras">
+      <a class="card" href="livros/15-esdras.html" data-nome="esdras" data-testamento="Antigo Testamento">
         <span class="card-numero">15</span>
         <span class="card-nome">Esdras</span>
       </a>
-      <a class="card" href="livros/16-neemias.html" data-nome="neemias">
+      <a class="card" href="livros/16-neemias.html" data-nome="neemias" data-testamento="Antigo Testamento">
         <span class="card-numero">16</span>
         <span class="card-nome">Neemias</span>
       </a>
-      <a class="card" href="livros/17-ester.html" data-nome="ester">
+      <a class="card" href="livros/17-ester.html" data-nome="ester" data-testamento="Antigo Testamento">
         <span class="card-numero">17</span>
         <span class="card-nome">Ester</span>
       </a>
-      <a class="card" href="livros/18-jo.html" data-nome="jó">
+      <a class="card" href="livros/18-jo.html" data-nome="jó" data-testamento="Antigo Testamento">
         <span class="card-numero">18</span>
         <span class="card-nome">Jó</span>
       </a>
-      <a class="card" href="livros/19-salmos.html" data-nome="salmos">
+      <a class="card" href="livros/19-salmos.html" data-nome="salmos" data-testamento="Antigo Testamento">
         <span class="card-numero">19</span>
         <span class="card-nome">Salmos</span>
       </a>
-      <a class="card" href="livros/20-proverbios.html" data-nome="provérbios">
+      <a class="card" href="livros/20-proverbios.html" data-nome="provérbios" data-testamento="Antigo Testamento">
         <span class="card-numero">20</span>
         <span class="card-nome">Provérbios</span>
       </a>
-      <a class="card" href="livros/21-eclesiastes.html" data-nome="eclesiastes">
+      <a class="card" href="livros/21-eclesiastes.html" data-nome="eclesiastes" data-testamento="Antigo Testamento">
         <span class="card-numero">21</span>
         <span class="card-nome">Eclesiastes</span>
       </a>
-      <a class="card" href="livros/22-cantares.html" data-nome="cantares">
+      <a class="card" href="livros/22-cantares.html" data-nome="cantares" data-testamento="Antigo Testamento">
         <span class="card-numero">22</span>
         <span class="card-nome">Cantares</span>
       </a>
-      <a class="card" href="livros/23-isaias.html" data-nome="isaías">
+      <a class="card" href="livros/23-isaias.html" data-nome="isaías" data-testamento="Antigo Testamento">
         <span class="card-numero">23</span>
         <span class="card-nome">Isaías</span>
       </a>
-      <a class="card" href="livros/24-jeremias.html" data-nome="jeremias">
+      <a class="card" href="livros/24-jeremias.html" data-nome="jeremias" data-testamento="Antigo Testamento">
         <span class="card-numero">24</span>
         <span class="card-nome">Jeremias</span>
       </a>
-      <a class="card" href="livros/25-lamentacoes.html" data-nome="lamentações">
+      <a class="card" href="livros/25-lamentacoes.html" data-nome="lamentações" data-testamento="Antigo Testamento">
         <span class="card-numero">25</span>
         <span class="card-nome">Lamentações</span>
       </a>
-      <a class="card" href="livros/26-ezequiel.html" data-nome="ezequiel">
+      <a class="card" href="livros/26-ezequiel.html" data-nome="ezequiel" data-testamento="Antigo Testamento">
         <span class="card-numero">26</span>
         <span class="card-nome">Ezequiel</span>
       </a>
-      <a class="card" href="livros/27-daniel.html" data-nome="daniel">
+      <a class="card" href="livros/27-daniel.html" data-nome="daniel" data-testamento="Antigo Testamento">
         <span class="card-numero">27</span>
         <span class="card-nome">Daniel</span>
       </a>
-      <a class="card" href="livros/28-oseias.html" data-nome="oséias">
+      <a class="card" href="livros/28-oseias.html" data-nome="oséias" data-testamento="Antigo Testamento">
         <span class="card-numero">28</span>
         <span class="card-nome">Oséias</span>
       </a>
-      <a class="card" href="livros/29-joel.html" data-nome="joel">
+      <a class="card" href="livros/29-joel.html" data-nome="joel" data-testamento="Antigo Testamento">
         <span class="card-numero">29</span>
         <span class="card-nome">Joel</span>
       </a>
-      <a class="card" href="livros/30-amos.html" data-nome="amós">
+      <a class="card" href="livros/30-amos.html" data-nome="amós" data-testamento="Antigo Testamento">
         <span class="card-numero">30</span>
         <span class="card-nome">Amós</span>
       </a>
-      <a class="card" href="livros/31-obadias.html" data-nome="obadias">
+      <a class="card" href="livros/31-obadias.html" data-nome="obadias" data-testamento="Antigo Testamento">
         <span class="card-numero">31</span>
         <span class="card-nome">Obadias</span>
       </a>
-      <a class="card" href="livros/32-jonas.html" data-nome="jonas">
+      <a class="card" href="livros/32-jonas.html" data-nome="jonas" data-testamento="Antigo Testamento">
         <span class="card-numero">32</span>
         <span class="card-nome">Jonas</span>
       </a>
-      <a class="card" href="livros/33-miqueias.html" data-nome="miquéias">
+      <a class="card" href="livros/33-miqueias.html" data-nome="miquéias" data-testamento="Antigo Testamento">
         <span class="card-numero">33</span>
         <span class="card-nome">Miquéias</span>
       </a>
-      <a class="card" href="livros/34-naum.html" data-nome="naum">
+      <a class="card" href="livros/34-naum.html" data-nome="naum" data-testamento="Antigo Testamento">
         <span class="card-numero">34</span>
         <span class="card-nome">Naum</span>
       </a>
-      <a class="card" href="livros/35-habacuque.html" data-nome="habacuque">
+      <a class="card" href="livros/35-habacuque.html" data-nome="habacuque" data-testamento="Antigo Testamento">
         <span class="card-numero">35</span>
         <span class="card-nome">Habacuque</span>
       </a>
-      <a class="card" href="livros/36-sofonias.html" data-nome="sofonias">
+      <a class="card" href="livros/36-sofonias.html" data-nome="sofonias" data-testamento="Antigo Testamento">
         <span class="card-numero">36</span>
         <span class="card-nome">Sofonias</span>
       </a>
-      <a class="card" href="livros/37-ageu.html" data-nome="ageu">
+      <a class="card" href="livros/37-ageu.html" data-nome="ageu" data-testamento="Antigo Testamento">
         <span class="card-numero">37</span>
         <span class="card-nome">Ageu</span>
       </a>
-      <a class="card" href="livros/38-zacarias.html" data-nome="zacarias">
+      <a class="card" href="livros/38-zacarias.html" data-nome="zacarias" data-testamento="Antigo Testamento">
         <span class="card-numero">38</span>
         <span class="card-nome">Zacarias</span>
       </a>
-      <a class="card" href="livros/39-malaquias.html" data-nome="malaquias">
+      <a class="card" href="livros/39-malaquias.html" data-nome="malaquias" data-testamento="Antigo Testamento">
         <span class="card-numero">39</span>
         <span class="card-nome">Malaquias</span>
       </a>
       </div>
     </section>
-    <section class="grupo">
+    <section class="grupo" data-testamento="Novo Testamento">
       <h2>Novo Testamento <span class="contagem">(27 livros)</span></h2>
       <div class="grade">
-      <a class="card" href="livros/40-mateus.html" data-nome="mateus">
+      <a class="card" href="livros/40-mateus.html" data-nome="mateus" data-testamento="Novo Testamento">
         <span class="card-numero">40</span>
         <span class="card-nome">Mateus</span>
       </a>
-      <a class="card" href="livros/41-marcos.html" data-nome="marcos">
+      <a class="card" href="livros/41-marcos.html" data-nome="marcos" data-testamento="Novo Testamento">
         <span class="card-numero">41</span>
         <span class="card-nome">Marcos</span>
       </a>
-      <a class="card" href="livros/42-lucas.html" data-nome="lucas">
+      <a class="card" href="livros/42-lucas.html" data-nome="lucas" data-testamento="Novo Testamento">
         <span class="card-numero">42</span>
         <span class="card-nome">Lucas</span>
       </a>
-      <a class="card" href="livros/43-joao.html" data-nome="joão">
+      <a class="card" href="livros/43-joao.html" data-nome="joão" data-testamento="Novo Testamento">
         <span class="card-numero">43</span>
         <span class="card-nome">João</span>
       </a>
-      <a class="card" href="livros/44-atos.html" data-nome="atos">
+      <a class="card" href="livros/44-atos.html" data-nome="atos" data-testamento="Novo Testamento">
         <span class="card-numero">44</span>
         <span class="card-nome">Atos</span>
       </a>
-      <a class="card" href="livros/45-romanos.html" data-nome="romanos">
+      <a class="card" href="livros/45-romanos.html" data-nome="romanos" data-testamento="Novo Testamento">
         <span class="card-numero">45</span>
         <span class="card-nome">Romanos</span>
       </a>
-      <a class="card" href="livros/46-1-corintios.html" data-nome="1 coríntios">
+      <a class="card" href="livros/46-1-corintios.html" data-nome="1 coríntios" data-testamento="Novo Testamento">
         <span class="card-numero">46</span>
         <span class="card-nome">1 Coríntios</span>
       </a>
-      <a class="card" href="livros/47-2-corintios.html" data-nome="2 coríntios">
+      <a class="card" href="livros/47-2-corintios.html" data-nome="2 coríntios" data-testamento="Novo Testamento">
         <span class="card-numero">47</span>
         <span class="card-nome">2 Coríntios</span>
       </a>
-      <a class="card" href="livros/48-galatas.html" data-nome="gálatas">
+      <a class="card" href="livros/48-galatas.html" data-nome="gálatas" data-testamento="Novo Testamento">
         <span class="card-numero">48</span>
         <span class="card-nome">Gálatas</span>
       </a>
-      <a class="card" href="livros/49-efesios.html" data-nome="efésios">
+      <a class="card" href="livros/49-efesios.html" data-nome="efésios" data-testamento="Novo Testamento">
         <span class="card-numero">49</span>
         <span class="card-nome">Efésios</span>
       </a>
-      <a class="card" href="livros/50-filipenses.html" data-nome="filipenses">
+      <a class="card" href="livros/50-filipenses.html" data-nome="filipenses" data-testamento="Novo Testamento">
         <span class="card-numero">50</span>
         <span class="card-nome">Filipenses</span>
       </a>
-      <a class="card" href="livros/51-colossenses.html" data-nome="colossenses">
+      <a class="card" href="livros/51-colossenses.html" data-nome="colossenses" data-testamento="Novo Testamento">
         <span class="card-numero">51</span>
         <span class="card-nome">Colossenses</span>
       </a>
-      <a class="card" href="livros/52-1-tessalonicenses.html" data-nome="1 tessalonicenses">
+      <a class="card" href="livros/52-1-tessalonicenses.html" data-nome="1 tessalonicenses" data-testamento="Novo Testamento">
         <span class="card-numero">52</span>
         <span class="card-nome">1 Tessalonicenses</span>
       </a>
-      <a class="card" href="livros/53-2-tessalonicenses.html" data-nome="2 tessalonicenses">
+      <a class="card" href="livros/53-2-tessalonicenses.html" data-nome="2 tessalonicenses" data-testamento="Novo Testamento">
         <span class="card-numero">53</span>
         <span class="card-nome">2 Tessalonicenses</span>
       </a>
-      <a class="card" href="livros/54-1-timoteo.html" data-nome="1 timóteo">
+      <a class="card" href="livros/54-1-timoteo.html" data-nome="1 timóteo" data-testamento="Novo Testamento">
         <span class="card-numero">54</span>
         <span class="card-nome">1 Timóteo</span>
       </a>
-      <a class="card" href="livros/55-2-timoteo.html" data-nome="2 timóteo">
+      <a class="card" href="livros/55-2-timoteo.html" data-nome="2 timóteo" data-testamento="Novo Testamento">
         <span class="card-numero">55</span>
         <span class="card-nome">2 Timóteo</span>
       </a>
-      <a class="card" href="livros/56-tito.html" data-nome="tito">
+      <a class="card" href="livros/56-tito.html" data-nome="tito" data-testamento="Novo Testamento">
         <span class="card-numero">56</span>
         <span class="card-nome">Tito</span>
       </a>
-      <a class="card" href="livros/57-filemom.html" data-nome="filemom">
+      <a class="card" href="livros/57-filemom.html" data-nome="filemom" data-testamento="Novo Testamento">
         <span class="card-numero">57</span>
         <span class="card-nome">Filemom</span>
       </a>
-      <a class="card" href="livros/58-hebreus.html" data-nome="hebreus">
+      <a class="card" href="livros/58-hebreus.html" data-nome="hebreus" data-testamento="Novo Testamento">
         <span class="card-numero">58</span>
         <span class="card-nome">Hebreus</span>
       </a>
-      <a class="card" href="livros/59-tiago.html" data-nome="tiago">
+      <a class="card" href="livros/59-tiago.html" data-nome="tiago" data-testamento="Novo Testamento">
         <span class="card-numero">59</span>
         <span class="card-nome">Tiago</span>
       </a>
-      <a class="card" href="livros/60-1-pedro.html" data-nome="1 pedro">
+      <a class="card" href="livros/60-1-pedro.html" data-nome="1 pedro" data-testamento="Novo Testamento">
         <span class="card-numero">60</span>
         <span class="card-nome">1 Pedro</span>
       </a>
-      <a class="card" href="livros/61-2-pedro.html" data-nome="2 pedro">
+      <a class="card" href="livros/61-2-pedro.html" data-nome="2 pedro" data-testamento="Novo Testamento">
         <span class="card-numero">61</span>
         <span class="card-nome">2 Pedro</span>
       </a>
-      <a class="card" href="livros/62-1-joao.html" data-nome="1 joão">
+      <a class="card" href="livros/62-1-joao.html" data-nome="1 joão" data-testamento="Novo Testamento">
         <span class="card-numero">62</span>
         <span class="card-nome">1 João</span>
       </a>
-      <a class="card" href="livros/63-2-joao.html" data-nome="2 joão">
+      <a class="card" href="livros/63-2-joao.html" data-nome="2 joão" data-testamento="Novo Testamento">
         <span class="card-numero">63</span>
         <span class="card-nome">2 João</span>
       </a>
-      <a class="card" href="livros/64-3-joao.html" data-nome="3 joão">
+      <a class="card" href="livros/64-3-joao.html" data-nome="3 joão" data-testamento="Novo Testamento">
         <span class="card-numero">64</span>
         <span class="card-nome">3 João</span>
       </a>
-      <a class="card" href="livros/65-judas.html" data-nome="judas">
+      <a class="card" href="livros/65-judas.html" data-nome="judas" data-testamento="Novo Testamento">
         <span class="card-numero">65</span>
         <span class="card-nome">Judas</span>
       </a>
-      <a class="card" href="livros/66-apocalipse.html" data-nome="apocalipse">
+      <a class="card" href="livros/66-apocalipse.html" data-nome="apocalipse" data-testamento="Novo Testamento">
         <span class="card-numero">66</span>
         <span class="card-nome">Apocalipse</span>
       </a>
