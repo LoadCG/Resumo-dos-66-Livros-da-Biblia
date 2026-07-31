@@ -23,6 +23,11 @@
     const resultado = {
       referencia: dados.reference,
       texto: dados.text.trim().replace(/\s+/g, " "),
+      versiculos: Array.isArray(dados.verses)
+        ? dados.verses.map(function (v) {
+            return { numero: v.verse, texto: v.text.trim().replace(/\s+/g, " ") };
+          })
+        : null,
     };
 
     cache[chave] = resultado;
@@ -101,7 +106,21 @@
     try {
       const resultado = await window.BibliaAPI.buscar(ref);
       rotulo.textContent = resultado.referencia;
-      corpo.innerHTML = "<p>" + resultado.texto + "</p>";
+      if (resultado.versiculos && resultado.versiculos.length > 1) {
+        corpo.innerHTML = resultado.versiculos
+          .map(function (v) {
+            return (
+              '<p class="popover-versiculo-item"><span class="popover-versiculo-numero">' +
+              v.numero +
+              "</span>" +
+              v.texto +
+              "</p>"
+            );
+          })
+          .join("");
+      } else {
+        corpo.innerHTML = "<p>" + resultado.texto + "</p>";
+      }
     } catch (erro) {
       corpo.innerHTML =
         '<p class="popover-versiculo-estado">Não foi possível carregar esse versículo agora. Tente de novo em instantes.</p>';

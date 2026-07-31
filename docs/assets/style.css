@@ -667,6 +667,18 @@ main .bloco {
   margin: 0;
 }
 
+.popover-versiculo-item + .popover-versiculo-item {
+  margin-top: 0.6rem;
+}
+
+.popover-versiculo-numero {
+  margin-right: 0.35rem;
+  color: var(--cor-destaque);
+  font-size: 0.78rem;
+  font-weight: 700;
+  vertical-align: super;
+}
+
 .popover-versiculo-estado {
   color: var(--cor-texto-suave);
 }
