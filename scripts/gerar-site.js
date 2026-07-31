@@ -19,6 +19,17 @@ const OUT_DIR = path.join(REPO_ROOT, "docs");
 const SITE_TITLE = "Resumo dos 66 Livros da Bíblia";
 const BASE_URL = "https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/";
 
+function generoDoLivro(numero) {
+  if (numero <= 5) return "Lei";
+  if (numero <= 17) return "Histórico";
+  if (numero <= 22) return "Poético";
+  if (numero <= 39) return "Profético";
+  if (numero <= 43) return "Evangelho";
+  if (numero === 44) return "Histórico";
+  if (numero <= 65) return "Carta";
+  return "Apocalíptico";
+}
+
 const SECTION_KEYS = [
   "fichaRapida",
   "panoDeFundo",
@@ -123,6 +134,7 @@ function parseBook(filePath, testamento) {
     numero,
     nome,
     testamento,
+    genero: generoDoLivro(numero),
     fichaRapidaHtml: parseFichaRapida(sections.fichaRapida.body),
     blocos: [
       { id: SECTION_IDS.panoDeFundo, titulo: sections.panoDeFundo.header, html: parseProse(sections.panoDeFundo.body) },
@@ -165,6 +177,12 @@ function pageShell({ title, basePath, bodyHtml, description, url, ogType }) {
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:url" content="${url}">
 <meta name="twitter:card" content="summary">
+<script>
+try {
+  var temaSalvo = localStorage.getItem("biblia-tema");
+  if (temaSalvo) document.documentElement.dataset.tema = temaSalvo;
+} catch (e) {}
+</script>
 <link rel="stylesheet" href="${basePath}assets/style.css">
 </head>
 <body>
@@ -179,9 +197,13 @@ function renderIndex(books) {
     const doGrupo = books.filter((b) => b.testamento === testamento);
     const cards = doGrupo
       .map(
-        (b) => `      <a class="card" href="livros/${b.slug}.html" data-nome="${escapeHtml(b.nome.toLowerCase())}" data-testamento="${escapeHtml(testamento)}">
+        (b) => `      <a class="card genero-${b.genero.toLowerCase().replace("í", "i")}" href="livros/${b.slug}.html" data-slug="${b.slug}" data-nome="${escapeHtml(b.nome.toLowerCase())}" data-testamento="${escapeHtml(testamento)}">
         <span class="card-numero">${b.numero}</span>
-        <span class="card-nome">${escapeHtml(b.nome)}</span>
+        <span class="card-conteudo">
+          <span class="card-nome">${escapeHtml(b.nome)}</span>
+          <span class="genero">${b.genero}</span>
+        </span>
+        <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>`
       )
       .join("\n");
@@ -194,6 +216,9 @@ ${cards}
   });
 
   const body = `  <header class="topo">
+    <div class="preferencias">
+      <button type="button" class="controle tema-toggle" aria-label="Alternar tema">◐ Tema</button>
+    </div>
     <h1>${SITE_TITLE}</h1>
     <p class="intro">Resumos históricos dos 66 livros da Bíblia — contexto, autoria,
     cronologia e curiosidades, em linguagem simples para leitura rápida.</p>
@@ -212,6 +237,7 @@ ${grupos.join("\n")}
   <footer class="rodape">
     <p>Resumos históricos dos 66 livros da Bíblia.</p>
   </footer>
+  <script src="assets/preferencias.js"></script>
   <script src="assets/busca.js"></script>`;
 
   return pageShell({
@@ -249,10 +275,16 @@ ${bloco.html}
   const body = `  <header class="topo topo-livro">
     <div class="topo-acoes">
       <a class="voltar" href="../index.html">← Todos os livros</a>
-      <button type="button" class="copiar-link" data-url="${url}">🔗 Copiar link</button>
+      <div class="acoes-livro">
+        <button type="button" class="controle tema-toggle" aria-label="Alternar tema">◐ Tema</button>
+        <button type="button" class="controle fonte-menos" aria-label="Diminuir texto">A−</button>
+        <button type="button" class="controle fonte-mais" aria-label="Aumentar texto">A+</button>
+        <button type="button" class="controle marcar-lido" data-slug="${book.slug}" aria-pressed="false">✓ Marcar como lido</button>
+        <button type="button" class="copiar-link" data-url="${url}">🔗 Copiar link</button>
+      </div>
     </div>
     <h1>${escapeHtml(book.nome)}</h1>
-    <p class="subtitulo">Livro ${book.numero} de 66 — ${book.testamento}</p>
+    <p class="subtitulo">Livro ${book.numero} de 66 — ${book.testamento} · <span class="genero">${book.genero}</span></p>
   </header>
   <nav class="indice" aria-label="Índice do livro">
 ${indiceHtml}
@@ -271,6 +303,7 @@ ${blocosHtml}
   <footer class="rodape">
     <p><a href="../index.html">← Voltar para todos os livros</a></p>
   </footer>
+  <script src="../assets/preferencias.js"></script>
   <script src="../assets/livro.js"></script>`;
 
   return pageShell({

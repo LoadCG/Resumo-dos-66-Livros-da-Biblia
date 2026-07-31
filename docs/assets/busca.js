@@ -8,6 +8,15 @@
   const vazio = document.getElementById("busca-vazia");
   const botoesFiltro = Array.from(document.querySelectorAll(".filtro-botao"));
   const botaoAleatorio = document.getElementById("aleatorio");
+  let livrosLidos = [];
+
+  try {
+    livrosLidos = JSON.parse(localStorage.getItem("biblia-livros-lidos") || "[]");
+  } catch (e) {}
+
+  cards.forEach(function (card) {
+    card.classList.toggle("is-lido", livrosLidos.includes(card.getAttribute("data-slug")));
+  });
 
   let termo = "";
   let testamento = "todos";

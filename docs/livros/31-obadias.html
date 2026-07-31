@@ -12,16 +12,28 @@
 <meta property="og:description" content="Resumo histórico de Obadias: contexto, autoria, cronologia e conteúdo.">
 <meta property="og:url" content="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/livros/31-obadias.html">
 <meta name="twitter:card" content="summary">
+<script>
+try {
+  var temaSalvo = localStorage.getItem("biblia-tema");
+  if (temaSalvo) document.documentElement.dataset.tema = temaSalvo;
+} catch (e) {}
+</script>
 <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
   <header class="topo topo-livro">
     <div class="topo-acoes">
       <a class="voltar" href="../index.html">← Todos os livros</a>
-      <button type="button" class="copiar-link" data-url="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/livros/31-obadias.html">🔗 Copiar link</button>
+      <div class="acoes-livro">
+        <button type="button" class="controle tema-toggle" aria-label="Alternar tema">◐ Tema</button>
+        <button type="button" class="controle fonte-menos" aria-label="Diminuir texto">A−</button>
+        <button type="button" class="controle fonte-mais" aria-label="Aumentar texto">A+</button>
+        <button type="button" class="controle marcar-lido" data-slug="31-obadias" aria-pressed="false">✓ Marcar como lido</button>
+        <button type="button" class="copiar-link" data-url="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/livros/31-obadias.html">🔗 Copiar link</button>
+      </div>
     </div>
     <h1>Obadias</h1>
-    <p class="subtitulo">Livro 31 de 66 — Antigo Testamento</p>
+    <p class="subtitulo">Livro 31 de 66 — Antigo Testamento · <span class="genero">Profético</span></p>
   </header>
   <nav class="indice" aria-label="Índice do livro">
       <a href="#ficha-rapida">Ficha Rápida</a>
@@ -81,6 +93,7 @@
   <footer class="rodape">
     <p><a href="../index.html">← Voltar para todos os livros</a></p>
   </footer>
+  <script src="../assets/preferencias.js"></script>
   <script src="../assets/livro.js"></script>
 </body>
 </html>

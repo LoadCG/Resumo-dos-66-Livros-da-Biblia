@@ -11,10 +11,7 @@ qualquer coisa, rode `node scripts/gerar-site.js` de novo para regenerar as
 (todas concluídas — ver seção "Concluído")
 
 ## Médias
-- [ ] Toggle manual de tema claro/escuro (com persistência em localStorage)
-- [ ] Botões A-/A+ para ajustar tamanho da fonte de leitura
-- [ ] Progresso de leitura: marcar livro como lido (localStorage) + indicador nos cards da home
-- [ ] Selo/cor por gênero literário nos cards (Lei, Histórico, Poético, Profético, Evangelho, Carta, Apocalíptico)
+(todas concluídas — ver seção "Concluído")
 
 ## Mais trabalhosas
 - [ ] PWA leve: manifest.json + service worker para funcionar offline/instalar no celular
@@ -26,3 +23,7 @@ qualquer coisa, rode `node scripts/gerar-site.js` de novo para regenerar as
 - [x] Filtro por Antigo/Novo Testamento (botões, além da busca por texto)
 - [x] Meta tags Open Graph (título/descrição bonitos ao compartilhar) + `sitemap.xml`
 - [x] Índice de seções (âncoras) dentro da página do livro
+- [x] Toggle manual de tema claro/escuro (com persistência em localStorage)
+- [x] Botões A-/A+ para ajustar tamanho da fonte de leitura
+- [x] Progresso de leitura: marcar livro como lido (localStorage) + indicador nos cards da home
+- [x] Selo/cor por gênero literário nos cards (Lei, Histórico, Poético, Profético, Evangelho, Carta, Apocalíptico)
