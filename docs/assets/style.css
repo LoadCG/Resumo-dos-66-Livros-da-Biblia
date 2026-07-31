@@ -243,6 +243,10 @@ main {
   font-size: 0.9rem;
 }
 
+.confirmacao-lido[hidden] {
+  display: none;
+}
+
 .fechar-confirmacao {
   flex-shrink: 0;
   display: inline-flex;
@@ -898,6 +902,8 @@ main .bloco {
 }
 
 .limpar-busca:hover { background: var(--cor-destaque-fundo); }
+
+.limpar-busca[hidden] { display: none; }
 
 .filtros-status { margin-top: 0.5rem; }
 
