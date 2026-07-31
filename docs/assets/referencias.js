@@ -90,7 +90,8 @@
     let esquerda = rectBotao.left;
     esquerda = Math.max(12, Math.min(esquerda, window.innerWidth - largura - 12));
 
-    const topo = abrirAcima ? rectBotao.top - alturaPopover - 8 : rectBotao.bottom + 8;
+    let topo = abrirAcima ? rectBotao.top - alturaPopover - 8 : rectBotao.bottom + 8;
+    topo = Math.max(12, Math.min(topo, window.innerHeight - alturaPopover - 12));
 
     popover.style.left = esquerda + "px";
     popover.style.top = Math.max(12, topo) + "px";
@@ -125,6 +126,8 @@
       corpo.innerHTML =
         '<p class="popover-versiculo-estado">Não foi possível carregar esse versículo agora. Tente de novo em instantes.</p>';
     }
+
+    if (botaoAtual) posicionar(botaoAtual);
   }
 
   function abrir(botao) {
