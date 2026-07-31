@@ -49,6 +49,13 @@ const SECTION_IDS = {
   porQueImporta: "por-que-importa",
 };
 
+function normalizarClasse(texto) {
+  return texto
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
+}
+
 function contarPalavras(texto) {
   const matches = texto.replace(/[#*_>-]/g, " ").trim().match(/\S+/g);
   return matches ? matches.length : 0;
@@ -84,6 +91,15 @@ function parseBulletList(body) {
   return `<ul>\n${items.map((item) => `  <li>${formatInline(item)}</li>`).join("\n")}\n</ul>`;
 }
 
+const ICONES_FICHA = {
+  "Autor": "✍️",
+  "Data provável de escrita": "🗓️",
+  "Período histórico narrado": "🏛️",
+  "Gênero literário": "📚",
+  "Local/contexto de origem": "📍",
+  "Conexão com o livro anterior": "🔗",
+};
+
 function parseFichaRapida(body) {
   const items = body
     .trim()
@@ -97,10 +113,10 @@ function parseFichaRapida(body) {
     .filter(Boolean);
 
   return `<dl class="ficha-rapida">\n${items
-    .map(
-      (item) =>
-        `  <div class="ficha-item"><dt>${escapeHtml(item.label)}</dt><dd>${formatInline(item.value)}</dd></div>`
-    )
+    .map((item) => {
+      const icone = ICONES_FICHA[item.label] || "•";
+      return `  <div class="ficha-item"><dt><span class="ficha-icone" aria-hidden="true">${icone}</span>${escapeHtml(item.label)}</dt><dd>${formatInline(item.value)}</dd></div>`;
+    })
     .join("\n")}\n</dl>`;
 }
 
@@ -214,13 +230,14 @@ function renderIndex(books) {
     const doGrupo = books.filter((b) => b.testamento === testamento);
     const cards = doGrupo
       .map(
-        (b) => `      <a class="card genero-${b.genero.toLowerCase().replace("í", "i")}" href="livros/${b.slug}.html" data-slug="${b.slug}" data-nome="${escapeHtml(b.nome.toLowerCase())}" data-testamento="${escapeHtml(testamento)}" data-genero="${b.genero}">
+        (b) => `      <a class="card genero-${normalizarClasse(b.genero)}" href="livros/${b.slug}.html" data-slug="${b.slug}" data-nome="${escapeHtml(b.nome.toLowerCase())}" data-testamento="${escapeHtml(testamento)}" data-genero="${b.genero}">
         <span class="card-numero">${b.numero}</span>
         <span class="card-conteudo">
           <span class="card-nome">${escapeHtml(b.nome)}</span>
           <span class="genero">${b.genero}</span>
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
+        <span class="badge-continuar" aria-hidden="true">Continue aqui</span>
       </a>`
       )
       .join("\n");
@@ -234,7 +251,7 @@ ${cards}
 
   const legenda = generos
     .map(
-      (genero) => `      <button type="button" class="legenda-item genero-${genero.toLowerCase().replace("í", "i")}" data-genero="${genero}">
+      (genero) => `      <button type="button" class="legenda-item genero-${normalizarClasse(genero)}" data-genero="${genero}">
         <span class="legenda-cor" aria-hidden="true"></span>${genero}
       </button>`
     )
@@ -269,6 +286,10 @@ ${cards}
     </div>
   </header>
   <main class="home-conteudo">
+    <p id="confirmacao-lido" class="confirmacao-lido" hidden role="status">
+      <span id="confirmacao-lido-texto"></span>
+      <button type="button" class="fechar-confirmacao" aria-label="Fechar aviso">×</button>
+    </p>
     <section class="explorador" aria-labelledby="titulo-explorador">
       <div class="explorador-topo">
         <div>
@@ -307,7 +328,7 @@ ${cards}
 ${legenda}
         </div>
       </details>
-      <p id="busca-vazia" class="busca-vazia" hidden>Nenhum livro corresponde aos filtros.</p>
+      <p id="busca-vazia" class="busca-vazia" hidden>Nenhum livro corresponde aos filtros. <button type="button" id="limpar-busca-vazia" class="link-botao">Limpar filtros</button></p>
     </section>
 ${grupos.join("\n")}
   </main>
@@ -341,11 +362,17 @@ ${bloco.html}
     .join("\n");
 
   const navAnterior = prev
-    ? `<a class="nav-link nav-anterior" href="${prev.slug}.html">← ${escapeHtml(prev.nome)}</a>`
-    : `<span class="nav-link nav-desabilitado"></span>`;
+    ? `<a class="nav-card nav-anterior" href="${prev.slug}.html">
+        <span class="nav-card-rotulo">← Livro anterior</span>
+        <span class="nav-card-nome">${escapeHtml(prev.nome)}</span>
+      </a>`
+    : `<span class="nav-card nav-vazio" aria-hidden="true"></span>`;
   const navProximo = next
-    ? `<a class="nav-link nav-proximo" href="${next.slug}.html">${escapeHtml(next.nome)} →</a>`
-    : `<span class="nav-link nav-desabilitado"></span>`;
+    ? `<a class="nav-card nav-proximo" href="${next.slug}.html">
+        <span class="nav-card-rotulo">Próximo livro →</span>
+        <span class="nav-card-nome">${escapeHtml(next.nome)}</span>
+      </a>`
+    : `<span class="nav-card nav-vazio" aria-hidden="true"></span>`;
 
   const url = `${BASE_URL}livros/${book.slug}.html`;
 

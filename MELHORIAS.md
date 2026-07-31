@@ -27,44 +27,52 @@ não só em funcionalidade nova. Cada item explica o problema que resolve.
 - [x] Tempo estimado de leitura (calculado por contagem de palavras) ao
   lado do gênero no subtítulo — ajuda a decidir se dá para ler agora ou
   depois, antes mesmo de rolar a página.
-- [ ] Transformar os links "anterior/próximo" do rodapé em cartões maiores
-  (com número e nome em destaque, não só texto sublinhado) — hoje são
-  discretos demais para o convite visual de "continue lendo" que deveriam
-  passar.
+- [x] Links "anterior/próximo" do rodapé viraram cartões maiores, com
+  rótulo + nome do livro em destaque — antes eram texto sublinhado discreto
+  demais para o convite de "continue lendo" que deveriam passar.
 
 **Hierarquia visual dentro da leitura**
-- [ ] Redesenhar a Ficha Rápida com um ícone por campo (autor, data,
-  gênero, local) em vez de só rótulo em negrito — fica mais rápido de
+- [x] Ficha Rápida com um ícone por campo (autor, data, período, gênero,
+  local, conexão) em vez de só rótulo em negrito — fica mais rápido de
   escanear visualmente antes de começar a ler o texto corrido.
-- [ ] Marcar no índice fixo qual seção está em foco na tela no momento
-  (usando IntersectionObserver) — hoje o índice é estático e não dá
-  nenhuma pista de onde o leitor está dentro do artigo.
-- [ ] Recolher o índice de seções em uma faixa mais compacta no mobile
-  (hoje ele ocupa uma faixa fixa inteira no topo, roubando espaço de tela
-  pequena) — por exemplo, um botão "Índice ☰" que abre a lista por cima.
+- [x] Índice fixo marca qual seção está em foco na tela no momento
+  (via IntersectionObserver) — antes o índice era estático e não dava
+  nenhuma pista de onde o leitor estava dentro do artigo.
+- [x] Índice de seções vira uma faixa compacta com rolagem horizontal no
+  mobile, em vez de quebrar em várias linhas — deixa de roubar espaço
+  vertical da tela pequena.
 
 **Descoberta e progresso na home**
-- [ ] Destacar visualmente o próximo livro não lido na grade (borda ou
-  selo "Continue aqui"), complementando o card "Continuar leitura" do
-  topo — no scroll da grade inteira, hoje não há nenhuma pista visual de
-  onde o leitor parou.
-- [ ] Pequena confirmação visual (não intrusiva) na home quando um livro é
-  marcado como lido pela primeira vez — hoje a mudança de estado do card é
+- [x] Próximo livro não lido destacado na grade (borda + selo "Continue
+  aqui"), complementando o card "Continuar leitura" do topo — antes não
+  havia nenhuma pista visual, na grade inteira, de onde o leitor parou.
+- [x] Confirmação visual (dispensável) na home quando um novo livro é
+  concluído desde a última visita — antes a mudança de estado do card era
   silenciosa, sem nenhum feedback de "conquista".
-- [ ] Estado vazio da busca mais útil: além do texto "nenhum livro
-  encontrado", oferecer um botão "Limpar filtros" diretamente ali, sem
-  precisar procurar o botão lá em cima.
+- [x] Estado vazio da busca ganhou um botão "Limpar filtros" diretamente
+  na mensagem, sem precisar procurar o botão lá em cima.
 
 **Consistência e acessibilidade como parte do design**
-- [ ] Auditar o contraste dos selos de gênero no tema escuro — as cores
-  foram calibradas para o card no tema claro; vale conferir se continuam
-  legíveis com o fundo escuro.
-- [ ] Garantir que todo elemento clicável novo (cards, chips de gênero,
-  botões de controle) tenha um estado de foco visível e consistente ao
-  navegar só por teclado, não só ao passar o mouse.
-- [ ] Padronizar o tamanho mínimo de toque (44px) em todos os botões
-  pequenos novos (chips de gênero, botão de limpar busca) — alguns hoje
-  ficam abaixo desse mínimo recomendado para uso confortável no celular.
+- [x] Contraste dos selos de gênero no tema escuro corrigido — na
+  auditoria, veio à tona que a classe CSS gerada para "Histórico",
+  "Poético" e "Profético" mantinha o acento (`genero-histórico` em vez de
+  `genero-historico`) e nunca batia com o seletor do CSS, deixando 35 dos
+  66 livros sem a cor do gênero em ambos os temas. Corrigido na geração
+  (função `normalizarClasse`) e adicionada uma paleta própria para o tema
+  escuro, mais saturada, em vez de reusar o pastel do tema claro.
+- [x] Foco visível consistente (anel ao redor do elemento) em qualquer
+  link, botão ou campo ao navegar só por teclado, cobrindo também os
+  elementos novos (cards, chips de gênero, cartões de navegação).
+- [x] Tamanho mínimo de toque padronizado para 40-44px nos controles,
+  chips de gênero, filtros e botão de limpar busca — vários estavam
+  abaixo do recomendado para uso confortável no celular.
+
+**Bug encontrado durante a implementação**
+- [x] O layout do rodapé de navegação quebrava no mobile: o cartão
+  "próximo livro" forçava `grid-column: 2` mesmo quando só havia 1 coluna
+  definida para telas pequenas, criando uma coluna implícita extra em vez
+  de empilhar os dois cartões corretamente. Corrigido restaurando
+  `grid-column: auto` dentro do breakpoint mobile.
 
 ## Próxima etapa — alto impacto
 

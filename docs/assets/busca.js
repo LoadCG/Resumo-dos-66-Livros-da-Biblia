@@ -1,6 +1,6 @@
-// Busca por texto + filtro por testamento + botão "livro aleatório" na home.
-// Progressive enhancement: sem JS, a lista completa continua visível e
-// navegável normalmente.
+// Busca, filtros (testamento/progresso/gênero), livro aleatório e
+// indicadores de progresso na home. Progressive enhancement: sem JS, a
+// lista completa continua visível e navegável normalmente.
 (function () {
   const input = document.getElementById("busca");
   const cards = Array.from(document.querySelectorAll(".card"));
@@ -11,12 +11,16 @@
   const botoesGenero = Array.from(document.querySelectorAll(".legenda-item"));
   const botaoAleatorio = document.getElementById("aleatorio");
   const botaoLimpar = document.getElementById("limpar-filtros");
+  const botaoLimparVazio = document.getElementById("limpar-busca-vazia");
   const botaoLimparBusca = document.getElementById("limpar-busca");
   const progressoTexto = document.getElementById("progresso-texto");
   const progressoPorcentagem = document.getElementById("progresso-porcentagem");
   const progressoPreenchimento = document.getElementById("progresso-preenchimento");
   const progressoTrilho = document.querySelector(".trilho-progresso");
   const continuarLeitura = document.getElementById("continuar-leitura");
+  const confirmacao = document.getElementById("confirmacao-lido");
+  const confirmacaoTexto = document.getElementById("confirmacao-lido-texto");
+  const fecharConfirmacao = document.querySelector(".fechar-confirmacao");
   let livrosLidos = [];
 
   try {
@@ -26,6 +30,31 @@
   cards.forEach(function (card) {
     card.classList.toggle("is-lido", livrosLidos.includes(card.getAttribute("data-slug")));
   });
+
+  const proximoNaoLidoCard = cards.find(function (card) {
+    return !card.classList.contains("is-lido");
+  });
+  if (proximoNaoLidoCard) proximoNaoLidoCard.classList.add("proximo-sugerido");
+
+  if (confirmacao && confirmacaoTexto) {
+    let ultimoTotalVisto = 0;
+    try {
+      ultimoTotalVisto = Number(localStorage.getItem("biblia-total-visto")) || 0;
+    } catch (e) {}
+    const totalAtual = livrosLidos.length;
+    if (totalAtual > ultimoTotalVisto && totalAtual > 0) {
+      confirmacaoTexto.textContent = "🎉 Você concluiu mais um livro! " + totalAtual + " de 66 lidos até agora.";
+      confirmacao.hidden = false;
+    }
+    try {
+      localStorage.setItem("biblia-total-visto", String(totalAtual));
+    } catch (e) {}
+    if (fecharConfirmacao) {
+      fecharConfirmacao.addEventListener("click", function () {
+        confirmacao.hidden = true;
+      });
+    }
+  }
 
   let termo = "";
   let testamento = "todos";
@@ -94,6 +123,22 @@
     });
   }
 
+  function limparTudo() {
+    termo = "";
+    testamento = "todos";
+    status = "todos";
+    genero = "todos";
+    if (input) input.value = "";
+    if (botaoLimparBusca) botaoLimparBusca.hidden = true;
+    marcarAtivo(botoesFiltro, botoesFiltro[0]);
+    marcarAtivo(botoesStatus, botoesStatus[0]);
+    botoesGenero.forEach(function (item) {
+      item.classList.remove("is-ativo");
+      item.setAttribute("aria-pressed", "false");
+    });
+    aplicarFiltro();
+  }
+
   if (input) {
     input.addEventListener("input", function () {
       termo = input.value.trim().toLowerCase();
@@ -151,23 +196,8 @@
     });
   }
 
-  if (botaoLimpar) {
-    botaoLimpar.addEventListener("click", function () {
-      termo = "";
-      testamento = "todos";
-      status = "todos";
-      genero = "todos";
-      if (input) input.value = "";
-      if (botaoLimparBusca) botaoLimparBusca.hidden = true;
-      marcarAtivo(botoesFiltro, botoesFiltro[0]);
-      marcarAtivo(botoesStatus, botoesStatus[0]);
-      botoesGenero.forEach(function (item) {
-        item.classList.remove("is-ativo");
-        item.setAttribute("aria-pressed", "false");
-      });
-      aplicarFiltro();
-    });
-  }
+  if (botaoLimpar) botaoLimpar.addEventListener("click", limparTudo);
+  if (botaoLimparVazio) botaoLimparVazio.addEventListener("click", limparTudo);
 
   atualizarProgresso();
   aplicarFiltro();

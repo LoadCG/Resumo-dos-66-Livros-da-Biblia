@@ -86,6 +86,31 @@
     atualizarLido();
   }
 
+  const linksIndice = Array.from(document.querySelectorAll(".indice a"));
+  const secoesIndice = Array.from(document.querySelectorAll("main .bloco[id]"));
+  if (linksIndice.length && secoesIndice.length && "IntersectionObserver" in window) {
+    const mapaLinks = {};
+    linksIndice.forEach(function (link) {
+      mapaLinks[link.getAttribute("href").slice(1)] = link;
+    });
+    const observador = new IntersectionObserver(
+      function (entradas) {
+        entradas.forEach(function (entrada) {
+          const link = mapaLinks[entrada.target.id];
+          if (!link || !entrada.isIntersecting) return;
+          linksIndice.forEach(function (l) {
+            l.classList.remove("is-atual");
+          });
+          link.classList.add("is-atual");
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+    secoesIndice.forEach(function (secao) {
+      observador.observe(secao);
+    });
+  }
+
   function atualizarRolagem() {
     const total = document.documentElement.scrollHeight - window.innerHeight;
     const porcentagem = total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0;

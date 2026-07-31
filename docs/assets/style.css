@@ -47,6 +47,14 @@
   box-sizing: border-box;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 2px;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -83,8 +91,8 @@ main {
 }
 
 .controle {
-  padding: 0.4rem 0.7rem;
-  min-height: 36px;
+  padding: 0.4rem 0.8rem;
+  min-height: 44px;
   border: 1px solid var(--cor-borda);
   border-radius: 999px;
   background: var(--cor-fundo-elevado);
@@ -132,6 +140,47 @@ main {
   margin-top: 1rem;
 }
 
+.link-botao {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--cor-destaque);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.confirmacao-lido {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--cor-destaque-fundo);
+  color: var(--cor-texto);
+  border-radius: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.fechar-confirmacao {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.fechar-confirmacao:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
 .filtros {
   display: flex;
   flex-wrap: wrap;
@@ -148,7 +197,7 @@ main {
   background: var(--cor-fundo-elevado);
   color: var(--cor-texto);
   cursor: pointer;
-  min-height: 36px;
+  min-height: 44px;
 }
 
 .filtro-botao.is-ativo {
@@ -266,6 +315,27 @@ main {
   display: inline;
 }
 
+.badge-continuar {
+  display: none;
+  margin-left: auto;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--cor-destaque);
+  color: var(--cor-fundo-elevado);
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.card.proximo-sugerido {
+  border-color: var(--cor-destaque);
+  box-shadow: 0 0 0 2px var(--cor-destaque-fundo);
+}
+
+.card.proximo-sugerido .badge-continuar {
+  display: inline-flex;
+}
+
 .genero-lei .card-numero { background: #e7edf9; color: #395990; }
 .genero-historico .card-numero { background: #f3e6d3; color: #8a5a2b; }
 .genero-poetico .card-numero { background: #f2e2f1; color: #84477e; }
@@ -273,6 +343,24 @@ main {
 .genero-evangelho .card-numero { background: #dff0e5; color: #287a45; }
 .genero-carta .card-numero { background: #e2eef0; color: #326b75; }
 .genero-apocaliptico .card-numero { background: #ebe4f6; color: #664795; }
+
+:root[data-tema="escuro"] .genero-lei .card-numero { background: #33415f; color: #b9c8ec; }
+:root[data-tema="escuro"] .genero-historico .card-numero { background: #4a3620; color: #e8c48f; }
+:root[data-tema="escuro"] .genero-poetico .card-numero { background: #452c40; color: #e3b3dd; }
+:root[data-tema="escuro"] .genero-profetico .card-numero { background: #4a2a26; color: #eeaba3; }
+:root[data-tema="escuro"] .genero-evangelho .card-numero { background: #22412c; color: #a6dbb7; }
+:root[data-tema="escuro"] .genero-carta .card-numero { background: #233c40; color: #a9d6dc; }
+:root[data-tema="escuro"] .genero-apocaliptico .card-numero { background: #372b4c; color: #c9b3e8; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema]) .genero-lei .card-numero { background: #33415f; color: #b9c8ec; }
+  :root:not([data-tema]) .genero-historico .card-numero { background: #4a3620; color: #e8c48f; }
+  :root:not([data-tema]) .genero-poetico .card-numero { background: #452c40; color: #e3b3dd; }
+  :root:not([data-tema]) .genero-profetico .card-numero { background: #4a2a26; color: #eeaba3; }
+  :root:not([data-tema]) .genero-evangelho .card-numero { background: #22412c; color: #a6dbb7; }
+  :root:not([data-tema]) .genero-carta .card-numero { background: #233c40; color: #a9d6dc; }
+  :root:not([data-tema]) .genero-apocaliptico .card-numero { background: #372b4c; color: #c9b3e8; }
+}
 
 .card[hidden] {
   display: none;
@@ -346,10 +434,34 @@ main {
 .indice a {
   color: var(--cor-destaque);
   text-decoration: none;
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .indice a:hover {
   text-decoration: underline;
+}
+
+.indice a.is-atual {
+  background: var(--cor-destaque);
+  color: var(--cor-fundo-elevado);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .indice {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .indice a {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
 }
 
 .topo-livro h1 {
@@ -412,8 +524,16 @@ main .bloco {
 }
 
 .ficha-item dt {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-weight: 600;
   color: var(--cor-texto-suave);
+}
+
+.ficha-icone {
+  flex-shrink: 0;
+  font-size: 0.95em;
 }
 
 .ficha-item dd {
@@ -480,31 +600,68 @@ main .bloco {
 
 .navegacao-livros {
   max-width: var(--largura-leitura);
-  margin: 2rem auto 0;
+  margin: 1.5rem auto 0;
   padding: 0 0 2rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  border-top: 1px solid var(--cor-borda);
-  padding-top: 1.5rem;
 }
 
-.nav-link {
-  color: var(--cor-destaque);
-  text-decoration: none;
-  font-weight: 500;
-  min-height: 44px;
+.nav-card {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.1rem;
+  min-height: 44px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.7rem;
+  background: var(--cor-fundo-elevado);
+  color: var(--cor-texto);
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
-.nav-link:hover {
-  text-decoration: underline;
+.nav-card:hover,
+.nav-card:focus-visible {
+  border-color: var(--cor-destaque);
+  transform: translateY(-1px);
+}
+
+.nav-card-rotulo {
+  color: var(--cor-texto-suave);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.nav-card-nome {
+  font-weight: 600;
+  font-size: 1.02rem;
 }
 
 .nav-proximo {
   text-align: right;
-  margin-left: auto;
+  grid-column: 2;
+}
+
+.nav-vazio {
+  visibility: hidden;
+}
+
+@media (max-width: 520px) {
+  .navegacao-livros {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-proximo {
+    grid-column: auto;
+    text-align: left;
+  }
+
+  .nav-vazio {
+    display: none;
+  }
 }
 
 /* Rodapé */
@@ -581,9 +738,9 @@ main .bloco {
 .limpar-busca {
   position: absolute;
   top: 50%;
-  right: 0.55rem;
-  width: 2rem;
-  height: 2rem;
+  right: 0.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
   padding: 0;
   transform: translateY(-50%);
   border: 0;
@@ -600,7 +757,7 @@ main .bloco {
 
 .filtro-status {
   padding: 0.45rem 0.9rem;
-  min-height: 36px;
+  min-height: 44px;
   border: 1px solid var(--cor-borda);
   border-radius: 999px;
   background: var(--cor-fundo-elevado);
@@ -652,8 +809,8 @@ main .bloco {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  min-height: 34px;
-  padding: 0.35rem 0.65rem;
+  min-height: 40px;
+  padding: 0.35rem 0.75rem;
   border: 1px solid var(--cor-borda);
   border-radius: 999px;
   background: var(--cor-fundo);
@@ -948,8 +1105,8 @@ main .bloco {
 
 .barra-filtros .filtro-botao,
 .barra-filtros .filtro-status {
-  min-height: 32px;
-  padding: 0.3rem 0.65rem;
+  min-height: 40px;
+  padding: 0.3rem 0.75rem;
   border-color: transparent;
   background: transparent;
   font-size: 0.78rem;
