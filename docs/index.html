@@ -28,20 +28,70 @@ try {
     <h1>Resumo dos 66 Livros da Bíblia</h1>
     <p class="intro">Resumos históricos dos 66 livros da Bíblia — contexto, autoria,
     cronologia e curiosidades, em linguagem simples para leitura rápida.</p>
-    <input type="search" id="busca" class="busca" placeholder="Buscar um livro pelo nome..." aria-label="Buscar livro">
+    <section class="painel-progresso" aria-label="Seu progresso de leitura">
+      <div>
+        <strong id="progresso-texto">0 de 66 livros lidos</strong>
+        <span id="progresso-porcentagem">0%</span>
+      </div>
+      <div class="trilho-progresso" role="progressbar" aria-label="Livros lidos" aria-valuemin="0" aria-valuemax="66" aria-valuenow="0">
+        <span id="progresso-preenchimento"></span>
+      </div>
+      <a id="continuar-leitura" class="continuar-leitura" href="livros/01-genesis.html">Continuar leitura →</a>
+    </section>
+    <div class="busca-container">
+      <input type="search" id="busca" class="busca" placeholder="Buscar um livro pelo nome..." aria-label="Buscar livro">
+      <button type="button" id="limpar-busca" class="limpar-busca" aria-label="Limpar busca" hidden>×</button>
+    </div>
     <div class="filtros" role="group" aria-label="Filtrar por testamento">
       <button type="button" class="filtro-botao is-ativo" data-testamento="todos">Todos</button>
       <button type="button" class="filtro-botao" data-testamento="Antigo Testamento">Antigo Testamento</button>
       <button type="button" class="filtro-botao" data-testamento="Novo Testamento">Novo Testamento</button>
     </div>
-    <button type="button" id="aleatorio" class="botao-secundario">🎲 Livro aleatório</button>
+    <div class="filtros filtros-status" role="group" aria-label="Filtrar por progresso">
+      <button type="button" class="filtro-status is-ativo" data-status="todos">Todos</button>
+      <button type="button" class="filtro-status" data-status="nao-lidos">Não lidos</button>
+      <button type="button" class="filtro-status" data-status="lidos">Lidos</button>
+    </div>
+    <div class="acoes-home">
+      <button type="button" id="aleatorio" class="botao-secundario">🎲 Livro aleatório</button>
+      <button type="button" id="limpar-filtros" class="botao-secundario">Limpar filtros</button>
+    </div>
     <p id="busca-vazia" class="busca-vazia" hidden>Nenhum livro encontrado.</p>
   </header>
   <main>
+    <section class="legenda" aria-labelledby="titulo-legenda">
+      <div class="legenda-cabecalho">
+        <h2 id="titulo-legenda">Cores por gênero literário</h2>
+        <p>As cores dos números identificam o tipo de literatura. Clique em um gênero para filtrar.</p>
+      </div>
+      <div class="legenda-itens">
+      <button type="button" class="legenda-item genero-lei" data-genero="Lei">
+        <span class="legenda-cor" aria-hidden="true"></span>Lei
+      </button>
+      <button type="button" class="legenda-item genero-histórico" data-genero="Histórico">
+        <span class="legenda-cor" aria-hidden="true"></span>Histórico
+      </button>
+      <button type="button" class="legenda-item genero-poético" data-genero="Poético">
+        <span class="legenda-cor" aria-hidden="true"></span>Poético
+      </button>
+      <button type="button" class="legenda-item genero-profético" data-genero="Profético">
+        <span class="legenda-cor" aria-hidden="true"></span>Profético
+      </button>
+      <button type="button" class="legenda-item genero-evangelho" data-genero="Evangelho">
+        <span class="legenda-cor" aria-hidden="true"></span>Evangelho
+      </button>
+      <button type="button" class="legenda-item genero-carta" data-genero="Carta">
+        <span class="legenda-cor" aria-hidden="true"></span>Carta
+      </button>
+      <button type="button" class="legenda-item genero-apocaliptico" data-genero="Apocalíptico">
+        <span class="legenda-cor" aria-hidden="true"></span>Apocalíptico
+      </button>
+      </div>
+    </section>
     <section class="grupo" data-testamento="Antigo Testamento">
       <h2>Antigo Testamento <span class="contagem">(39 livros)</span></h2>
       <div class="grade">
-      <a class="card genero-lei" href="livros/01-genesis.html" data-slug="01-genesis" data-nome="gênesis" data-testamento="Antigo Testamento">
+      <a class="card genero-lei" href="livros/01-genesis.html" data-slug="01-genesis" data-nome="gênesis" data-testamento="Antigo Testamento" data-genero="Lei">
         <span class="card-numero">1</span>
         <span class="card-conteudo">
           <span class="card-nome">Gênesis</span>
@@ -49,7 +99,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-lei" href="livros/02-exodo.html" data-slug="02-exodo" data-nome="êxodo" data-testamento="Antigo Testamento">
+      <a class="card genero-lei" href="livros/02-exodo.html" data-slug="02-exodo" data-nome="êxodo" data-testamento="Antigo Testamento" data-genero="Lei">
         <span class="card-numero">2</span>
         <span class="card-conteudo">
           <span class="card-nome">Êxodo</span>
@@ -57,7 +107,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-lei" href="livros/03-levitico.html" data-slug="03-levitico" data-nome="levítico" data-testamento="Antigo Testamento">
+      <a class="card genero-lei" href="livros/03-levitico.html" data-slug="03-levitico" data-nome="levítico" data-testamento="Antigo Testamento" data-genero="Lei">
         <span class="card-numero">3</span>
         <span class="card-conteudo">
           <span class="card-nome">Levítico</span>
@@ -65,7 +115,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-lei" href="livros/04-numeros.html" data-slug="04-numeros" data-nome="números" data-testamento="Antigo Testamento">
+      <a class="card genero-lei" href="livros/04-numeros.html" data-slug="04-numeros" data-nome="números" data-testamento="Antigo Testamento" data-genero="Lei">
         <span class="card-numero">4</span>
         <span class="card-conteudo">
           <span class="card-nome">Números</span>
@@ -73,7 +123,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-lei" href="livros/05-deuteronomio.html" data-slug="05-deuteronomio" data-nome="deuteronômio" data-testamento="Antigo Testamento">
+      <a class="card genero-lei" href="livros/05-deuteronomio.html" data-slug="05-deuteronomio" data-nome="deuteronômio" data-testamento="Antigo Testamento" data-genero="Lei">
         <span class="card-numero">5</span>
         <span class="card-conteudo">
           <span class="card-nome">Deuteronômio</span>
@@ -81,7 +131,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/06-josue.html" data-slug="06-josue" data-nome="josué" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/06-josue.html" data-slug="06-josue" data-nome="josué" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">6</span>
         <span class="card-conteudo">
           <span class="card-nome">Josué</span>
@@ -89,7 +139,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/07-juizes.html" data-slug="07-juizes" data-nome="juízes" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/07-juizes.html" data-slug="07-juizes" data-nome="juízes" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">7</span>
         <span class="card-conteudo">
           <span class="card-nome">Juízes</span>
@@ -97,7 +147,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/08-rute.html" data-slug="08-rute" data-nome="rute" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/08-rute.html" data-slug="08-rute" data-nome="rute" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">8</span>
         <span class="card-conteudo">
           <span class="card-nome">Rute</span>
@@ -105,7 +155,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/09-1-samuel.html" data-slug="09-1-samuel" data-nome="1 samuel" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/09-1-samuel.html" data-slug="09-1-samuel" data-nome="1 samuel" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">9</span>
         <span class="card-conteudo">
           <span class="card-nome">1 Samuel</span>
@@ -113,7 +163,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/10-2-samuel.html" data-slug="10-2-samuel" data-nome="2 samuel" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/10-2-samuel.html" data-slug="10-2-samuel" data-nome="2 samuel" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">10</span>
         <span class="card-conteudo">
           <span class="card-nome">2 Samuel</span>
@@ -121,7 +171,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/11-1-reis.html" data-slug="11-1-reis" data-nome="1 reis" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/11-1-reis.html" data-slug="11-1-reis" data-nome="1 reis" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">11</span>
         <span class="card-conteudo">
           <span class="card-nome">1 Reis</span>
@@ -129,7 +179,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/12-2-reis.html" data-slug="12-2-reis" data-nome="2 reis" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/12-2-reis.html" data-slug="12-2-reis" data-nome="2 reis" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">12</span>
         <span class="card-conteudo">
           <span class="card-nome">2 Reis</span>
@@ -137,7 +187,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/13-1-cronicas.html" data-slug="13-1-cronicas" data-nome="1 crônicas" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/13-1-cronicas.html" data-slug="13-1-cronicas" data-nome="1 crônicas" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">13</span>
         <span class="card-conteudo">
           <span class="card-nome">1 Crônicas</span>
@@ -145,7 +195,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/14-2-cronicas.html" data-slug="14-2-cronicas" data-nome="2 crônicas" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/14-2-cronicas.html" data-slug="14-2-cronicas" data-nome="2 crônicas" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">14</span>
         <span class="card-conteudo">
           <span class="card-nome">2 Crônicas</span>
@@ -153,7 +203,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/15-esdras.html" data-slug="15-esdras" data-nome="esdras" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/15-esdras.html" data-slug="15-esdras" data-nome="esdras" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">15</span>
         <span class="card-conteudo">
           <span class="card-nome">Esdras</span>
@@ -161,7 +211,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/16-neemias.html" data-slug="16-neemias" data-nome="neemias" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/16-neemias.html" data-slug="16-neemias" data-nome="neemias" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">16</span>
         <span class="card-conteudo">
           <span class="card-nome">Neemias</span>
@@ -169,7 +219,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/17-ester.html" data-slug="17-ester" data-nome="ester" data-testamento="Antigo Testamento">
+      <a class="card genero-histórico" href="livros/17-ester.html" data-slug="17-ester" data-nome="ester" data-testamento="Antigo Testamento" data-genero="Histórico">
         <span class="card-numero">17</span>
         <span class="card-conteudo">
           <span class="card-nome">Ester</span>
@@ -177,7 +227,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-poético" href="livros/18-jo.html" data-slug="18-jo" data-nome="jó" data-testamento="Antigo Testamento">
+      <a class="card genero-poético" href="livros/18-jo.html" data-slug="18-jo" data-nome="jó" data-testamento="Antigo Testamento" data-genero="Poético">
         <span class="card-numero">18</span>
         <span class="card-conteudo">
           <span class="card-nome">Jó</span>
@@ -185,7 +235,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-poético" href="livros/19-salmos.html" data-slug="19-salmos" data-nome="salmos" data-testamento="Antigo Testamento">
+      <a class="card genero-poético" href="livros/19-salmos.html" data-slug="19-salmos" data-nome="salmos" data-testamento="Antigo Testamento" data-genero="Poético">
         <span class="card-numero">19</span>
         <span class="card-conteudo">
           <span class="card-nome">Salmos</span>
@@ -193,7 +243,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-poético" href="livros/20-proverbios.html" data-slug="20-proverbios" data-nome="provérbios" data-testamento="Antigo Testamento">
+      <a class="card genero-poético" href="livros/20-proverbios.html" data-slug="20-proverbios" data-nome="provérbios" data-testamento="Antigo Testamento" data-genero="Poético">
         <span class="card-numero">20</span>
         <span class="card-conteudo">
           <span class="card-nome">Provérbios</span>
@@ -201,7 +251,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-poético" href="livros/21-eclesiastes.html" data-slug="21-eclesiastes" data-nome="eclesiastes" data-testamento="Antigo Testamento">
+      <a class="card genero-poético" href="livros/21-eclesiastes.html" data-slug="21-eclesiastes" data-nome="eclesiastes" data-testamento="Antigo Testamento" data-genero="Poético">
         <span class="card-numero">21</span>
         <span class="card-conteudo">
           <span class="card-nome">Eclesiastes</span>
@@ -209,7 +259,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-poético" href="livros/22-cantares.html" data-slug="22-cantares" data-nome="cantares" data-testamento="Antigo Testamento">
+      <a class="card genero-poético" href="livros/22-cantares.html" data-slug="22-cantares" data-nome="cantares" data-testamento="Antigo Testamento" data-genero="Poético">
         <span class="card-numero">22</span>
         <span class="card-conteudo">
           <span class="card-nome">Cantares</span>
@@ -217,7 +267,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/23-isaias.html" data-slug="23-isaias" data-nome="isaías" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/23-isaias.html" data-slug="23-isaias" data-nome="isaías" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">23</span>
         <span class="card-conteudo">
           <span class="card-nome">Isaías</span>
@@ -225,7 +275,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/24-jeremias.html" data-slug="24-jeremias" data-nome="jeremias" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/24-jeremias.html" data-slug="24-jeremias" data-nome="jeremias" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">24</span>
         <span class="card-conteudo">
           <span class="card-nome">Jeremias</span>
@@ -233,7 +283,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/25-lamentacoes.html" data-slug="25-lamentacoes" data-nome="lamentações" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/25-lamentacoes.html" data-slug="25-lamentacoes" data-nome="lamentações" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">25</span>
         <span class="card-conteudo">
           <span class="card-nome">Lamentações</span>
@@ -241,7 +291,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/26-ezequiel.html" data-slug="26-ezequiel" data-nome="ezequiel" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/26-ezequiel.html" data-slug="26-ezequiel" data-nome="ezequiel" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">26</span>
         <span class="card-conteudo">
           <span class="card-nome">Ezequiel</span>
@@ -249,7 +299,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/27-daniel.html" data-slug="27-daniel" data-nome="daniel" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/27-daniel.html" data-slug="27-daniel" data-nome="daniel" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">27</span>
         <span class="card-conteudo">
           <span class="card-nome">Daniel</span>
@@ -257,7 +307,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/28-oseias.html" data-slug="28-oseias" data-nome="oséias" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/28-oseias.html" data-slug="28-oseias" data-nome="oséias" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">28</span>
         <span class="card-conteudo">
           <span class="card-nome">Oséias</span>
@@ -265,7 +315,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/29-joel.html" data-slug="29-joel" data-nome="joel" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/29-joel.html" data-slug="29-joel" data-nome="joel" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">29</span>
         <span class="card-conteudo">
           <span class="card-nome">Joel</span>
@@ -273,7 +323,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/30-amos.html" data-slug="30-amos" data-nome="amós" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/30-amos.html" data-slug="30-amos" data-nome="amós" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">30</span>
         <span class="card-conteudo">
           <span class="card-nome">Amós</span>
@@ -281,7 +331,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/31-obadias.html" data-slug="31-obadias" data-nome="obadias" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/31-obadias.html" data-slug="31-obadias" data-nome="obadias" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">31</span>
         <span class="card-conteudo">
           <span class="card-nome">Obadias</span>
@@ -289,7 +339,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/32-jonas.html" data-slug="32-jonas" data-nome="jonas" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/32-jonas.html" data-slug="32-jonas" data-nome="jonas" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">32</span>
         <span class="card-conteudo">
           <span class="card-nome">Jonas</span>
@@ -297,7 +347,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/33-miqueias.html" data-slug="33-miqueias" data-nome="miquéias" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/33-miqueias.html" data-slug="33-miqueias" data-nome="miquéias" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">33</span>
         <span class="card-conteudo">
           <span class="card-nome">Miquéias</span>
@@ -305,7 +355,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/34-naum.html" data-slug="34-naum" data-nome="naum" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/34-naum.html" data-slug="34-naum" data-nome="naum" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">34</span>
         <span class="card-conteudo">
           <span class="card-nome">Naum</span>
@@ -313,7 +363,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/35-habacuque.html" data-slug="35-habacuque" data-nome="habacuque" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/35-habacuque.html" data-slug="35-habacuque" data-nome="habacuque" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">35</span>
         <span class="card-conteudo">
           <span class="card-nome">Habacuque</span>
@@ -321,7 +371,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/36-sofonias.html" data-slug="36-sofonias" data-nome="sofonias" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/36-sofonias.html" data-slug="36-sofonias" data-nome="sofonias" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">36</span>
         <span class="card-conteudo">
           <span class="card-nome">Sofonias</span>
@@ -329,7 +379,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/37-ageu.html" data-slug="37-ageu" data-nome="ageu" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/37-ageu.html" data-slug="37-ageu" data-nome="ageu" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">37</span>
         <span class="card-conteudo">
           <span class="card-nome">Ageu</span>
@@ -337,7 +387,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/38-zacarias.html" data-slug="38-zacarias" data-nome="zacarias" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/38-zacarias.html" data-slug="38-zacarias" data-nome="zacarias" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">38</span>
         <span class="card-conteudo">
           <span class="card-nome">Zacarias</span>
@@ -345,7 +395,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-profético" href="livros/39-malaquias.html" data-slug="39-malaquias" data-nome="malaquias" data-testamento="Antigo Testamento">
+      <a class="card genero-profético" href="livros/39-malaquias.html" data-slug="39-malaquias" data-nome="malaquias" data-testamento="Antigo Testamento" data-genero="Profético">
         <span class="card-numero">39</span>
         <span class="card-conteudo">
           <span class="card-nome">Malaquias</span>
@@ -358,7 +408,7 @@ try {
     <section class="grupo" data-testamento="Novo Testamento">
       <h2>Novo Testamento <span class="contagem">(27 livros)</span></h2>
       <div class="grade">
-      <a class="card genero-evangelho" href="livros/40-mateus.html" data-slug="40-mateus" data-nome="mateus" data-testamento="Novo Testamento">
+      <a class="card genero-evangelho" href="livros/40-mateus.html" data-slug="40-mateus" data-nome="mateus" data-testamento="Novo Testamento" data-genero="Evangelho">
         <span class="card-numero">40</span>
         <span class="card-conteudo">
           <span class="card-nome">Mateus</span>
@@ -366,7 +416,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-evangelho" href="livros/41-marcos.html" data-slug="41-marcos" data-nome="marcos" data-testamento="Novo Testamento">
+      <a class="card genero-evangelho" href="livros/41-marcos.html" data-slug="41-marcos" data-nome="marcos" data-testamento="Novo Testamento" data-genero="Evangelho">
         <span class="card-numero">41</span>
         <span class="card-conteudo">
           <span class="card-nome">Marcos</span>
@@ -374,7 +424,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-evangelho" href="livros/42-lucas.html" data-slug="42-lucas" data-nome="lucas" data-testamento="Novo Testamento">
+      <a class="card genero-evangelho" href="livros/42-lucas.html" data-slug="42-lucas" data-nome="lucas" data-testamento="Novo Testamento" data-genero="Evangelho">
         <span class="card-numero">42</span>
         <span class="card-conteudo">
           <span class="card-nome">Lucas</span>
@@ -382,7 +432,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-evangelho" href="livros/43-joao.html" data-slug="43-joao" data-nome="joão" data-testamento="Novo Testamento">
+      <a class="card genero-evangelho" href="livros/43-joao.html" data-slug="43-joao" data-nome="joão" data-testamento="Novo Testamento" data-genero="Evangelho">
         <span class="card-numero">43</span>
         <span class="card-conteudo">
           <span class="card-nome">João</span>
@@ -390,7 +440,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-histórico" href="livros/44-atos.html" data-slug="44-atos" data-nome="atos" data-testamento="Novo Testamento">
+      <a class="card genero-histórico" href="livros/44-atos.html" data-slug="44-atos" data-nome="atos" data-testamento="Novo Testamento" data-genero="Histórico">
         <span class="card-numero">44</span>
         <span class="card-conteudo">
           <span class="card-nome">Atos</span>
@@ -398,7 +448,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/45-romanos.html" data-slug="45-romanos" data-nome="romanos" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/45-romanos.html" data-slug="45-romanos" data-nome="romanos" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">45</span>
         <span class="card-conteudo">
           <span class="card-nome">Romanos</span>
@@ -406,7 +456,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/46-1-corintios.html" data-slug="46-1-corintios" data-nome="1 coríntios" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/46-1-corintios.html" data-slug="46-1-corintios" data-nome="1 coríntios" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">46</span>
         <span class="card-conteudo">
           <span class="card-nome">1 Coríntios</span>
@@ -414,7 +464,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/47-2-corintios.html" data-slug="47-2-corintios" data-nome="2 coríntios" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/47-2-corintios.html" data-slug="47-2-corintios" data-nome="2 coríntios" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">47</span>
         <span class="card-conteudo">
           <span class="card-nome">2 Coríntios</span>
@@ -422,7 +472,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/48-galatas.html" data-slug="48-galatas" data-nome="gálatas" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/48-galatas.html" data-slug="48-galatas" data-nome="gálatas" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">48</span>
         <span class="card-conteudo">
           <span class="card-nome">Gálatas</span>
@@ -430,7 +480,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/49-efesios.html" data-slug="49-efesios" data-nome="efésios" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/49-efesios.html" data-slug="49-efesios" data-nome="efésios" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">49</span>
         <span class="card-conteudo">
           <span class="card-nome">Efésios</span>
@@ -438,7 +488,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/50-filipenses.html" data-slug="50-filipenses" data-nome="filipenses" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/50-filipenses.html" data-slug="50-filipenses" data-nome="filipenses" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">50</span>
         <span class="card-conteudo">
           <span class="card-nome">Filipenses</span>
@@ -446,7 +496,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/51-colossenses.html" data-slug="51-colossenses" data-nome="colossenses" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/51-colossenses.html" data-slug="51-colossenses" data-nome="colossenses" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">51</span>
         <span class="card-conteudo">
           <span class="card-nome">Colossenses</span>
@@ -454,7 +504,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/52-1-tessalonicenses.html" data-slug="52-1-tessalonicenses" data-nome="1 tessalonicenses" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/52-1-tessalonicenses.html" data-slug="52-1-tessalonicenses" data-nome="1 tessalonicenses" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">52</span>
         <span class="card-conteudo">
           <span class="card-nome">1 Tessalonicenses</span>
@@ -462,7 +512,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/53-2-tessalonicenses.html" data-slug="53-2-tessalonicenses" data-nome="2 tessalonicenses" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/53-2-tessalonicenses.html" data-slug="53-2-tessalonicenses" data-nome="2 tessalonicenses" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">53</span>
         <span class="card-conteudo">
           <span class="card-nome">2 Tessalonicenses</span>
@@ -470,7 +520,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/54-1-timoteo.html" data-slug="54-1-timoteo" data-nome="1 timóteo" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/54-1-timoteo.html" data-slug="54-1-timoteo" data-nome="1 timóteo" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">54</span>
         <span class="card-conteudo">
           <span class="card-nome">1 Timóteo</span>
@@ -478,7 +528,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/55-2-timoteo.html" data-slug="55-2-timoteo" data-nome="2 timóteo" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/55-2-timoteo.html" data-slug="55-2-timoteo" data-nome="2 timóteo" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">55</span>
         <span class="card-conteudo">
           <span class="card-nome">2 Timóteo</span>
@@ -486,7 +536,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/56-tito.html" data-slug="56-tito" data-nome="tito" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/56-tito.html" data-slug="56-tito" data-nome="tito" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">56</span>
         <span class="card-conteudo">
           <span class="card-nome">Tito</span>
@@ -494,7 +544,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/57-filemom.html" data-slug="57-filemom" data-nome="filemom" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/57-filemom.html" data-slug="57-filemom" data-nome="filemom" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">57</span>
         <span class="card-conteudo">
           <span class="card-nome">Filemom</span>
@@ -502,7 +552,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/58-hebreus.html" data-slug="58-hebreus" data-nome="hebreus" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/58-hebreus.html" data-slug="58-hebreus" data-nome="hebreus" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">58</span>
         <span class="card-conteudo">
           <span class="card-nome">Hebreus</span>
@@ -510,7 +560,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/59-tiago.html" data-slug="59-tiago" data-nome="tiago" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/59-tiago.html" data-slug="59-tiago" data-nome="tiago" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">59</span>
         <span class="card-conteudo">
           <span class="card-nome">Tiago</span>
@@ -518,7 +568,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/60-1-pedro.html" data-slug="60-1-pedro" data-nome="1 pedro" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/60-1-pedro.html" data-slug="60-1-pedro" data-nome="1 pedro" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">60</span>
         <span class="card-conteudo">
           <span class="card-nome">1 Pedro</span>
@@ -526,7 +576,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/61-2-pedro.html" data-slug="61-2-pedro" data-nome="2 pedro" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/61-2-pedro.html" data-slug="61-2-pedro" data-nome="2 pedro" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">61</span>
         <span class="card-conteudo">
           <span class="card-nome">2 Pedro</span>
@@ -534,7 +584,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/62-1-joao.html" data-slug="62-1-joao" data-nome="1 joão" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/62-1-joao.html" data-slug="62-1-joao" data-nome="1 joão" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">62</span>
         <span class="card-conteudo">
           <span class="card-nome">1 João</span>
@@ -542,7 +592,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/63-2-joao.html" data-slug="63-2-joao" data-nome="2 joão" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/63-2-joao.html" data-slug="63-2-joao" data-nome="2 joão" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">63</span>
         <span class="card-conteudo">
           <span class="card-nome">2 João</span>
@@ -550,7 +600,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/64-3-joao.html" data-slug="64-3-joao" data-nome="3 joão" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/64-3-joao.html" data-slug="64-3-joao" data-nome="3 joão" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">64</span>
         <span class="card-conteudo">
           <span class="card-nome">3 João</span>
@@ -558,7 +608,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-carta" href="livros/65-judas.html" data-slug="65-judas" data-nome="judas" data-testamento="Novo Testamento">
+      <a class="card genero-carta" href="livros/65-judas.html" data-slug="65-judas" data-nome="judas" data-testamento="Novo Testamento" data-genero="Carta">
         <span class="card-numero">65</span>
         <span class="card-conteudo">
           <span class="card-nome">Judas</span>
@@ -566,7 +616,7 @@ try {
         </span>
         <span class="status-lido" aria-label="Livro lido" title="Livro lido">✓</span>
       </a>
-      <a class="card genero-apocaliptico" href="livros/66-apocalipse.html" data-slug="66-apocalipse" data-nome="apocalipse" data-testamento="Novo Testamento">
+      <a class="card genero-apocaliptico" href="livros/66-apocalipse.html" data-slug="66-apocalipse" data-nome="apocalipse" data-testamento="Novo Testamento" data-genero="Apocalíptico">
         <span class="card-numero">66</span>
         <span class="card-conteudo">
           <span class="card-nome">Apocalipse</span>

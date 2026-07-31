@@ -193,11 +193,12 @@ ${bodyHtml}
 }
 
 function renderIndex(books) {
+  const generos = ["Lei", "Histórico", "Poético", "Profético", "Evangelho", "Carta", "Apocalíptico"];
   const grupos = ["Antigo Testamento", "Novo Testamento"].map((testamento) => {
     const doGrupo = books.filter((b) => b.testamento === testamento);
     const cards = doGrupo
       .map(
-        (b) => `      <a class="card genero-${b.genero.toLowerCase().replace("í", "i")}" href="livros/${b.slug}.html" data-slug="${b.slug}" data-nome="${escapeHtml(b.nome.toLowerCase())}" data-testamento="${escapeHtml(testamento)}">
+        (b) => `      <a class="card genero-${b.genero.toLowerCase().replace("í", "i")}" href="livros/${b.slug}.html" data-slug="${b.slug}" data-nome="${escapeHtml(b.nome.toLowerCase())}" data-testamento="${escapeHtml(testamento)}" data-genero="${b.genero}">
         <span class="card-numero">${b.numero}</span>
         <span class="card-conteudo">
           <span class="card-nome">${escapeHtml(b.nome)}</span>
@@ -215,6 +216,14 @@ ${cards}
     </section>`;
   });
 
+  const legenda = generos
+    .map(
+      (genero) => `      <button type="button" class="legenda-item genero-${genero.toLowerCase().replace("í", "i")}" data-genero="${genero}">
+        <span class="legenda-cor" aria-hidden="true"></span>${genero}
+      </button>`
+    )
+    .join("\n");
+
   const body = `  <header class="topo">
     <div class="preferencias">
       <button type="button" class="controle tema-toggle" aria-label="Alternar tema">◐ Tema</button>
@@ -222,16 +231,46 @@ ${cards}
     <h1>${SITE_TITLE}</h1>
     <p class="intro">Resumos históricos dos 66 livros da Bíblia — contexto, autoria,
     cronologia e curiosidades, em linguagem simples para leitura rápida.</p>
-    <input type="search" id="busca" class="busca" placeholder="Buscar um livro pelo nome..." aria-label="Buscar livro">
+    <section class="painel-progresso" aria-label="Seu progresso de leitura">
+      <div>
+        <strong id="progresso-texto">0 de 66 livros lidos</strong>
+        <span id="progresso-porcentagem">0%</span>
+      </div>
+      <div class="trilho-progresso" role="progressbar" aria-label="Livros lidos" aria-valuemin="0" aria-valuemax="66" aria-valuenow="0">
+        <span id="progresso-preenchimento"></span>
+      </div>
+      <a id="continuar-leitura" class="continuar-leitura" href="livros/01-genesis.html">Continuar leitura →</a>
+    </section>
+    <div class="busca-container">
+      <input type="search" id="busca" class="busca" placeholder="Buscar um livro pelo nome..." aria-label="Buscar livro">
+      <button type="button" id="limpar-busca" class="limpar-busca" aria-label="Limpar busca" hidden>×</button>
+    </div>
     <div class="filtros" role="group" aria-label="Filtrar por testamento">
       <button type="button" class="filtro-botao is-ativo" data-testamento="todos">Todos</button>
       <button type="button" class="filtro-botao" data-testamento="Antigo Testamento">Antigo Testamento</button>
       <button type="button" class="filtro-botao" data-testamento="Novo Testamento">Novo Testamento</button>
     </div>
-    <button type="button" id="aleatorio" class="botao-secundario">🎲 Livro aleatório</button>
+    <div class="filtros filtros-status" role="group" aria-label="Filtrar por progresso">
+      <button type="button" class="filtro-status is-ativo" data-status="todos">Todos</button>
+      <button type="button" class="filtro-status" data-status="nao-lidos">Não lidos</button>
+      <button type="button" class="filtro-status" data-status="lidos">Lidos</button>
+    </div>
+    <div class="acoes-home">
+      <button type="button" id="aleatorio" class="botao-secundario">🎲 Livro aleatório</button>
+      <button type="button" id="limpar-filtros" class="botao-secundario">Limpar filtros</button>
+    </div>
     <p id="busca-vazia" class="busca-vazia" hidden>Nenhum livro encontrado.</p>
   </header>
   <main>
+    <section class="legenda" aria-labelledby="titulo-legenda">
+      <div class="legenda-cabecalho">
+        <h2 id="titulo-legenda">Cores por gênero literário</h2>
+        <p>As cores dos números identificam o tipo de literatura. Clique em um gênero para filtrar.</p>
+      </div>
+      <div class="legenda-itens">
+${legenda}
+      </div>
+    </section>
 ${grupos.join("\n")}
   </main>
   <footer class="rodape">
@@ -273,6 +312,7 @@ ${bloco.html}
   const url = `${BASE_URL}livros/${book.slug}.html`;
 
   const body = `  <header class="topo topo-livro">
+    <div class="progresso-pagina" aria-hidden="true"><span></span></div>
     <div class="topo-acoes">
       <a class="voltar" href="../index.html">← Todos os livros</a>
       <div class="acoes-livro">
@@ -300,6 +340,7 @@ ${blocosHtml}
     ${navAnterior}
     ${navProximo}
   </nav>
+  <button type="button" class="voltar-topo" aria-label="Voltar ao início" title="Voltar ao início">↑</button>
   <footer class="rodape">
     <p><a href="../index.html">← Voltar para todos os livros</a></p>
   </footer>

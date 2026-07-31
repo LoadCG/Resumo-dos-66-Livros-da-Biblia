@@ -4,7 +4,15 @@
   const botaoLido = document.querySelector(".marcar-lido");
   const botaoMenos = document.querySelector(".fonte-menos");
   const botaoMais = document.querySelector(".fonte-mais");
+  const botaoTopo = document.querySelector(".voltar-topo");
+  const barraPagina = document.querySelector(".progresso-pagina span");
   const raiz = document.documentElement;
+
+  if (botaoLido) {
+    try {
+      localStorage.setItem("biblia-ultimo-livro", botaoLido.getAttribute("data-slug"));
+    } catch (e) {}
+  }
 
   if (botao) {
     const textoOriginal = botao.textContent;
@@ -71,4 +79,19 @@
     });
     atualizarLido();
   }
+
+  function atualizarRolagem() {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const porcentagem = total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0;
+    if (barraPagina) barraPagina.style.width = porcentagem + "%";
+    if (botaoTopo) botaoTopo.classList.toggle("is-visivel", window.scrollY > 500);
+  }
+
+  window.addEventListener("scroll", atualizarRolagem, { passive: true });
+  if (botaoTopo) {
+    botaoTopo.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+  atualizarRolagem();
 })();
