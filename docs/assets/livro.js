@@ -21,6 +21,19 @@
 
     botaoCopiar.addEventListener("click", async function () {
       const url = botaoCopiar.getAttribute("data-url");
+      const titulo = botaoCopiar.getAttribute("data-titulo") || document.title;
+
+      // Em celulares com suporte, abre o menu nativo de compartilhamento
+      // (WhatsApp, Instagram etc.) em vez de só copiar o link.
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: titulo, url: url });
+        } catch (erro) {
+          // Usuário cancelou o compartilhamento: não é erro, não faz nada.
+        }
+        return;
+      }
+
       try {
         await navigator.clipboard.writeText(url);
         botaoCopiar.innerHTML =

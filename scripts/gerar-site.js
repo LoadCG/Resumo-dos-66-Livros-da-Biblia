@@ -426,7 +426,7 @@ ${bloco.html}
         <button type="button" class="controle fonte-menos" aria-label="Diminuir texto">A−</button>
         <button type="button" class="controle fonte-mais" aria-label="Aumentar texto">A+</button>
         <button type="button" class="controle marcar-lido" data-slug="${book.slug}" aria-pressed="false">${icone("check")}<span class="rotulo-lido">Marcar como lido</span></button>
-        <button type="button" class="copiar-link" data-url="${url}">${icone("link")}<span class="rotulo-copiar">Copiar link</span></button>
+        <button type="button" class="copiar-link" data-url="${url}" data-titulo="${escapeHtml(book.nome)} — ${escapeHtml(SITE_TITLE)}">${icone("link")}<span class="rotulo-copiar">Compartilhar</span></button>
       </div>
     </div>
     <h1>${escapeHtml(book.nome)}</h1>
