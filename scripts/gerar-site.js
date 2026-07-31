@@ -224,52 +224,74 @@ ${cards}
     )
     .join("\n");
 
-  const body = `  <header class="topo">
-    <div class="preferencias">
+  const body = `  <header class="home-cabecalho">
+    <div class="home-barra">
+      <a class="marca" href="index.html" aria-label="Página inicial">
+        <span class="marca-simbolo" aria-hidden="true">66</span>
+        <span>Resumos Bíblicos</span>
+      </a>
       <button type="button" class="controle tema-toggle" aria-label="Alternar tema">◐ Tema</button>
     </div>
-    <h1>${SITE_TITLE}</h1>
-    <p class="intro">Resumos históricos dos 66 livros da Bíblia — contexto, autoria,
-    cronologia e curiosidades, em linguagem simples para leitura rápida.</p>
-    <section class="painel-progresso" aria-label="Seu progresso de leitura">
-      <div>
+    <div class="home-hero">
+      <div class="hero-copy">
+        <p class="hero-sobretitulo">Uma biblioteca para estudar e compreender</p>
+        <h1>${SITE_TITLE}</h1>
+        <p class="intro">Contexto, autoria, cronologia e curiosidades em resumos claros,
+        organizados para você explorar no seu ritmo.</p>
+      </div>
+      <section class="painel-progresso" aria-label="Seu progresso de leitura">
+        <div class="progresso-topo">
+          <span>Seu progresso</span>
+          <strong id="progresso-porcentagem">0%</strong>
+        </div>
         <strong id="progresso-texto">0 de 66 livros lidos</strong>
-        <span id="progresso-porcentagem">0%</span>
-      </div>
-      <div class="trilho-progresso" role="progressbar" aria-label="Livros lidos" aria-valuemin="0" aria-valuemax="66" aria-valuenow="0">
-        <span id="progresso-preenchimento"></span>
-      </div>
-      <a id="continuar-leitura" class="continuar-leitura" href="livros/01-genesis.html">Continuar leitura →</a>
-    </section>
-    <div class="busca-container">
-      <input type="search" id="busca" class="busca" placeholder="Buscar um livro pelo nome..." aria-label="Buscar livro">
-      <button type="button" id="limpar-busca" class="limpar-busca" aria-label="Limpar busca" hidden>×</button>
+        <div class="trilho-progresso" role="progressbar" aria-label="Livros lidos" aria-valuemin="0" aria-valuemax="66" aria-valuenow="0">
+          <span id="progresso-preenchimento"></span>
+        </div>
+        <a id="continuar-leitura" class="continuar-leitura" href="livros/01-genesis.html">Começar leitura →</a>
+      </section>
     </div>
-    <div class="filtros" role="group" aria-label="Filtrar por testamento">
-      <button type="button" class="filtro-botao is-ativo" data-testamento="todos">Todos</button>
-      <button type="button" class="filtro-botao" data-testamento="Antigo Testamento">Antigo Testamento</button>
-      <button type="button" class="filtro-botao" data-testamento="Novo Testamento">Novo Testamento</button>
-    </div>
-    <div class="filtros filtros-status" role="group" aria-label="Filtrar por progresso">
-      <button type="button" class="filtro-status is-ativo" data-status="todos">Todos</button>
-      <button type="button" class="filtro-status" data-status="nao-lidos">Não lidos</button>
-      <button type="button" class="filtro-status" data-status="lidos">Lidos</button>
-    </div>
-    <div class="acoes-home">
-      <button type="button" id="aleatorio" class="botao-secundario">🎲 Livro aleatório</button>
-      <button type="button" id="limpar-filtros" class="botao-secundario">Limpar filtros</button>
-    </div>
-    <p id="busca-vazia" class="busca-vazia" hidden>Nenhum livro encontrado.</p>
   </header>
-  <main>
-    <section class="legenda" aria-labelledby="titulo-legenda">
-      <div class="legenda-cabecalho">
-        <h2 id="titulo-legenda">Cores por gênero literário</h2>
-        <p>As cores dos números identificam o tipo de literatura. Clique em um gênero para filtrar.</p>
+  <main class="home-conteudo">
+    <section class="explorador" aria-labelledby="titulo-explorador">
+      <div class="explorador-topo">
+        <div>
+          <p class="secao-rotulo">Biblioteca</p>
+          <h2 id="titulo-explorador">Explore os 66 livros</h2>
+        </div>
+        <button type="button" id="aleatorio" class="botao-aleatorio">🎲 Surpreenda-me</button>
       </div>
-      <div class="legenda-itens">
+      <div class="busca-container">
+        <span class="busca-icone" aria-hidden="true">⌕</span>
+        <input type="search" id="busca" class="busca" placeholder="Busque por Gênesis, Salmos, Romanos..." aria-label="Buscar livro">
+        <button type="button" id="limpar-busca" class="limpar-busca" aria-label="Limpar busca" hidden>×</button>
+      </div>
+      <div class="barra-filtros">
+        <div class="filtro-grupo">
+          <span class="filtro-label">Testamento</span>
+          <div class="filtros" role="group" aria-label="Filtrar por testamento">
+            <button type="button" class="filtro-botao is-ativo" data-testamento="todos">Todos</button>
+            <button type="button" class="filtro-botao" data-testamento="Antigo Testamento">Antigo</button>
+            <button type="button" class="filtro-botao" data-testamento="Novo Testamento">Novo</button>
+          </div>
+        </div>
+        <div class="filtro-grupo">
+          <span class="filtro-label">Progresso</span>
+          <div class="filtros filtros-status" role="group" aria-label="Filtrar por progresso">
+            <button type="button" class="filtro-status is-ativo" data-status="todos">Todos</button>
+            <button type="button" class="filtro-status" data-status="nao-lidos">Não lidos</button>
+            <button type="button" class="filtro-status" data-status="lidos">Lidos</button>
+          </div>
+        </div>
+        <button type="button" id="limpar-filtros" class="limpar-filtros">Limpar</button>
+      </div>
+      <details class="legenda">
+        <summary id="titulo-legenda">Filtrar por gênero literário <span>As cores dos números representam os gêneros</span></summary>
+        <div class="legenda-itens">
 ${legenda}
-      </div>
+        </div>
+      </details>
+      <p id="busca-vazia" class="busca-vazia" hidden>Nenhum livro corresponde aos filtros.</p>
     </section>
 ${grupos.join("\n")}
   </main>

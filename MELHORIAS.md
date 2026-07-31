@@ -77,3 +77,6 @@ node scripts/gerar-site.js
 - [x] Barra de progresso da página durante a leitura
 - [x] Botão flutuante para voltar ao início do livro
 - [x] Respeito à preferência de movimento reduzido do sistema
+- [x] Redesign profissional da página inicial com hero, navegação compacta e hierarquia visual
+- [x] Filtros reorganizados para reduzir ruído e priorizar a biblioteca de livros
+- [x] Legenda de gêneros recolhível para manter a função sem sobrecarregar a página
