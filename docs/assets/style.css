@@ -1214,6 +1214,47 @@ main .bloco {
   line-height: 1.7;
 }
 
+.versiculo-dia {
+  max-width: 560px;
+  margin: 1.75rem 0 0;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--cor-destaque);
+  border-radius: 0 0.6rem 0.6rem 0;
+  background: color-mix(in srgb, var(--cor-fundo-elevado) 88%, var(--cor-destaque-fundo));
+}
+
+.versiculo-dia[hidden] {
+  display: none;
+}
+
+.versiculo-dia-rotulo {
+  display: flex;
+  align-items: center;
+  margin: 0 0 0.5rem;
+  color: var(--cor-destaque);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.versiculo-dia-texto {
+  margin: 0;
+  color: var(--cor-texto);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.versiculo-dia-ref {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--cor-texto-suave);
+  font-size: 0.85rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
 .home-hero .painel-progresso {
   width: 100%;
   margin: 0;

@@ -32,7 +32,11 @@ node scripts/gerar-site.js
 - [x] Arquitetura pensada pra crescer: a busca+cache
   (`window.BibliaAPI.buscar`) fica separada da UI do popover, para
   reaproveitar em features futuras sem duplicar a parte de rede:
-  - [ ] Widget de "versículo do dia" na home
+  - [x] Widget de "versículo do dia" na home — lista curada de 40
+    versículos conhecidos (não a lista de referências detectadas nos
+    resumos), escolhido de forma determinística pelo dia do ano (mesmo
+    versículo o dia inteiro para todo mundo, sem precisar de servidor).
+    Some silenciosamente se a API estiver fora do ar.
   - [ ] Botão de versículo aleatório (sorteando entre as referências já
     detectadas no site)
   - [ ] Selecionar outra tradução além da Almeida

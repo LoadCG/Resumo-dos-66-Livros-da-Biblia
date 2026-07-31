@@ -421,6 +421,11 @@ ${cards}
         <h1>${SITE_TITLE}</h1>
         <p class="intro">Contexto, autoria, cronologia e curiosidades em resumos claros,
         organizados para você explorar no seu ritmo.</p>
+        <blockquote id="versiculo-dia" class="versiculo-dia" aria-live="polite" hidden>
+          <p class="versiculo-dia-rotulo">${icone("sparkle")}Versículo do dia</p>
+          <p class="versiculo-dia-texto" id="versiculo-dia-texto"></p>
+          <cite class="versiculo-dia-ref" id="versiculo-dia-ref"></cite>
+        </blockquote>
       </div>
       <section class="painel-progresso" aria-label="Seu progresso de leitura">
         <div class="progresso-topo">
@@ -486,6 +491,8 @@ ${grupos.join("\n")}
     <p>Resumos históricos dos 66 livros da Bíblia.</p>
   </footer>
   <script src="assets/preferencias.js"></script>
+  <script src="assets/referencias.js"></script>
+  <script src="assets/versiculo-dia.js"></script>
   <script src="assets/busca.js"></script>`;
 
   return pageShell({
