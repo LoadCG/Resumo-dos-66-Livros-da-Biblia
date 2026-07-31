@@ -1,6 +1,9 @@
-// Controles de leitura e botão "copiar link" nas páginas de livro.
+// Controles de leitura (fonte, marcar como lido, copiar link, índice com
+// destaque de seção atual, barra de progresso e botão de voltar ao topo)
+// nas páginas de livro.
 (function () {
-  const botao = document.querySelector(".copiar-link");
+  const icones = window.ICONES || {};
+  const botaoCopiar = document.querySelector(".copiar-link");
   const botoesLido = Array.from(document.querySelectorAll(".marcar-lido"));
   const sugestao = document.getElementById("sugestao-proximo");
   const botaoMenos = document.querySelector(".fonte-menos");
@@ -10,39 +13,36 @@
   const raiz = document.documentElement;
 
   if (botoesLido.length) {
-    try {
-      localStorage.setItem("biblia-ultimo-livro", botoesLido[0].getAttribute("data-slug"));
-    } catch (e) {}
+    window.salvarArmazenamento("biblia-ultimo-livro", botoesLido[0].getAttribute("data-slug"));
   }
 
-  if (botao) {
-    const textoOriginal = botao.textContent;
+  if (botaoCopiar) {
+    const original = botaoCopiar.innerHTML;
 
-    botao.addEventListener("click", async function () {
-      const url = botao.getAttribute("data-url");
+    botaoCopiar.addEventListener("click", async function () {
+      const url = botaoCopiar.getAttribute("data-url");
       try {
         await navigator.clipboard.writeText(url);
-        botao.textContent = "✅ Link copiado!";
+        botaoCopiar.innerHTML =
+          '<span class="icone" aria-hidden="true">' + icones.check + '</span><span class="rotulo-copiar">Link copiado!</span>';
       } catch (erro) {
-        botao.textContent = "Não foi possível copiar";
+        botaoCopiar.innerHTML =
+          '<span class="icone" aria-hidden="true">' +
+          icones.close +
+          '</span><span class="rotulo-copiar">Não foi possível copiar</span>';
       }
       setTimeout(function () {
-        botao.textContent = textoOriginal;
+        botaoCopiar.innerHTML = original;
       }, 2000);
     });
   }
 
-  let tamanho = 100;
-  try {
-    tamanho = Number(localStorage.getItem("biblia-tamanho-fonte")) || 100;
-  } catch (e) {}
+  let tamanho = Number(window.lerArmazenamento("biblia-tamanho-fonte", 100)) || 100;
 
   function aplicarTamanho() {
     tamanho = Math.max(85, Math.min(130, tamanho));
     raiz.style.setProperty("--escala-leitura", tamanho / 100);
-    try {
-      localStorage.setItem("biblia-tamanho-fonte", String(tamanho));
-    } catch (e) {}
+    window.salvarArmazenamento("biblia-tamanho-fonte", tamanho);
   }
 
   if (botaoMenos) botaoMenos.addEventListener("click", function () {
@@ -57,29 +57,28 @@
 
   if (botoesLido.length) {
     const slug = botoesLido[0].getAttribute("data-slug");
-    let lidos = [];
-    try {
-      lidos = JSON.parse(localStorage.getItem("biblia-livros-lidos") || "[]");
-    } catch (e) {}
+    let lidos = window.lerArmazenamento("biblia-livros-lidos", []);
 
     function atualizarLido() {
-      const estaLido = lidos.includes(slug);
+      const estaLido = lidos.indexOf(slug) !== -1;
       botoesLido.forEach(function (botaoLido) {
         botaoLido.classList.toggle("is-ativo", estaLido);
         botaoLido.setAttribute("aria-pressed", String(estaLido));
-        botaoLido.textContent = estaLido ? "✓ Livro lido" : "✓ Marcar como lido";
+        const rotulo = botaoLido.querySelector(".rotulo-lido");
+        if (rotulo) rotulo.textContent = estaLido ? "Livro lido" : "Marcar como lido";
       });
       if (sugestao) sugestao.hidden = !estaLido;
     }
 
     botoesLido.forEach(function (botaoLido) {
       botaoLido.addEventListener("click", function () {
-        lidos = lidos.includes(slug) ? lidos.filter(function (item) {
-          return item !== slug;
-        }) : lidos.concat(slug);
-        try {
-          localStorage.setItem("biblia-livros-lidos", JSON.stringify(lidos));
-        } catch (e) {}
+        lidos =
+          lidos.indexOf(slug) !== -1
+            ? lidos.filter(function (item) {
+                return item !== slug;
+              })
+            : lidos.concat(slug);
+        window.salvarArmazenamento("biblia-livros-lidos", lidos);
         atualizarLido();
       });
     });
@@ -93,15 +92,15 @@
     linksIndice.forEach(function (link) {
       mapaLinks[link.getAttribute("href").slice(1)] = link;
     });
+    let linkAtual = null;
     const observador = new IntersectionObserver(
       function (entradas) {
         entradas.forEach(function (entrada) {
           const link = mapaLinks[entrada.target.id];
           if (!link || !entrada.isIntersecting) return;
-          linksIndice.forEach(function (l) {
-            l.classList.remove("is-atual");
-          });
+          if (linkAtual) linkAtual.classList.remove("is-atual");
           link.classList.add("is-atual");
+          linkAtual = link;
         });
       },
       { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
@@ -111,14 +110,24 @@
     });
   }
 
+  let tickAgendado = false;
+
   function atualizarRolagem() {
     const total = document.documentElement.scrollHeight - window.innerHeight;
     const porcentagem = total > 0 ? Math.min(100, (window.scrollY / total) * 100) : 0;
     if (barraPagina) barraPagina.style.width = porcentagem + "%";
     if (botaoTopo) botaoTopo.classList.toggle("is-visivel", window.scrollY > 500);
+    tickAgendado = false;
   }
 
-  window.addEventListener("scroll", atualizarRolagem, { passive: true });
+  function aoRolar() {
+    if (!tickAgendado) {
+      tickAgendado = true;
+      requestAnimationFrame(atualizarRolagem);
+    }
+  }
+
+  window.addEventListener("scroll", aoRolar, { passive: true });
   if (botaoTopo) {
     botaoTopo.addEventListener("click", function () {
       window.scrollTo({ top: 0, behavior: "smooth" });

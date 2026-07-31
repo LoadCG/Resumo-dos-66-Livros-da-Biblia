@@ -9,6 +9,21 @@
   --sombra: 0 1px 3px rgba(0, 0, 0, 0.06);
   --largura-leitura: 680px;
   --escala-leitura: 1;
+
+  --genero-lei-bg: #e7edf9;
+  --genero-lei-fg: #395990;
+  --genero-historico-bg: #f3e6d3;
+  --genero-historico-fg: #8a5a2b;
+  --genero-poetico-bg: #f2e2f1;
+  --genero-poetico-fg: #84477e;
+  --genero-profetico-bg: #f8e1df;
+  --genero-profetico-fg: #934840;
+  --genero-evangelho-bg: #dff0e5;
+  --genero-evangelho-fg: #287a45;
+  --genero-carta-bg: #e2eef0;
+  --genero-carta-fg: #326b75;
+  --genero-apocaliptico-bg: #ebe4f6;
+  --genero-apocaliptico-fg: #664795;
 }
 
 :root[data-tema="escuro"] {
@@ -20,6 +35,21 @@
   --cor-destaque: #e0a75e;
   --cor-destaque-fundo: #3a2c18;
   --sombra: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  --genero-lei-bg: #33415f;
+  --genero-lei-fg: #b9c8ec;
+  --genero-historico-bg: #4a3620;
+  --genero-historico-fg: #e8c48f;
+  --genero-poetico-bg: #452c40;
+  --genero-poetico-fg: #e3b3dd;
+  --genero-profetico-bg: #4a2a26;
+  --genero-profetico-fg: #eeaba3;
+  --genero-evangelho-bg: #22412c;
+  --genero-evangelho-fg: #a6dbb7;
+  --genero-carta-bg: #233c40;
+  --genero-carta-fg: #a9d6dc;
+  --genero-apocaliptico-bg: #372b4c;
+  --genero-apocaliptico-fg: #c9b3e8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,6 +62,21 @@
     --cor-destaque: #e0a75e;
     --cor-destaque-fundo: #3a2c18;
     --sombra: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+    --genero-lei-bg: #33415f;
+    --genero-lei-fg: #b9c8ec;
+    --genero-historico-bg: #4a3620;
+    --genero-historico-fg: #e8c48f;
+    --genero-poetico-bg: #452c40;
+    --genero-poetico-fg: #e3b3dd;
+    --genero-profetico-bg: #4a2a26;
+    --genero-profetico-fg: #eeaba3;
+    --genero-evangelho-bg: #22412c;
+    --genero-evangelho-fg: #a6dbb7;
+    --genero-carta-bg: #233c40;
+    --genero-carta-fg: #a9d6dc;
+    --genero-apocaliptico-bg: #372b4c;
+    --genero-apocaliptico-fg: #c9b3e8;
   }
 }
 
@@ -70,6 +115,28 @@ main {
   padding: 0 1.25rem 3rem;
 }
 
+/* Ícones inline (SVG) */
+
+.icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.15em;
+}
+
+.icone:not(:only-child) {
+  margin-right: 0.35em;
+}
+
+.icone svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* Topo / cabeçalho */
 
 .topo {
@@ -84,13 +151,9 @@ main {
   margin: 0 0 0.5rem;
 }
 
-.preferencias {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
 .controle {
+  display: inline-flex;
+  align-items: center;
   padding: 0.4rem 0.8rem;
   min-height: 44px;
   border: 1px solid var(--cor-borda);
@@ -166,6 +229,9 @@ main {
 
 .fechar-confirmacao {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 32px;
   height: 32px;
   border: 0;
@@ -173,8 +239,7 @@ main {
   background: transparent;
   color: var(--cor-texto-suave);
   cursor: pointer;
-  font-size: 1.2rem;
-  line-height: 1;
+  font-size: 1.1rem;
 }
 
 .fechar-confirmacao:hover {
@@ -189,7 +254,8 @@ main {
   margin-top: 1rem;
 }
 
-.filtro-botao {
+.filtro-botao,
+.filtro-status {
   padding: 0.45rem 0.9rem;
   font-size: 0.9rem;
   border: 1px solid var(--cor-borda);
@@ -200,7 +266,8 @@ main {
   min-height: 44px;
 }
 
-.filtro-botao.is-ativo {
+.filtro-botao.is-ativo,
+.filtro-status.is-ativo {
   background: var(--cor-destaque);
   border-color: var(--cor-destaque);
   color: var(--cor-fundo-elevado);
@@ -208,7 +275,8 @@ main {
 }
 
 .botao-secundario {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   margin-top: 1rem;
   padding: 0.6rem 1.1rem;
   font-size: 0.95rem;
@@ -261,13 +329,14 @@ main {
   color: var(--cor-texto);
   box-shadow: var(--sombra);
   min-height: 44px;
-  transition: transform 0.1s ease, border-color 0.1s ease;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card:hover,
 .card:focus-visible {
   border-color: var(--cor-destaque);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
 }
 
 .card-numero {
@@ -302,9 +371,12 @@ main {
 
 .status-lido {
   display: none;
+  align-items: center;
+  justify-content: center;
   margin-left: auto;
+  width: 1.1rem;
+  height: 1.1rem;
   color: #287a45;
-  font-weight: 700;
 }
 
 .card.is-lido {
@@ -312,7 +384,7 @@ main {
 }
 
 .card.is-lido .status-lido {
-  display: inline;
+  display: inline-flex;
 }
 
 .badge-continuar {
@@ -336,31 +408,13 @@ main {
   display: inline-flex;
 }
 
-.genero-lei .card-numero { background: #e7edf9; color: #395990; }
-.genero-historico .card-numero { background: #f3e6d3; color: #8a5a2b; }
-.genero-poetico .card-numero { background: #f2e2f1; color: #84477e; }
-.genero-profetico .card-numero { background: #f8e1df; color: #934840; }
-.genero-evangelho .card-numero { background: #dff0e5; color: #287a45; }
-.genero-carta .card-numero { background: #e2eef0; color: #326b75; }
-.genero-apocaliptico .card-numero { background: #ebe4f6; color: #664795; }
-
-:root[data-tema="escuro"] .genero-lei .card-numero { background: #33415f; color: #b9c8ec; }
-:root[data-tema="escuro"] .genero-historico .card-numero { background: #4a3620; color: #e8c48f; }
-:root[data-tema="escuro"] .genero-poetico .card-numero { background: #452c40; color: #e3b3dd; }
-:root[data-tema="escuro"] .genero-profetico .card-numero { background: #4a2a26; color: #eeaba3; }
-:root[data-tema="escuro"] .genero-evangelho .card-numero { background: #22412c; color: #a6dbb7; }
-:root[data-tema="escuro"] .genero-carta .card-numero { background: #233c40; color: #a9d6dc; }
-:root[data-tema="escuro"] .genero-apocaliptico .card-numero { background: #372b4c; color: #c9b3e8; }
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-tema]) .genero-lei .card-numero { background: #33415f; color: #b9c8ec; }
-  :root:not([data-tema]) .genero-historico .card-numero { background: #4a3620; color: #e8c48f; }
-  :root:not([data-tema]) .genero-poetico .card-numero { background: #452c40; color: #e3b3dd; }
-  :root:not([data-tema]) .genero-profetico .card-numero { background: #4a2a26; color: #eeaba3; }
-  :root:not([data-tema]) .genero-evangelho .card-numero { background: #22412c; color: #a6dbb7; }
-  :root:not([data-tema]) .genero-carta .card-numero { background: #233c40; color: #a9d6dc; }
-  :root:not([data-tema]) .genero-apocaliptico .card-numero { background: #372b4c; color: #c9b3e8; }
-}
+.genero-lei .card-numero { background: var(--genero-lei-bg); color: var(--genero-lei-fg); }
+.genero-historico .card-numero { background: var(--genero-historico-bg); color: var(--genero-historico-fg); }
+.genero-poetico .card-numero { background: var(--genero-poetico-bg); color: var(--genero-poetico-fg); }
+.genero-profetico .card-numero { background: var(--genero-profetico-bg); color: var(--genero-profetico-fg); }
+.genero-evangelho .card-numero { background: var(--genero-evangelho-bg); color: var(--genero-evangelho-fg); }
+.genero-carta .card-numero { background: var(--genero-carta-bg); color: var(--genero-carta-fg); }
+.genero-apocaliptico .card-numero { background: var(--genero-apocaliptico-bg); color: var(--genero-apocaliptico-fg); }
 
 .card[hidden] {
   display: none;
@@ -390,6 +444,8 @@ main {
 }
 
 .voltar {
+  display: inline-flex;
+  align-items: center;
   color: var(--cor-destaque);
   text-decoration: none;
   font-size: 0.95rem;
@@ -400,6 +456,8 @@ main {
 }
 
 .copiar-link {
+  display: inline-flex;
+  align-items: center;
   padding: 0.4rem 0.8rem;
   font-size: 0.85rem;
   border: 1px solid var(--cor-borda);
@@ -407,7 +465,7 @@ main {
   background: var(--cor-fundo-elevado);
   color: var(--cor-texto);
   cursor: pointer;
-  min-height: 36px;
+  min-height: 44px;
   white-space: nowrap;
 }
 
@@ -432,6 +490,8 @@ main {
 }
 
 .indice a {
+  display: inline-flex;
+  align-items: center;
   color: var(--cor-destaque);
   text-decoration: none;
   border-radius: 999px;
@@ -485,6 +545,8 @@ main .bloco {
 }
 
 .bloco h2 {
+  display: flex;
+  align-items: center;
   font-size: 1.15rem;
   margin-bottom: 0.75rem;
 }
@@ -504,10 +566,6 @@ main .bloco {
 }
 
 .ficha-rapida {
-  font-size: calc(1rem * var(--escala-leitura));
-}
-
-.ficha-rapida {
   display: grid;
   gap: 0.6rem;
   margin: 0;
@@ -515,6 +573,7 @@ main .bloco {
   border: 1px solid var(--cor-borda);
   border-radius: 0.6rem;
   padding: 1rem 1.25rem;
+  font-size: calc(1rem * var(--escala-leitura));
 }
 
 .ficha-item {
@@ -526,14 +585,8 @@ main .bloco {
 .ficha-item dt {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
   font-weight: 600;
   color: var(--cor-texto-suave);
-}
-
-.ficha-icone {
-  flex-shrink: 0;
-  font-size: 0.95em;
 }
 
 .ficha-item dd {
@@ -628,11 +681,22 @@ main .bloco {
 }
 
 .nav-card-rotulo {
+  display: inline-flex;
+  align-items: center;
   color: var(--cor-texto-suave);
   font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+}
+
+.nav-proximo .nav-card-rotulo {
+  flex-direction: row-reverse;
+}
+
+.nav-proximo .nav-card-rotulo .icone {
+  margin-right: 0;
+  margin-left: 0.35em;
 }
 
 .nav-card-nome {
@@ -657,6 +721,15 @@ main .bloco {
   .nav-proximo {
     grid-column: auto;
     text-align: left;
+  }
+
+  .nav-proximo .nav-card-rotulo {
+    flex-direction: row;
+  }
+
+  .nav-proximo .nav-card-rotulo .icone {
+    margin-right: 0.35em;
+    margin-left: 0;
   }
 
   .nav-vazio {
@@ -719,6 +792,8 @@ main .bloco {
 }
 
 .continuar-leitura {
+  display: inline-flex;
+  align-items: center;
   color: var(--cor-destaque);
   font-size: 0.88rem;
   font-weight: 600;
@@ -735,6 +810,17 @@ main .bloco {
 
 .busca-container .busca { padding-right: 2.8rem; }
 
+.busca-icone {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  z-index: 1;
+  transform: translateY(-50%);
+  display: inline-flex;
+  color: var(--cor-texto-suave);
+  font-size: 1.2rem;
+}
+
 .limpar-busca {
   position: absolute;
   top: 50%;
@@ -742,36 +828,21 @@ main .bloco {
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transform: translateY(-50%);
   border: 0;
   border-radius: 50%;
   background: transparent;
   color: var(--cor-texto-suave);
   cursor: pointer;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
 }
 
 .limpar-busca:hover { background: var(--cor-destaque-fundo); }
 
 .filtros-status { margin-top: 0.5rem; }
-
-.filtro-status {
-  padding: 0.45rem 0.9rem;
-  min-height: 44px;
-  border: 1px solid var(--cor-borda);
-  border-radius: 999px;
-  background: var(--cor-fundo-elevado);
-  color: var(--cor-texto);
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.filtro-status.is-ativo {
-  background: var(--cor-destaque);
-  border-color: var(--cor-destaque);
-  color: var(--cor-fundo-elevado);
-  font-weight: 600;
-}
 
 .acoes-home {
   display: flex;
@@ -786,17 +857,6 @@ main .bloco {
   background: var(--cor-fundo-elevado);
   border: 1px solid var(--cor-borda);
   border-radius: 0.8rem;
-}
-
-.legenda-cabecalho h2 {
-  margin: 0;
-  font-size: 1.05rem;
-}
-
-.legenda-cabecalho p {
-  margin: 0.15rem 0 0.8rem;
-  color: var(--cor-texto-suave);
-  font-size: 0.86rem;
 }
 
 .legenda-itens {
@@ -834,23 +894,13 @@ main .bloco {
   border-radius: 50%;
 }
 
-.genero-lei .legenda-cor { background: #7089bb; }
-.genero-historico .legenda-cor { background: #b47a3d; }
-.genero-poetico .legenda-cor { background: #a5649f; }
-.genero-profetico .legenda-cor { background: #b76058; }
-.genero-evangelho .legenda-cor { background: #489363; }
-.genero-carta .legenda-cor { background: #4e8790; }
-.genero-apocaliptico .legenda-cor { background: #8065ab; }
-
-.card {
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.card:hover,
-.card:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
-}
+.genero-lei .legenda-cor { background: var(--genero-lei-fg); }
+.genero-historico .legenda-cor { background: var(--genero-historico-fg); }
+.genero-poetico .legenda-cor { background: var(--genero-poetico-fg); }
+.genero-profetico .legenda-cor { background: var(--genero-profetico-fg); }
+.genero-evangelho .legenda-cor { background: var(--genero-evangelho-fg); }
+.genero-carta .legenda-cor { background: var(--genero-carta-fg); }
+.genero-apocaliptico .legenda-cor { background: var(--genero-apocaliptico-fg); }
 
 .progresso-pagina {
   position: fixed;
@@ -872,12 +922,16 @@ main .bloco {
   bottom: 1.2rem;
   width: 44px;
   height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--cor-borda);
   border-radius: 50%;
   background: var(--cor-fundo-elevado);
   color: var(--cor-destaque);
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+  font-size: 1.2rem;
   opacity: 0;
   pointer-events: none;
   transform: translateY(8px);
@@ -1038,6 +1092,8 @@ main .bloco {
 }
 
 .botao-aleatorio {
+  display: inline-flex;
+  align-items: center;
   min-height: 40px;
   padding: 0.55rem 0.9rem;
   border: 1px solid var(--cor-borda);
@@ -1065,16 +1121,6 @@ main .bloco {
   padding: 0.75rem 3rem;
   border-radius: 0.8rem;
   box-shadow: var(--sombra);
-}
-
-.busca-icone {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  z-index: 1;
-  transform: translateY(-52%);
-  color: var(--cor-texto-suave);
-  font-size: 1.35rem;
 }
 
 .barra-filtros {

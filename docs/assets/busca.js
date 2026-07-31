@@ -21,34 +21,46 @@
   const confirmacao = document.getElementById("confirmacao-lido");
   const confirmacaoTexto = document.getElementById("confirmacao-lido-texto");
   const fecharConfirmacao = document.querySelector(".fechar-confirmacao");
-  let livrosLidos = [];
+  const icones = window.ICONES || {};
+  const livrosLidos = window.lerArmazenamento("biblia-livros-lidos", []);
 
-  try {
-    livrosLidos = JSON.parse(localStorage.getItem("biblia-livros-lidos") || "[]");
-  } catch (e) {}
+  // Cache dos atributos estáticos de cada card, para não repetir
+  // getAttribute() em todo card a cada tecla digitada na busca.
+  const itens = cards.map(function (card) {
+    return {
+      el: card,
+      nome: card.getAttribute("data-nome") || "",
+      testamento: card.getAttribute("data-testamento") || "",
+      genero: card.getAttribute("data-genero") || "",
+    };
+  });
 
   cards.forEach(function (card) {
-    card.classList.toggle("is-lido", livrosLidos.includes(card.getAttribute("data-slug")));
+    card.classList.toggle("is-lido", livrosLidos.indexOf(card.getAttribute("data-slug")) !== -1);
   });
 
-  const proximoNaoLidoCard = cards.find(function (card) {
-    return !card.classList.contains("is-lido");
-  });
+  function encontrarProximoNaoLido() {
+    return cards.find(function (card) {
+      return !card.classList.contains("is-lido");
+    });
+  }
+
+  const proximoNaoLidoCard = encontrarProximoNaoLido();
   if (proximoNaoLidoCard) proximoNaoLidoCard.classList.add("proximo-sugerido");
 
   if (confirmacao && confirmacaoTexto) {
-    let ultimoTotalVisto = 0;
-    try {
-      ultimoTotalVisto = Number(localStorage.getItem("biblia-total-visto")) || 0;
-    } catch (e) {}
+    const ultimoTotalVisto = window.lerArmazenamento("biblia-total-visto", 0);
     const totalAtual = livrosLidos.length;
     if (totalAtual > ultimoTotalVisto && totalAtual > 0) {
-      confirmacaoTexto.textContent = "🎉 Você concluiu mais um livro! " + totalAtual + " de 66 lidos até agora.";
+      confirmacaoTexto.innerHTML =
+        '<span class="icone" aria-hidden="true">' +
+        icones.sparkle +
+        "</span>Você concluiu mais um livro! " +
+        totalAtual +
+        " de 66 lidos até agora.";
       confirmacao.hidden = false;
     }
-    try {
-      localStorage.setItem("biblia-total-visto", String(totalAtual));
-    } catch (e) {}
+    window.salvarArmazenamento("biblia-total-visto", totalAtual);
     if (fecharConfirmacao) {
       fecharConfirmacao.addEventListener("click", function () {
         confirmacao.hidden = true;
@@ -70,47 +82,45 @@
     if (progressoTrilho) progressoTrilho.setAttribute("aria-valuenow", String(total));
 
     if (continuarLeitura) {
-      let ultimoSlug = "";
-      try {
-        ultimoSlug = localStorage.getItem("biblia-ultimo-livro") || "";
-      } catch (e) {}
+      const ultimoSlug = window.lerArmazenamento("biblia-ultimo-livro", "");
       const ultimoCard = cards.find(function (card) {
         return card.getAttribute("data-slug") === ultimoSlug;
       });
-      const proximoNaoLido = cards.find(function (card) {
-        return !card.classList.contains("is-lido");
-      });
-      const destino = ultimoCard || proximoNaoLido;
+      const destino = ultimoCard || encontrarProximoNaoLido();
+      const seta = '<span class="icone" aria-hidden="true">' + icones["arrow-right"] + "</span>";
       if (destino) {
         continuarLeitura.href = destino.getAttribute("href");
-        continuarLeitura.textContent = ultimoCard ? "Continuar em " + ultimoCard.querySelector(".card-nome").textContent + " →" : "Começar por " + destino.querySelector(".card-nome").textContent + " →";
+        continuarLeitura.innerHTML = ultimoCard
+          ? "Continuar em " + ultimoCard.querySelector(".card-nome").textContent + seta
+          : "Começar por " + destino.querySelector(".card-nome").textContent + seta;
       } else {
-        continuarLeitura.textContent = "Leitura concluída! ✓";
+        continuarLeitura.innerHTML = "Leitura concluída!";
         continuarLeitura.removeAttribute("href");
       }
     }
   }
 
   function aplicarFiltro() {
+    const contagemGrupo = {};
     let algumVisivel = false;
 
-    cards.forEach(function (card) {
-      const nome = card.getAttribute("data-nome") || "";
-      const testamentoCard = card.getAttribute("data-testamento") || "";
-      const generoCard = card.getAttribute("data-genero") || "";
-      const lido = card.classList.contains("is-lido");
-      const bateTermo = nome.includes(termo);
-      const bateTestamento = testamento === "todos" || testamentoCard === testamento;
-      const bateGenero = genero === "todos" || generoCard === genero;
+    itens.forEach(function (item) {
+      const lido = item.el.classList.contains("is-lido");
+      const bateTermo = item.nome.includes(termo);
+      const bateTestamento = testamento === "todos" || item.testamento === testamento;
+      const bateGenero = genero === "todos" || item.genero === genero;
       const bateStatus = status === "todos" || (status === "lidos" && lido) || (status === "nao-lidos" && !lido);
       const visivel = bateTermo && bateTestamento && bateGenero && bateStatus;
-      card.hidden = !visivel;
-      if (visivel) algumVisivel = true;
+      item.el.hidden = !visivel;
+      if (visivel) {
+        algumVisivel = true;
+        contagemGrupo[item.testamento] = (contagemGrupo[item.testamento] || 0) + 1;
+      }
     });
 
     grupos.forEach(function (grupo) {
-      const visiveis = grupo.querySelectorAll(".card:not([hidden])").length;
-      grupo.hidden = visiveis === 0;
+      const chave = grupo.getAttribute("data-testamento");
+      grupo.hidden = !contagemGrupo[chave];
     });
 
     if (vazio) vazio.hidden = algumVisivel;
@@ -118,8 +128,9 @@
 
   function marcarAtivo(botoes, ativo) {
     botoes.forEach(function (botao) {
-      botao.classList.toggle("is-ativo", botao === ativo);
-      botao.setAttribute("aria-pressed", String(botao === ativo));
+      const on = botao === ativo;
+      botao.classList.toggle("is-ativo", on);
+      botao.setAttribute("aria-pressed", String(on));
     });
   }
 
@@ -132,10 +143,7 @@
     if (botaoLimparBusca) botaoLimparBusca.hidden = true;
     marcarAtivo(botoesFiltro, botoesFiltro[0]);
     marcarAtivo(botoesStatus, botoesStatus[0]);
-    botoesGenero.forEach(function (item) {
-      item.classList.remove("is-ativo");
-      item.setAttribute("aria-pressed", "false");
-    });
+    marcarAtivo(botoesGenero, null);
     aplicarFiltro();
   }
 
@@ -177,11 +185,7 @@
     botao.addEventListener("click", function () {
       const selecionado = botao.getAttribute("data-genero");
       genero = genero === selecionado ? "todos" : selecionado;
-      botoesGenero.forEach(function (item) {
-        const ativo = item.getAttribute("data-genero") === genero;
-        item.classList.toggle("is-ativo", ativo);
-        item.setAttribute("aria-pressed", String(ativo));
-      });
+      marcarAtivo(botoesGenero, genero === "todos" ? null : botao);
       aplicarFiltro();
     });
   });

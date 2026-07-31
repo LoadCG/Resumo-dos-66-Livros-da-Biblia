@@ -11,6 +11,47 @@ Após alterar o conteúdo ou os templates, execute:
 node scripts/gerar-site.js
 ```
 
+## Qualidade de código (revisão /simplify) e ícones SVG
+
+Rodada a skill `/simplify` com 4 agentes em paralelo (reuso, simplificação,
+eficiência, altitude) sobre o diff de `scripts/gerar-site.js` e
+`docs/assets/*`. Achados aplicados na mesma passada em que os emojis e
+setas do site foram trocados por ícones SVG embutidos (sem dependência
+externa, sem CDN):
+
+- [x] Conjunto de 21 ícones SVG (só formas primitivas — linha, polilinha,
+  polígono, círculo, elipse — sem curvas Bézier escritas à mão) substitui
+  todo emoji e seta de texto (←, →, ↑, ✓, ×, 🔗, 🎲, ☀, ☾, 🎉 etc.) no site
+  inteiro, tanto no conteúdo gerado (`scripts/gerar-site.js`) quanto nos
+  estados dinâmicos dos scripts do navegador. Uma única fonte de verdade
+  (`ICONES` em `gerar-site.js`) também é exportada para
+  `docs/assets/icones.js`, lido pelos scripts do navegador — sem duplicar
+  os SVGs em cada arquivo `.js`.
+- [x] Cores de gênero literário viraram variáveis CSS (`--genero-X-bg`/
+  `--genero-X-fg`) em vez de 4 tabelas hexadecimais independentes
+  (card claro, card escuro ×2 contextos, pontinho da legenda) — a
+  duplicação que causava o bug de contraste da rodada anterior.
+- [x] Ícone da Ficha Rápida agora é indexado pela posição fixa do campo no
+  template (Autor, Data, Período...), não pelo texto do rótulo — mais
+  robusto a variações de grafia.
+- [x] Título e ícone de cada seção do livro vêm de uma tabela única
+  (`SECTION_META`), eliminando duas listas mantidas à mão em paralelo
+  (contagem de palavras e montagem dos blocos).
+- [x] Cartões "livro anterior/próximo" gerados por uma função só
+  (`navCard`), em vez de dois blocos de template copiados.
+- [x] `localStorage` centralizado em dois helpers (`lerArmazenamento`/
+  `salvarArmazenamento`, em `preferencias.js`, carregado em toda página),
+  eliminando 11 blocos `try/catch` repetidos.
+- [x] `.card` e `.ficha-rapida` (CSS) deixaram de ter regras duplicadas
+  não-adjacentes para o mesmo seletor.
+- [x] Busca não refaz `querySelectorAll` por grupo a cada tecla — conta os
+  cards visíveis num único laço já existente.
+- [x] Barra de progresso de leitura (scroll) passou a rodar dentro de
+  `requestAnimationFrame`, em vez de recalcular layout a cada evento bruto
+  de scroll.
+- [x] Índice com destaque de seção atual deixou de percorrer todos os
+  links a cada interseção — mantém uma referência do link ativo.
+
 ## Usabilidade e design de UI — elaborado
 
 Ideias detalhadas focadas especificamente em interface e ergonomia de uso,
