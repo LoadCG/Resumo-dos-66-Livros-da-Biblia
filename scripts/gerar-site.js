@@ -84,6 +84,109 @@ function formatInline(text) {
   return escaped.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 }
 
+// Apelido/abreviação -> nome canônico do livro (o mesmo `nome` que os 66
+// livros já têm), usado para detectar referências bíblicas soltas no texto
+// e virar botões clicáveis. Cobre as abreviações padrão em português.
+// "Os" (Oséias) e "Na" (Naum) foram deixadas de fora de propósito: são
+// palavras comuns do português ("os", "na") e geravam falso positivo real
+// no nosso próprio conteúdo (ex: "Os 150 salmos..." em 19-salmos.md) — para
+// esses dois livros, só o nome por extenso é detectado.
+const ALIASES_LIVRO = {
+  Gênesis: "Gênesis", Gn: "Gênesis",
+  Êxodo: "Êxodo", Êx: "Êxodo",
+  Levítico: "Levítico", Lv: "Levítico",
+  Números: "Números", Nm: "Números",
+  Deuteronômio: "Deuteronômio", Dt: "Deuteronômio",
+  Josué: "Josué", Js: "Josué",
+  Juízes: "Juízes", Jz: "Juízes",
+  Rute: "Rute", Rt: "Rute",
+  "1 Samuel": "1 Samuel", "1Sm": "1 Samuel", "1 Sm": "1 Samuel",
+  "2 Samuel": "2 Samuel", "2Sm": "2 Samuel", "2 Sm": "2 Samuel",
+  "1 Reis": "1 Reis", "1Rs": "1 Reis", "1 Rs": "1 Reis",
+  "2 Reis": "2 Reis", "2Rs": "2 Reis", "2 Rs": "2 Reis",
+  "1 Crônicas": "1 Crônicas", "1Cr": "1 Crônicas", "1 Cr": "1 Crônicas",
+  "2 Crônicas": "2 Crônicas", "2Cr": "2 Crônicas", "2 Cr": "2 Crônicas",
+  Esdras: "Esdras", Ed: "Esdras",
+  Neemias: "Neemias", Ne: "Neemias",
+  Ester: "Ester", Et: "Ester",
+  Jó: "Jó",
+  Salmos: "Salmos", Sl: "Salmos", Salmo: "Salmos",
+  Provérbios: "Provérbios", Pv: "Provérbios",
+  Eclesiastes: "Eclesiastes", Ec: "Eclesiastes",
+  Cantares: "Cantares", Ct: "Cantares",
+  Isaías: "Isaías", Is: "Isaías",
+  Jeremias: "Jeremias", Jr: "Jeremias",
+  Lamentações: "Lamentações", Lm: "Lamentações",
+  Ezequiel: "Ezequiel", Ez: "Ezequiel",
+  Daniel: "Daniel", Dn: "Daniel",
+  Oséias: "Oséias",
+  Joel: "Joel", Jl: "Joel",
+  Amós: "Amós", Am: "Amós",
+  Obadias: "Obadias", Ob: "Obadias",
+  Jonas: "Jonas", Jn: "Jonas",
+  Miquéias: "Miquéias", Mq: "Miquéias",
+  Naum: "Naum",
+  Habacuque: "Habacuque", Hc: "Habacuque",
+  Sofonias: "Sofonias", Sf: "Sofonias",
+  Ageu: "Ageu", Ag: "Ageu",
+  Zacarias: "Zacarias", Zc: "Zacarias",
+  Malaquias: "Malaquias", Ml: "Malaquias",
+  Mateus: "Mateus", Mt: "Mateus",
+  Marcos: "Marcos", Mc: "Marcos",
+  Lucas: "Lucas", Lc: "Lucas",
+  João: "João",
+  Atos: "Atos", At: "Atos",
+  Romanos: "Romanos", Rm: "Romanos",
+  "1 Coríntios": "1 Coríntios", "1Co": "1 Coríntios", "1 Co": "1 Coríntios",
+  "2 Coríntios": "2 Coríntios", "2Co": "2 Coríntios", "2 Co": "2 Coríntios",
+  Gálatas: "Gálatas", Gl: "Gálatas",
+  Efésios: "Efésios", Ef: "Efésios",
+  Filipenses: "Filipenses", Fp: "Filipenses",
+  Colossenses: "Colossenses", Cl: "Colossenses",
+  "1 Tessalonicenses": "1 Tessalonicenses", "1Ts": "1 Tessalonicenses", "1 Ts": "1 Tessalonicenses",
+  "2 Tessalonicenses": "2 Tessalonicenses", "2Ts": "2 Tessalonicenses", "2 Ts": "2 Tessalonicenses",
+  "1 Timóteo": "1 Timóteo", "1Tm": "1 Timóteo", "1 Tm": "1 Timóteo",
+  "2 Timóteo": "2 Timóteo", "2Tm": "2 Timóteo", "2 Tm": "2 Timóteo",
+  Tito: "Tito", Tt: "Tito",
+  Filemom: "Filemom", Fm: "Filemom",
+  Hebreus: "Hebreus", Hb: "Hebreus",
+  Tiago: "Tiago", Tg: "Tiago",
+  "1 Pedro": "1 Pedro", "1Pe": "1 Pedro", "1 Pe": "1 Pedro",
+  "2 Pedro": "2 Pedro", "2Pe": "2 Pedro", "2 Pe": "2 Pedro",
+  "1 João": "1 João", "1Jo": "1 João", "1 Jo": "1 João",
+  "2 João": "2 João", "2Jo": "2 João", "2 Jo": "2 João",
+  "3 João": "3 João", "3Jo": "3 João", "3 Jo": "3 João",
+  Judas: "Judas", Jd: "Judas",
+  Apocalipse: "Apocalipse", Ap: "Apocalipse",
+};
+
+const LETRA = "A-Za-zÀ-ÖØ-öø-ÿ";
+const REGEX_REFERENCIA = (function construirRegex() {
+  const apelidos = Object.keys(ALIASES_LIVRO).sort((a, b) => b.length - a.length);
+  const alternativas = apelidos.map((a) => a.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+  return new RegExp(
+    `(?<![${LETRA}0-9])(${alternativas})\\.?\\s+(\\d{1,3})(:(\\d{1,3})(-(\\d{1,3}))?)?(?![${LETRA}])`,
+    "g"
+  );
+})();
+
+// Acha referências bíblicas soltas no texto (ex.: "Sl 22", "Rm 1:16-17") e
+// transforma em botões clicáveis, sem alterar o texto visível — só guarda
+// o nome canônico do livro em data-ref, pronto para virar consulta na
+// bible-api.com pelo docs/assets/referencias.js.
+function linkarReferencias(html) {
+  return html.replace(REGEX_REFERENCIA, function (match, alias, capitulo, _g3, versiculoIni, _g5, versiculoFim) {
+    const canonico = ALIASES_LIVRO[alias];
+    if (!canonico) return match;
+    let ref = `${canonico} ${capitulo}`;
+    if (versiculoIni) {
+      ref += `:${versiculoIni}`;
+      if (versiculoFim) ref += `-${versiculoFim}`;
+    }
+    return `<button type="button" class="ref-biblica" data-ref="${escapeHtml(ref)}">${match}</button>`;
+  });
+}
+
 // Conjunto de ícones em SVG puro (sem dependência externa), construídos só
 // com formas primitivas (linha, polilinha, polígono, círculo, elipse,
 // retângulo) para não depender de curvas Bézier escritas à mão. Também é
@@ -126,7 +229,7 @@ function parseProse(body) {
     .trim()
     .split(/\n\s*\n/)
     .filter(Boolean)
-    .map((par) => `<p>${formatInline(par.replace(/\s+/g, " ").trim())}</p>`)
+    .map((par) => `<p>${linkarReferencias(formatInline(par.replace(/\s+/g, " ").trim()))}</p>`)
     .join("\n");
 }
 
@@ -136,7 +239,7 @@ function parseBulletList(body) {
     .split("\n")
     .filter((line) => line.trim().startsWith("-"))
     .map((line) => line.trim().replace(/^-\s*/, ""));
-  return `<ul>\n${items.map((item) => `  <li>${formatInline(item)}</li>`).join("\n")}\n</ul>`;
+  return `<ul>\n${items.map((item) => `  <li>${linkarReferencias(formatInline(item))}</li>`).join("\n")}\n</ul>`;
 }
 
 function parseFichaRapida(body) {
@@ -456,6 +559,7 @@ ${blocosHtml}
     <p><a href="../index.html">${icone("arrow-left")}Voltar para todos os livros</a></p>
   </footer>
   <script src="../assets/preferencias.js"></script>
+  <script src="../assets/referencias.js"></script>
   <script src="../assets/livro.js"></script>`;
 
   return pageShell({

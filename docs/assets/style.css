@@ -593,6 +593,103 @@ main .bloco {
   font-size: calc(1rem * var(--escala-leitura));
 }
 
+/* Referências bíblicas clicáveis */
+
+.ref-biblica {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--cor-destaque);
+  cursor: pointer;
+  font: inherit;
+  font-size: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.2rem;
+}
+
+.ref-biblica:hover,
+.ref-biblica:focus-visible {
+  text-decoration-style: solid;
+}
+
+.popover-versiculo {
+  position: fixed;
+  z-index: 20;
+  background: var(--cor-fundo-elevado);
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.7rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  padding: 1rem 1.1rem;
+  font-size: 0.92rem;
+}
+
+.popover-versiculo-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.popover-versiculo-ref {
+  color: var(--cor-texto);
+  font-size: 0.9rem;
+}
+
+.popover-versiculo-fechar {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: -0.25rem -0.25rem 0 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+}
+
+.popover-versiculo-fechar:hover {
+  background: var(--cor-destaque-fundo);
+}
+
+.popover-versiculo-corpo {
+  max-height: 40vh;
+  overflow-y: auto;
+  color: var(--cor-texto);
+  line-height: 1.55;
+}
+
+.popover-versiculo-corpo p {
+  margin: 0;
+}
+
+.popover-versiculo-estado {
+  color: var(--cor-texto-suave);
+}
+
+.popover-versiculo-capitulo {
+  display: inline-flex;
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--cor-destaque);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.popover-versiculo[hidden] {
+  display: none;
+}
+
 .ficha-rapida {
   display: grid;
   gap: 0;

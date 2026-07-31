@@ -11,6 +11,40 @@ Após alterar o conteúdo ou os templates, execute:
 node scripts/gerar-site.js
 ```
 
+## Versículos citados clicáveis (bible-api.com) + Web Share API
+
+- [x] Todas as referências bíblicas soltas no texto dos resumos (ex: "Sl
+  22", "Rm 1:16-17") viram botões clicáveis, detectados em tempo de
+  geração (`scripts/gerar-site.js`) a partir de uma tabela própria de
+  apelido → nome canônico do livro — não depende do parser fuzzy da API,
+  que erra abreviações padrão em português (`sl`, `rm`, `gn`, `mt`, `hb`
+  não são reconhecidas; `jo` resolve errado, vira "Jó" em vez de "João").
+  93 referências detectadas nos 66 livros, sem falso positivo (testado
+  especificamente o caso "Os 150 salmos..." em Salmos, que colidiria com
+  a abreviação de Oséias se não tivesse sido excluída de propósito).
+- [x] Clicar numa referência abre um popover com o texto real do
+  versículo (tradução Almeida), buscado na `bible-api.com` (gratuita, sem
+  chave). Cacheado no `localStorage` — a mesma referência carrega
+  instantâneo da segunda vez em diante, em qualquer página.
+- [x] Botão "Ver capítulo inteiro" dentro do popover.
+- [x] Erro de rede/API fora do ar mostra mensagem amigável sem quebrar a
+  página — a busca de versículo é um extra, não uma dependência crítica.
+- [x] Arquitetura pensada pra crescer: a busca+cache
+  (`window.BibliaAPI.buscar`) fica separada da UI do popover, para
+  reaproveitar em features futuras sem duplicar a parte de rede:
+  - [ ] Widget de "versículo do dia" na home
+  - [ ] Botão de versículo aleatório (sorteando entre as referências já
+    detectadas no site)
+  - [ ] Selecionar outra tradução além da Almeida
+- [x] Botão de compartilhar/copiar link de cada livro agora usa a **Web
+  Share API** nativa (`navigator.share`) em celulares com suporte — abre o
+  menu nativo (WhatsApp, Instagram etc.) em vez de só copiar o link;
+  continua caindo pro clipboard em navegadores sem suporte, e trata
+  cancelamento do usuário sem mostrar erro.
+- [x] Pesquisa de mais APIs: `abibliadigital.com.br`, a alternativa óbvia
+  em PT-BR, foi **desativada em 01/08/2026** — descartada antes de ser
+  usada, confirmado por pesquisa em vez de suposição.
+
 ## Qualidade de código (revisão /simplify) e ícones SVG
 
 Rodada a skill `/simplify` com 4 agentes em paralelo (reuso, simplificação,
