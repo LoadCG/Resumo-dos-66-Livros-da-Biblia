@@ -1,15 +1,14 @@
-// Versículo do dia na home. Reusa window.BibliaAPI (busca+cache), definido
-// em referencias.js, em vez de duplicar a lógica de rede — o mesmo padrão
-// já usado pelo popover de referências nas páginas de livro.
+// Versículo do dia na home, com botão para sortear outro. Reusa
+// window.BibliaAPI (busca+cache), definido em referencias.js, em vez de
+// duplicar a lógica de rede — o mesmo padrão já usado pelo popover de
+// referências nas páginas de livro.
 (function () {
   const el = document.getElementById("versiculo-dia");
   if (!el || !window.BibliaAPI) return;
 
   // Lista curada (não é a lista de referências detectadas nos resumos):
   // versículos conhecidos e centrais para a fé cristã, apropriados para o
-  // público jovem do projeto. O mesmo versículo aparece o dia inteiro para
-  // todo mundo, e muda à meia-noite (calculado a partir da data local do
-  // visitante, sem depender de servidor).
+  // público jovem do projeto.
   const REFERENCIAS = [
     "João 3:16", "Salmos 23:1", "Provérbios 3:5-6", "Filipenses 4:13",
     "Romanos 8:28", "Isaías 41:10", "Josué 1:9", "Salmos 91:1-2",
@@ -23,21 +22,44 @@
     "Filipenses 4:19", "Salmos 139:14", "2 Coríntios 5:17", "Gálatas 5:22-23",
   ];
 
-  const hoje = new Date();
-  const inicioDoAno = new Date(hoje.getFullYear(), 0, 0);
-  const diaDoAno = Math.floor((hoje - inicioDoAno) / 86400000);
-  const referencia = REFERENCIAS[diaDoAno % REFERENCIAS.length];
-
   const textoEl = document.getElementById("versiculo-dia-texto");
   const refEl = document.getElementById("versiculo-dia-ref");
+  const botaoOutro = document.getElementById("versiculo-dia-outro");
+  let referenciaAtual = "";
 
-  window.BibliaAPI.buscar(referencia)
-    .then(function (resultado) {
+  function exibir(referencia) {
+    referenciaAtual = referencia;
+    return window.BibliaAPI.buscar(referencia).then(function (resultado) {
       textoEl.textContent = resultado.texto;
       refEl.textContent = resultado.referencia;
       el.hidden = false;
-    })
-    .catch(function () {
-      // API fora do ar: widget simplesmente não aparece, sem quebrar a home.
     });
+  }
+
+  // O mesmo versículo aparece o dia inteiro para todo mundo (calculado a
+  // partir da data local do visitante, sem depender de servidor), a menos
+  // que a pessoa sorteie outro com o botão de dado.
+  const hoje = new Date();
+  const inicioDoAno = new Date(hoje.getFullYear(), 0, 0);
+  const diaDoAno = Math.floor((hoje - inicioDoAno) / 86400000);
+  exibir(REFERENCIAS[diaDoAno % REFERENCIAS.length]).catch(function () {
+    // API fora do ar: widget simplesmente não aparece, sem quebrar a home.
+  });
+
+  if (botaoOutro) {
+    botaoOutro.addEventListener("click", function () {
+      let sorteada = referenciaAtual;
+      while (sorteada === referenciaAtual) {
+        sorteada = REFERENCIAS[Math.floor(Math.random() * REFERENCIAS.length)];
+      }
+      botaoOutro.disabled = true;
+      exibir(sorteada)
+        .catch(function () {
+          // Mantém o versículo anterior visível se a nova busca falhar.
+        })
+        .then(function () {
+          botaoOutro.disabled = false;
+        });
+    });
+  }
 })();

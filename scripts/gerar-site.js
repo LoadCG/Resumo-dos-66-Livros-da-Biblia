@@ -422,7 +422,9 @@ ${cards}
         <p class="intro">Contexto, autoria, cronologia e curiosidades em resumos claros,
         organizados para você explorar no seu ritmo.</p>
         <blockquote id="versiculo-dia" class="versiculo-dia" aria-live="polite" hidden>
-          <p class="versiculo-dia-rotulo">${icone("sparkle")}Versículo do dia</p>
+          <p class="versiculo-dia-rotulo">${icone("sparkle")}Versículo do dia
+            <button type="button" id="versiculo-dia-outro" class="versiculo-dia-outro" aria-label="Ver outro versículo">${icone("dice")}</button>
+          </p>
           <p class="versiculo-dia-texto" id="versiculo-dia-texto"></p>
           <cite class="versiculo-dia-ref" id="versiculo-dia-ref"></cite>
         </blockquote>

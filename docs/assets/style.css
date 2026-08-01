@@ -1238,6 +1238,36 @@ main .bloco {
   text-transform: uppercase;
 }
 
+.versiculo-dia-outro {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+}
+
+.versiculo-dia-outro .icone {
+  margin-right: 0;
+}
+
+.versiculo-dia-outro:hover,
+.versiculo-dia-outro:focus-visible {
+  background: var(--cor-destaque-fundo);
+  color: var(--cor-destaque);
+}
+
+.versiculo-dia-outro:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .versiculo-dia-texto {
   margin: 0;
   color: var(--cor-texto);

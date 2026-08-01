@@ -37,8 +37,8 @@ node scripts/gerar-site.js
     resumos), escolhido de forma determinística pelo dia do ano (mesmo
     versículo o dia inteiro para todo mundo, sem precisar de servidor).
     Some silenciosamente se a API estiver fora do ar.
-  - [ ] Botão de versículo aleatório (sorteando entre as referências já
-    detectadas no site)
+  - [x] Botão de dado ao lado do "Versículo do dia" sorteia outro
+    versículo da mesma lista curada, sem repetir o que já estava na tela.
   - [ ] Selecionar outra tradução além da Almeida
 - [x] Botão de compartilhar/copiar link de cada livro agora usa a **Web
   Share API** nativa (`navigator.share`) em celulares com suporte — abre o
