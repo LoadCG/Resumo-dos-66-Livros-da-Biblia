@@ -23,6 +23,15 @@
       .replace(/>/g, "&gt;");
   }
 
+  // Grifos: mapa "slugDoLivro:capitulo:versiculo" -> true, persistido no
+  // navegador. Compartilhado entre a tela de escolher versículo (mostra
+  // quais já estão grifados) e a tela de leitura (onde se grifa de fato).
+  const CHAVE_GRIFOS = "biblia-grifos";
+
+  function chaveGrifo(slug, capitulo, versiculo) {
+    return slug + ":" + capitulo + ":" + versiculo;
+  }
+
   // --- Página 1: escolher o livro (biblia/index.html) ---------------------
   const gradeLivros = document.getElementById("grade-livros-biblia");
   if (gradeLivros) {
@@ -127,12 +136,16 @@
         .then(function (resultado) {
           carregando.hidden = true;
           const total = resultado.versiculos ? resultado.versiculos.length : 1;
+          const grifos = window.lerArmazenamento(CHAVE_GRIFOS, {});
           const botoes = [];
           for (let v = 1; v <= total; v++) botoes.push(v);
           gradeVersiculos.innerHTML = botoes
             .map(function (v) {
+              const grifado = grifos[chaveGrifo(livro.slug, capitulo, v)] ? " is-grifado" : "";
               return (
-                '<a class="numero-botao" href="ler.html?' +
+                '<a class="numero-botao' +
+                grifado +
+                '" href="ler.html?' +
                 refBase +
                 "&versiculo=" +
                 v +
@@ -201,18 +214,33 @@
         navProximo.removeAttribute("href");
       }
 
+      const iconeGrifo = (window.ICONES && window.ICONES.highlighter) || "";
+      let grifos = window.lerArmazenamento(CHAVE_GRIFOS, {});
+
       window.BibliaAPI.buscar(livro.nome + " " + capitulo)
         .then(function (resultado) {
-          if (resultado.versiculos && resultado.versiculos.length > 1) {
+          if (resultado.versiculos && resultado.versiculos.length > 0) {
             corpoLeitura.innerHTML = resultado.versiculos
               .map(function (v) {
                 const destaque = v.numero === versiculoAlvo ? " is-destacado" : "";
+                const grifado = grifos[chaveGrifo(livro.slug, capitulo, v.numero)];
                 return (
                   '<p class="leitura-versiculo' +
                   destaque +
+                  (grifado ? " is-grifado" : "") +
                   '" id="versiculo-' +
                   v.numero +
-                  '"><span class="leitura-versiculo-numero">' +
+                  '"><button type="button" class="grifo-botao' +
+                  (grifado ? " is-ativo" : "") +
+                  '" data-versiculo="' +
+                  v.numero +
+                  '" aria-pressed="' +
+                  !!grifado +
+                  '" aria-label="Grifar versículo ' +
+                  v.numero +
+                  '"><span class="icone" aria-hidden="true">' +
+                  iconeGrifo +
+                  '</span></button><span class="leitura-versiculo-numero">' +
                   v.numero +
                   "</span>" +
                   v.texto +
@@ -233,6 +261,20 @@
           corpoLeitura.innerHTML =
             '<p class="busca-vazia">Não foi possível carregar este capítulo agora. Tente de novo em instantes.</p>';
         });
+
+      corpoLeitura.addEventListener("click", function (evento) {
+        const botao = evento.target.closest(".grifo-botao");
+        if (!botao) return;
+        const numero = botao.getAttribute("data-versiculo");
+        const chave = chaveGrifo(livro.slug, capitulo, numero);
+        const ativo = !grifos[chave];
+        if (ativo) grifos[chave] = true;
+        else delete grifos[chave];
+        window.salvarArmazenamento(CHAVE_GRIFOS, grifos);
+        botao.classList.toggle("is-ativo", ativo);
+        botao.setAttribute("aria-pressed", String(ativo));
+        botao.closest(".leitura-versiculo").classList.toggle("is-grifado", ativo);
+      });
 
       // Tamanho de texto (mesmo padrão das páginas de resumo).
       const raiz = document.documentElement;

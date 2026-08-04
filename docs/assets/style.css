@@ -24,6 +24,9 @@
   --genero-carta-fg: #326b75;
   --genero-apocaliptico-bg: #ebe4f6;
   --genero-apocaliptico-fg: #664795;
+
+  --cor-grifo: #fdf1b8;
+  --cor-grifo-fg: #caa000;
 }
 
 :root[data-tema="escuro"] {
@@ -50,6 +53,9 @@
   --genero-carta-fg: #a9d6dc;
   --genero-apocaliptico-bg: #372b4c;
   --genero-apocaliptico-fg: #c9b3e8;
+
+  --cor-grifo: #4a3f14;
+  --cor-grifo-fg: #e0c34a;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -77,6 +83,9 @@
     --genero-carta-fg: #a9d6dc;
     --genero-apocaliptico-bg: #372b4c;
     --genero-apocaliptico-fg: #c9b3e8;
+
+    --cor-grifo: #4a3f14;
+    --cor-grifo-fg: #e0c34a;
   }
 }
 
@@ -1731,4 +1740,54 @@ main .bloco {
   margin-left: -0.75rem;
   margin-right: -0.75rem;
   background: var(--cor-destaque-fundo);
+}
+
+.leitura-versiculo.is-grifado {
+  padding: 0.5rem 0.75rem;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  background: var(--cor-grifo);
+}
+
+.leitura-versiculo.is-destacado.is-grifado {
+  box-shadow: inset 3px 0 0 var(--cor-destaque);
+}
+
+.grifo-botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  margin-right: 0.35rem;
+  vertical-align: -0.35em;
+  padding: 0;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.4rem;
+  background: var(--cor-fundo-elevado);
+  color: var(--cor-texto-suave);
+  cursor: pointer;
+}
+
+.grifo-botao .icone {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0;
+}
+
+.grifo-botao:hover,
+.grifo-botao:focus-visible {
+  border-color: var(--cor-destaque);
+  color: var(--cor-destaque);
+}
+
+.grifo-botao.is-ativo {
+  background: var(--cor-grifo-fg);
+  border-color: var(--cor-grifo-fg);
+  color: var(--cor-fundo-elevado);
+}
+
+.numero-botao.is-grifado {
+  border-color: var(--cor-grifo-fg);
+  background: var(--cor-grifo);
 }

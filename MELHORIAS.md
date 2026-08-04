@@ -43,6 +43,14 @@ rodadas seguintes).
   local e confirmando que a casca da página ainda carrega.
 - [x] Tamanho de texto (A−/A+) reaproveitado na leitura, mesmo padrão das
   páginas de resumo.
+- [x] Grifar versículos: botão de marcador ao lado de cada versículo na
+  tela de leitura, cor própria (tom de destaque amarelo, diferente do
+  destaque de foco), persistido no navegador por referência exata
+  (`livro:capítulo:versículo`). A tela de escolher o versículo já mostra
+  quais estão grifados antes de abrir a leitura. Testado: grifar,
+  recarregar a página (persiste), abrir a lista de versículos (aparece
+  marcado), e o caso de um versículo estar grifado *e* em foco ao mesmo
+  tempo (visual combinado, não um sobrescreve o outro).
 
 ## Versículos citados clicáveis (bible-api.com) + Web Share API
 

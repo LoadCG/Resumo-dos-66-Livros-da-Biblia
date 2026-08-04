@@ -243,6 +243,7 @@ const ICONES = {
   dice: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg>`,
   type: `<svg ${ICONE_ATRIBUTOS}><line x1="6" y1="19" x2="11" y2="5"/><line x1="16" y1="19" x2="11" y2="5"/><line x1="8" y1="14" x2="14" y2="14"/></svg>`,
   grid: `<svg ${ICONE_ATRIBUTOS}><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>`,
+  highlighter: `<svg ${ICONE_ATRIBUTOS}><rect x="8" y="3" width="8" height="10" rx="1"/><line x1="8" y1="13" x2="6" y2="19"/><line x1="16" y1="13" x2="18" y2="19"/><line x1="5" y1="20" x2="19" y2="20"/></svg>`,
   focus: `<svg ${ICONE_ATRIBUTOS}><line x1="4" y1="4" x2="9" y2="4"/><line x1="4" y1="4" x2="4" y2="9"/><line x1="20" y1="4" x2="15" y2="4"/><line x1="20" y1="4" x2="20" y2="9"/><line x1="4" y1="20" x2="9" y2="20"/><line x1="4" y1="20" x2="4" y2="15"/><line x1="20" y1="20" x2="15" y2="20"/><line x1="20" y1="20" x2="20" y2="15"/></svg>`,
   sparkle: `<svg viewBox="0 0 24 24"><polygon points="12 2 13.6 9 21 10 13.6 11 12 18 10.4 11 3 10 10.4 9" fill="currentColor"/></svg>`,
 };
@@ -828,6 +829,7 @@ function renderBibliaLer() {
       </div>
     </div>
     <h1 id="titulo-leitura-biblia">Carregando…</h1>
+    <p class="subtitulo">Toque no ícone de marcador ao lado de um versículo para grifá-lo.</p>
   </header>
   <main>
     <div class="bloco">
