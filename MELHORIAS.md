@@ -194,7 +194,11 @@ não só em funcionalidade nova. Cada item explica o problema que resolve.
 - [ ] Modo foco, ocultando navegação e controles durante a leitura
 - [ ] Estimativa de tempo de leitura em cada livro
 - [ ] Destaque automático da seção atual no índice fixo
-- [ ] Atalhos de teclado para livro anterior/próximo, tema e tamanho da fonte
+- [x] Atalhos de teclado nas páginas de livro: ← / → para livro
+  anterior/próximo, T para alternar tema, +/− para o tamanho da fonte —
+  ignorados com Ctrl/Alt/Cmd (que já têm significado do navegador) e
+  enquanto o foco está num campo de formulário. Dica discreta no rodapé de
+  cada livro para quem não sabia que existiam.
 - [ ] Opção de fonte serifada para leitura longa
 - [ ] Notas pessoais locais por livro, com exportação e importação
 - [ ] Sequência/plano de leitura personalizável

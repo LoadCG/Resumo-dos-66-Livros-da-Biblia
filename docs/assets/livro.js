@@ -147,4 +147,40 @@
     });
   }
   atualizarRolagem();
+
+  // Atalhos de teclado: setas para navegar entre livros, T para tema,
+  // +/- para o tamanho da fonte. Ignorados com modificadores (Ctrl/Alt/
+  // Cmd, que já têm significado do navegador) e enquanto o foco está num
+  // campo de referência bíblica ou outro elemento de formulário.
+  const linkAnterior = document.querySelector(".nav-anterior");
+  const linkProximo = document.querySelector(".nav-proximo");
+  const botaoTema = document.querySelector(".tema-toggle");
+
+  document.addEventListener("keydown", function (evento) {
+    if (evento.ctrlKey || evento.altKey || evento.metaKey) return;
+    const alvo = evento.target;
+    if (alvo && /^(INPUT|TEXTAREA|SELECT)$/.test(alvo.tagName)) return;
+
+    switch (evento.key) {
+      case "ArrowLeft":
+        if (linkAnterior) window.location.href = linkAnterior.getAttribute("href");
+        break;
+      case "ArrowRight":
+        if (linkProximo) window.location.href = linkProximo.getAttribute("href");
+        break;
+      case "t":
+      case "T":
+        if (botaoTema) botaoTema.click();
+        break;
+      case "+":
+      case "=":
+        if (botaoMais) botaoMais.click();
+        break;
+      case "-":
+        if (botaoMenos) botaoMenos.click();
+        break;
+      default:
+        return;
+    }
+  });
 })();

@@ -595,6 +595,7 @@ ${blocosHtml}
   <button type="button" class="voltar-topo" aria-label="Voltar ao início" title="Voltar ao início">${icone("arrow-up")}</button>
   <footer class="rodape">
     <p><a href="../index.html">${icone("arrow-left")}Voltar para todos os livros</a></p>
+    <p class="atalhos-teclado">Atalhos: <kbd>←</kbd> anterior · <kbd>→</kbd> próximo · <kbd>T</kbd> tema · <kbd>+</kbd>/<kbd>−</kbd> fonte</p>
   </footer>
   <script src="../assets/preferencias.js"></script>
   <script src="../assets/referencias.js"></script>

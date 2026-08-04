@@ -922,6 +922,20 @@ main .bloco {
   color: var(--cor-destaque);
 }
 
+.atalhos-teclado {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+}
+
+.atalhos-teclado kbd {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.3rem;
+  background: var(--cor-fundo-elevado);
+  font-family: inherit;
+  font-size: 0.75rem;
+}
+
 /* Progresso, filtros avançados e legenda */
 
 .painel-progresso {
