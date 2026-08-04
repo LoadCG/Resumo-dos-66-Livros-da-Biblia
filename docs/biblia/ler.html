@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leitura da Bíblia — Resumo dos 66 Livros da Bíblia</title>
+<meta name="description" content="Texto completo do capítulo, com foco no versículo escolhido.">
+<link rel="canonical" href="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/biblia/ler.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Resumo dos 66 Livros da Bíblia">
+<meta property="og:title" content="Leitura da Bíblia — Resumo dos 66 Livros da Bíblia">
+<meta property="og:description" content="Texto completo do capítulo, com foco no versículo escolhido.">
+<meta property="og:url" content="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/biblia/ler.html">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#8a5a2b">
+<link rel="icon" href="../assets/icone.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/icone.svg">
+<script>
+try {
+  var temaSalvo = localStorage.getItem("biblia-tema");
+  if (temaSalvo) document.documentElement.dataset.tema = temaSalvo;
+} catch (e) {}
+</script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<script src="../assets/icones.js"></script>
+  <header class="topo topo-livro">
+    <div class="topo-acoes">
+      <a class="voltar" id="voltar-versiculos" href="versiculos.html"><span class="icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span>Trocar de versículo</a>
+      <div class="acoes-livro">
+        <button type="button" class="controle tema-toggle" aria-label="Alternar tema"><span class="rotulo-tema">Tema</span></button>
+        <button type="button" class="controle fonte-menos" aria-label="Diminuir texto">A−</button>
+        <button type="button" class="controle fonte-mais" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+    <h1 id="titulo-leitura-biblia">Carregando…</h1>
+  </header>
+  <main>
+    <div class="bloco">
+      <div class="leitura-biblia-corpo" id="leitura-biblia-corpo"></div>
+    </div>
+    <nav class="navegacao-livros" id="navegacao-capitulos">
+      <a class="nav-card nav-anterior" id="capitulo-anterior" href="#">
+        <span class="nav-card-rotulo"><span class="icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span>Capítulo anterior</span>
+        <span class="nav-card-nome" id="capitulo-anterior-nome"></span>
+      </a>
+      <a class="nav-card nav-proximo" id="capitulo-proximo" href="#">
+        <span class="nav-card-rotulo">Próximo capítulo<span class="icone" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></span>
+        <span class="nav-card-nome" id="capitulo-proximo-nome"></span>
+      </a>
+    </nav>
+  </main>
+  <script src="../assets/preferencias.js"></script>
+  <script src="../assets/livros-biblia.js"></script>
+  <script src="../assets/referencias.js"></script>
+  <script src="../assets/biblia-leitura.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("../sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>

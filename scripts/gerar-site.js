@@ -19,6 +19,17 @@ const OUT_DIR = path.join(REPO_ROOT, "docs");
 const SITE_TITLE = "Resumo dos 66 Livros da Bíblia";
 const BASE_URL = "https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/";
 
+// Quantidade de capítulos de cada um dos 66 livros, na ordem canônica
+// (mesma ordem de `numero`, 1 a 66). Dado fixo e público (não vem de
+// nenhuma API), usado para montar a navegação da leitura bíblica completa
+// (seleção de livro → capítulo → versículo) sem precisar consultar a
+// bible-api.com só para saber quantos capítulos um livro tem.
+const CAPITULOS_POR_LIVRO = [
+  50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13, 10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9,
+  1, 4, 7, 3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4, 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1,
+  22,
+];
+
 function generoDoLivro(numero) {
   if (numero <= 5) return "Lei";
   if (numero <= 17) return "Histórico";
@@ -231,6 +242,7 @@ const ICONES = {
   search: `<svg ${ICONE_ATRIBUTOS}><circle cx="10" cy="10" r="6"/><line x1="20" y1="20" x2="14.5" y2="14.5"/></svg>`,
   dice: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg>`,
   type: `<svg ${ICONE_ATRIBUTOS}><line x1="6" y1="19" x2="11" y2="5"/><line x1="16" y1="19" x2="11" y2="5"/><line x1="8" y1="14" x2="14" y2="14"/></svg>`,
+  grid: `<svg ${ICONE_ATRIBUTOS}><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>`,
   focus: `<svg ${ICONE_ATRIBUTOS}><line x1="4" y1="4" x2="9" y2="4"/><line x1="4" y1="4" x2="4" y2="9"/><line x1="20" y1="4" x2="15" y2="4"/><line x1="20" y1="4" x2="20" y2="9"/><line x1="4" y1="20" x2="9" y2="20"/><line x1="4" y1="20" x2="4" y2="15"/><line x1="20" y1="20" x2="15" y2="20"/><line x1="20" y1="20" x2="20" y2="15"/></svg>`,
   sparkle: `<svg viewBox="0 0 24 24"><polygon points="12 2 13.6 9 21 10 13.6 11 12 18 10.4 11 3 10 10.4 9" fill="currentColor"/></svg>`,
 };
@@ -444,7 +456,10 @@ ${cards}
         <span class="marca-simbolo" aria-hidden="true">66</span>
         <span>Resumos Bíblicos</span>
       </a>
-      <button type="button" class="controle tema-toggle" aria-label="Alternar tema"><span class="rotulo-tema">Tema</span></button>
+      <div class="home-barra-acoes">
+        <a class="botao-secundario" href="biblia/index.html" aria-label="Ler a Bíblia">${icone("book")}<span class="rotulo-ler-biblia">Ler a Bíblia</span></a>
+        <button type="button" class="controle tema-toggle" aria-label="Alternar tema"><span class="rotulo-tema">Tema</span></button>
+      </div>
     </div>
     <div class="home-hero">
       <div class="hero-copy">
@@ -669,6 +684,11 @@ function renderServiceWorker(books) {
     "assets/versiculo-dia.js",
     "assets/indice-busca.json",
     "assets/icone.svg",
+    "assets/livros-biblia.js",
+    "biblia/index.html",
+    "biblia/capitulos.html",
+    "biblia/versiculos.html",
+    "biblia/ler.html",
     ...books.map((b) => `livros/${b.slug}.html`),
   ];
 
@@ -693,8 +713,14 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
+  // Páginas de leitura bíblica (biblia/capitulos.html?livro=... etc.) usam
+  // a mesma casca HTML para qualquer combinação de parâmetros na URL —
+  // ignora a query string ao procurar no cache só para navegação (documento
+  // HTML), senão cada combinação diferente de ?livro=&capitulo= pareceria
+  // "não cacheada" mesmo com a casca já salva.
+  const ehNavegacao = event.request.mode === "navigate" || event.request.destination === "document";
   event.respondWith(
-    caches.match(event.request).then((cached) => {
+    caches.match(event.request, { ignoreSearch: ehNavegacao }).then((cached) => {
       const emRede = fetch(event.request)
         .then((resposta) => {
           if (resposta.ok) {
@@ -711,6 +737,127 @@ self.addEventListener("fetch", (event) => {
 `;
 }
 
+// As quatro páginas da leitura bíblica completa (texto real, buscado na
+// bible-api.com) são "cascas" estáticas praticamente vazias: quem monta o
+// conteúdo é sempre o mesmo script cliente (assets/biblia-leitura.js), lendo
+// os parâmetros da URL (?livro=&capitulo=&versiculo=) e os dados de
+// assets/livros-biblia.js. Isso evita gerar milhares de páginas (66 livros ×
+// até 150 capítulos × N versículos) só para navegação.
+
+function renderBibliaIndex() {
+  const body = `  <header class="topo">
+    <a class="voltar" href="../index.html">${icone("arrow-left")}Todos os livros</a>
+    <h1>Ler a Bíblia</h1>
+    <p class="intro">Escolha um livro para começar. O texto é buscado em tempo real (tradução Almeida).</p>
+    <div class="busca-container">
+      <span class="busca-icone" aria-hidden="true">${icone("search")}</span>
+      <input type="search" id="busca-livro-biblia" class="busca" placeholder="Busque por Gênesis, Salmos, Romanos..." aria-label="Buscar livro">
+      <button type="button" id="limpar-busca-livro-biblia" class="limpar-busca" aria-label="Limpar busca" hidden>${icone("close")}</button>
+    </div>
+  </header>
+  <main>
+    <div class="grade grade-livros-biblia" id="grade-livros-biblia" aria-live="polite"></div>
+    <p id="busca-vazia-biblia" class="busca-vazia" hidden>Nenhum livro encontrado.</p>
+  </main>
+  <script src="../assets/preferencias.js"></script>
+  <script src="../assets/livros-biblia.js"></script>
+  <script src="../assets/biblia-leitura.js"></script>`;
+
+  return pageShell({
+    title: `Ler a Bíblia — ${SITE_TITLE}`,
+    basePath: "../",
+    bodyHtml: body,
+    description: "Leia o texto completo dos 66 livros da Bíblia, capítulo por capítulo.",
+    url: `${BASE_URL}biblia/index.html`,
+  });
+}
+
+function renderBibliaCapitulos() {
+  const body = `  <header class="topo">
+    <a class="voltar" href="index.html">${icone("arrow-left")}Trocar de livro</a>
+    <h1 id="titulo-livro-biblia">Selecione o capítulo</h1>
+  </header>
+  <main>
+    <div class="grade-numeros" id="grade-capitulos" aria-live="polite"></div>
+  </main>
+  <script src="../assets/preferencias.js"></script>
+  <script src="../assets/livros-biblia.js"></script>
+  <script src="../assets/biblia-leitura.js"></script>`;
+
+  return pageShell({
+    title: `Selecione o capítulo — ${SITE_TITLE}`,
+    basePath: "../",
+    bodyHtml: body,
+    description: "Escolha o capítulo que deseja ler.",
+    url: `${BASE_URL}biblia/capitulos.html`,
+  });
+}
+
+function renderBibliaVersiculos() {
+  const body = `  <header class="topo">
+    <a class="voltar" id="voltar-capitulos" href="capitulos.html">${icone("arrow-left")}Trocar de capítulo</a>
+    <h1 id="titulo-capitulo-biblia">Selecione o versículo</h1>
+    <button type="button" class="botao-secundario" id="ler-capitulo-inteiro">${icone("book")}Ler o capítulo inteiro</button>
+  </header>
+  <main>
+    <p id="carregando-versiculos" class="busca-vazia">Carregando...</p>
+    <div class="grade-numeros" id="grade-versiculos" aria-live="polite"></div>
+  </main>
+  <script src="../assets/preferencias.js"></script>
+  <script src="../assets/livros-biblia.js"></script>
+  <script src="../assets/referencias.js"></script>
+  <script src="../assets/biblia-leitura.js"></script>`;
+
+  return pageShell({
+    title: `Selecione o versículo — ${SITE_TITLE}`,
+    basePath: "../",
+    bodyHtml: body,
+    description: "Escolha o versículo que deseja ler em destaque.",
+    url: `${BASE_URL}biblia/versiculos.html`,
+  });
+}
+
+function renderBibliaLer() {
+  const body = `  <header class="topo topo-livro">
+    <div class="topo-acoes">
+      <a class="voltar" id="voltar-versiculos" href="versiculos.html">${icone("arrow-left")}Trocar de versículo</a>
+      <div class="acoes-livro">
+        <button type="button" class="controle tema-toggle" aria-label="Alternar tema"><span class="rotulo-tema">Tema</span></button>
+        <button type="button" class="controle fonte-menos" aria-label="Diminuir texto">A−</button>
+        <button type="button" class="controle fonte-mais" aria-label="Aumentar texto">A+</button>
+      </div>
+    </div>
+    <h1 id="titulo-leitura-biblia">Carregando…</h1>
+  </header>
+  <main>
+    <div class="bloco">
+      <div class="leitura-biblia-corpo" id="leitura-biblia-corpo"></div>
+    </div>
+    <nav class="navegacao-livros" id="navegacao-capitulos">
+      <a class="nav-card nav-anterior" id="capitulo-anterior" href="#">
+        <span class="nav-card-rotulo">${icone("arrow-left")}Capítulo anterior</span>
+        <span class="nav-card-nome" id="capitulo-anterior-nome"></span>
+      </a>
+      <a class="nav-card nav-proximo" id="capitulo-proximo" href="#">
+        <span class="nav-card-rotulo">Próximo capítulo${icone("arrow-right")}</span>
+        <span class="nav-card-nome" id="capitulo-proximo-nome"></span>
+      </a>
+    </nav>
+  </main>
+  <script src="../assets/preferencias.js"></script>
+  <script src="../assets/livros-biblia.js"></script>
+  <script src="../assets/referencias.js"></script>
+  <script src="../assets/biblia-leitura.js"></script>`;
+
+  return pageShell({
+    title: `Leitura da Bíblia — ${SITE_TITLE}`,
+    basePath: "../",
+    bodyHtml: body,
+    description: "Texto completo do capítulo, com foco no versículo escolhido.",
+    url: `${BASE_URL}biblia/ler.html`,
+  });
+}
+
 function main() {
   const books = loadAllBooks();
   if (books.length !== 66) {
@@ -719,6 +866,7 @@ function main() {
 
   fs.mkdirSync(path.join(OUT_DIR, "livros"), { recursive: true });
   fs.mkdirSync(path.join(OUT_DIR, "assets"), { recursive: true });
+  fs.mkdirSync(path.join(OUT_DIR, "biblia"), { recursive: true });
 
   fs.writeFileSync(path.join(OUT_DIR, "index.html"), renderIndex(books), "utf8");
 
@@ -728,7 +876,26 @@ function main() {
     fs.writeFileSync(path.join(OUT_DIR, "livros", `${book.slug}.html`), renderLivro(book, prev, next), "utf8");
   });
 
-  const urls = [BASE_URL, ...books.map((b) => `${BASE_URL}livros/${b.slug}.html`)];
+  fs.writeFileSync(path.join(OUT_DIR, "biblia", "index.html"), renderBibliaIndex(), "utf8");
+  fs.writeFileSync(path.join(OUT_DIR, "biblia", "capitulos.html"), renderBibliaCapitulos(), "utf8");
+  fs.writeFileSync(path.join(OUT_DIR, "biblia", "versiculos.html"), renderBibliaVersiculos(), "utf8");
+  fs.writeFileSync(path.join(OUT_DIR, "biblia", "ler.html"), renderBibliaLer(), "utf8");
+
+  const livrosBiblia = books.map((b, i) => ({
+    slug: b.slug,
+    nome: b.nome,
+    numero: b.numero,
+    testamento: b.testamento,
+    capitulos: CAPITULOS_POR_LIVRO[i],
+  }));
+  const livrosBibliaJs = `// Gerado automaticamente por scripts/gerar-site.js -- nao editar a mao.\nwindow.LIVROS_BIBLIA = ${JSON.stringify(livrosBiblia)};\n`;
+  fs.writeFileSync(path.join(OUT_DIR, "assets", "livros-biblia.js"), livrosBibliaJs, "utf8");
+
+  const urls = [
+    BASE_URL,
+    ...books.map((b) => `${BASE_URL}livros/${b.slug}.html`),
+    `${BASE_URL}biblia/index.html`,
+  ];
   fs.writeFileSync(path.join(OUT_DIR, "sitemap.xml"), renderSitemap(urls), "utf8");
 
   const iconesClienteJs = `// Gerado automaticamente por scripts/gerar-site.js -- nao editar a mao.\nwindow.ICONES = ${JSON.stringify(ICONES)};\n`;
@@ -743,7 +910,7 @@ function main() {
   fs.writeFileSync(path.join(OUT_DIR, "manifest.json"), renderManifest(), "utf8");
   fs.writeFileSync(path.join(OUT_DIR, "sw.js"), renderServiceWorker(books), "utf8");
 
-  console.log(`Gerado: docs/index.html + ${books.length} páginas em docs/livros/ + sitemap.xml + assets/icones.js + assets/indice-busca.json + manifest.json + sw.js`);
+  console.log(`Gerado: docs/index.html + ${books.length} páginas em docs/livros/ + 4 páginas em docs/biblia/ + sitemap.xml + assets/icones.js + assets/indice-busca.json + assets/livros-biblia.js + manifest.json + sw.js`);
 }
 
 main();

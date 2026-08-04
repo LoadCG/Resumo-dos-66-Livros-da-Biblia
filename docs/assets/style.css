@@ -1239,6 +1239,16 @@ main .bloco {
   justify-content: space-between;
 }
 
+.home-barra-acoes {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.home-barra-acoes .botao-secundario {
+  margin-top: 0;
+}
+
 .marca {
   display: inline-flex;
   align-items: center;
@@ -1608,6 +1618,18 @@ main .bloco {
     font-size: 0.9rem;
   }
 
+  .home-barra-acoes .botao-secundario {
+    padding: 0.6rem;
+  }
+
+  .home-barra-acoes .rotulo-ler-biblia {
+    display: none;
+  }
+
+  .home-barra-acoes .botao-secundario .icone {
+    margin-right: 0;
+  }
+
   .hero-copy h1 {
     font-size: 2.35rem;
   }
@@ -1656,4 +1678,57 @@ main .bloco {
   .home-conteudo .grade {
     grid-template-columns: 1fr;
   }
+}
+
+/* Leitura completa da Bíblia (livro → capítulo → versículo → leitura) */
+
+.grade-numeros {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.numero-botao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.5rem;
+  background: var(--cor-fundo-elevado);
+  color: var(--cor-texto);
+  text-decoration: none;
+  font-weight: 600;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.numero-botao:hover,
+.numero-botao:focus-visible {
+  border-color: var(--cor-destaque);
+  color: var(--cor-destaque);
+}
+
+.leitura-versiculo {
+  margin: 0 0 0.9rem;
+  font-size: calc(1rem * var(--escala-leitura));
+  line-height: 1.7;
+  border-radius: 0.5rem;
+  scroll-margin-top: 5rem;
+  transition: background-color 1.2s ease;
+}
+
+.leitura-versiculo-numero {
+  margin-right: 0.4rem;
+  color: var(--cor-destaque);
+  font-size: 0.75em;
+  font-weight: 700;
+  vertical-align: super;
+}
+
+.leitura-versiculo.is-destacado {
+  padding: 0.5rem 0.75rem;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  background: var(--cor-destaque-fundo);
 }

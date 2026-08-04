@@ -11,6 +11,39 @@ Após alterar o conteúdo ou os templates, execute:
 node scripts/gerar-site.js
 ```
 
+## Sistema de leitura bíblica completa (MVP) — livro → capítulo → versículo
+
+Primeira etapa do sistema de Bíblia inspirado no YouVersion (planejado em
+detalhe antes desta rodada, com lista extensa de funcionalidades futuras:
+grifar, notas pessoais, planos de leitura, busca por palavra-chave no texto
+bíblico, favoritos, estatísticas, mais traduções etc. — essas ficam para
+rodadas seguintes).
+
+- [x] Fluxo de 3 telas em `docs/biblia/`: escolher o livro (com busca,
+  reaproveitando o padrão da busca da home) → escolher o capítulo (grade de
+  números, sabendo quantos cada livro tem por uma tabela fixa e conhecida,
+  sem precisar perguntar à API) → escolher o versículo (busca o capítulo
+  uma vez via `BibliaAPI` já existente, mostra um número por versículo).
+- [x] Tela de leitura (`ler.html`) mostra o capítulo inteiro com o
+  versículo escolhido em destaque e a página já rolada até ele — texto
+  real buscado na bible-api.com, reaproveitando a mesma função de
+  busca+cache das referências clicáveis nos resumos.
+- [x] Navegação de capítulo anterior/próximo dentro da leitura, inclusive
+  cruzando para o livro seguinte/anterior nas fronteiras (testado:
+  Malaquias 4 → Mateus 1; Gênesis 1 não tem anterior).
+- [x] As 4 páginas são "cascas" HTML praticamente vazias compartilhando um
+  único script (`assets/biblia-leitura.js`) que lê os parâmetros da URL —
+  evita gerar milhares de arquivos estáticos (66 livros × até 150
+  capítulos × N versículos) só para navegação.
+- [x] Entrada "Ler a Bíblia" na barra da home (ícone only no mobile, com
+  `aria-label`, para não espremer o cabeçalho).
+- [x] Service worker ajustado (`ignoreSearch` em navegações) para que as
+  páginas de leitura funcionem offline mesmo com parâmetros de URL
+  diferentes a cada capítulo/versículo — testado desligando o servidor
+  local e confirmando que a casca da página ainda carrega.
+- [x] Tamanho de texto (A−/A+) reaproveitado na leitura, mesmo padrão das
+  páginas de resumo.
+
 ## Versículos citados clicáveis (bible-api.com) + Web Share API
 
 - [x] Todas as referências bíblicas soltas no texto dos resumos (ex: "Sl
