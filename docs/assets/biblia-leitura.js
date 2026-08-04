@@ -32,6 +32,16 @@
     return slug + ":" + capitulo + ":" + versiculo;
   }
 
+  // Capítulos lidos: lista de "slugDoLivro:capítulo", separada de
+  // "biblia-livros-lidos" (usada pelos resumos) de propósito — ler o texto
+  // bíblico de um capítulo é uma coisa diferente de ter lido o resumo
+  // histórico do livro, então os dois progressos não se misturam.
+  const CHAVE_CAPITULOS_LIDOS = "biblia-capitulos-lidos";
+
+  function chaveCapitulo(slug, capitulo) {
+    return slug + ":" + capitulo;
+  }
+
   // --- Página 1: escolher o livro (biblia/index.html) ---------------------
   const gradeLivros = document.getElementById("grade-livros-biblia");
   if (gradeLivros) {
@@ -39,9 +49,15 @@
     const botaoLimpar = document.getElementById("limpar-busca-livro-biblia");
     const vazio = document.getElementById("busca-vazia-biblia");
 
+    const capitulosLidos = window.lerArmazenamento(CHAVE_CAPITULOS_LIDOS, []);
+
     function renderLivros(lista) {
       gradeLivros.innerHTML = lista
         .map(function (l) {
+          const lidosDoLivro = capitulosLidos.filter(function (chave) {
+            return chave.indexOf(l.slug + ":") === 0;
+          }).length;
+          const progresso = lidosDoLivro > 0 ? lidosDoLivro + " de " + l.capitulos + " capítulos lidos" : l.capitulos + (l.capitulos > 1 ? " capítulos" : " capítulo");
           return (
             '<a class="card" href="capitulos.html?livro=' +
             encodeURIComponent(l.slug) +
@@ -52,8 +68,7 @@
             '<span class="card-conteudo"><span class="card-nome">' +
             escapeHtml(l.nome) +
             '</span><span class="genero">' +
-            l.capitulos +
-            (l.capitulos > 1 ? " capítulos" : " capítulo") +
+            progresso +
             "</span></span></a>"
           );
         })
@@ -91,12 +106,16 @@
       document.getElementById("titulo-livro-biblia").textContent = livro.nome;
       document.title = livro.nome + " — Selecione o capítulo";
 
+      const capitulosLidos = window.lerArmazenamento(CHAVE_CAPITULOS_LIDOS, []);
       const botoes = [];
       for (let n = 1; n <= livro.capitulos; n++) botoes.push(n);
       gradeCapitulos.innerHTML = botoes
         .map(function (n) {
+          const lido = capitulosLidos.indexOf(chaveCapitulo(livro.slug, n)) !== -1 ? " is-lido" : "";
           return (
-            '<a class="numero-botao" href="versiculos.html?livro=' +
+            '<a class="numero-botao' +
+            lido +
+            '" href="versiculos.html?livro=' +
             encodeURIComponent(livro.slug) +
             "&capitulo=" +
             n +
@@ -297,6 +316,33 @@
         aplicarTamanho();
       });
       aplicarTamanho();
+
+      // Marcar capítulo como lido (separado de "livro lido", que é sobre
+      // o resumo histórico, não o texto bíblico em si).
+      const botaoCapituloLido = document.querySelector(".marcar-capitulo-lido");
+      if (botaoCapituloLido) {
+        const chave = chaveCapitulo(livro.slug, capitulo);
+        let capitulosLidos = window.lerArmazenamento(CHAVE_CAPITULOS_LIDOS, []);
+
+        function atualizarBotaoCapituloLido() {
+          const lido = capitulosLidos.indexOf(chave) !== -1;
+          botaoCapituloLido.classList.toggle("is-ativo", lido);
+          botaoCapituloLido.setAttribute("aria-pressed", String(lido));
+          botaoCapituloLido.querySelector(".rotulo-capitulo-lido").textContent = lido
+            ? "Capítulo lido"
+            : "Marcar capítulo como lido";
+        }
+
+        botaoCapituloLido.addEventListener("click", function () {
+          const indice = capitulosLidos.indexOf(chave);
+          if (indice === -1) capitulosLidos.push(chave);
+          else capitulosLidos.splice(indice, 1);
+          window.salvarArmazenamento(CHAVE_CAPITULOS_LIDOS, capitulosLidos);
+          atualizarBotaoCapituloLido();
+        });
+
+        atualizarBotaoCapituloLido();
+      }
     }
   }
 })();

@@ -51,6 +51,12 @@ rodadas seguintes).
   recarregar a página (persiste), abrir a lista de versículos (aparece
   marcado), e o caso de um versículo estar grifado *e* em foco ao mesmo
   tempo (visual combinado, não um sobrescreve o outro).
+- [x] Marcar capítulo como lido, separado de propósito do "livro lido"
+  usado nos resumos (ler o texto bíblico de um capítulo é diferente de
+  ter lido o resumo histórico do livro). O progresso aparece em três
+  lugares: o botão na leitura, os números já lidos em verde na grade de
+  capítulos, e "X de Y capítulos lidos" no card do livro na tela inicial
+  da leitura bíblica. Testado ponta a ponta nos três lugares.
 
 ## Versículos citados clicáveis (bible-api.com) + Web Share API
 

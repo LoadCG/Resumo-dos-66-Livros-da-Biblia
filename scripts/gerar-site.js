@@ -826,6 +826,7 @@ function renderBibliaLer() {
         <button type="button" class="controle tema-toggle" aria-label="Alternar tema"><span class="rotulo-tema">Tema</span></button>
         <button type="button" class="controle fonte-menos" aria-label="Diminuir texto">A−</button>
         <button type="button" class="controle fonte-mais" aria-label="Aumentar texto">A+</button>
+        <button type="button" class="controle marcar-capitulo-lido" aria-pressed="false">${icone("check")}<span class="rotulo-capitulo-lido">Marcar capítulo como lido</span></button>
       </div>
     </div>
     <h1 id="titulo-leitura-biblia">Carregando…</h1>

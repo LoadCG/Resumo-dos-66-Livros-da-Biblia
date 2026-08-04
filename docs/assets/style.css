@@ -1791,3 +1791,8 @@ main .bloco {
   border-color: var(--cor-grifo-fg);
   background: var(--cor-grifo);
 }
+
+.numero-botao.is-lido {
+  border-color: #58a66f;
+  color: #287a45;
+}
