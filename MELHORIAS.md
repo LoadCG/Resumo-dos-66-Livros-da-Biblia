@@ -161,7 +161,12 @@ não só em funcionalidade nova. Cada item explica o problema que resolve.
 - [ ] Acrescentar filtro combinado por gênero, testamento e progresso na URL para permitir compartilhar uma seleção
 - [ ] Criar página “Sobre o projeto”, explicando metodologia, fontes, escopo e limitações históricas
 - [ ] Melhorar compartilhamento com uma imagem Open Graph própria do projeto
-- [ ] Adicionar busca pelo conteúdo dos resumos, além do nome do livro
+- [x] Busca pelo conteúdo dos resumos, além do nome do livro — índice de
+  texto normalizado (sem acento/markdown) gerado em build
+  (`docs/assets/indice-busca.json`) e carregado à parte na home, sem
+  atrasar a busca por nome (que continua instantânea desde o primeiro
+  caractere digitado). Ex: buscar "cordeiro" encontra Êxodo e Apocalipse,
+  que não têm a palavra no nome do livro.
 - [ ] Criar testes automatizados para validar links, quantidade de livros e geração do HTML
 
 ## Conteúdo e descoberta

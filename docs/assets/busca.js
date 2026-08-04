@@ -29,11 +29,39 @@
   const itens = cards.map(function (card) {
     return {
       el: card,
+      slug: card.getAttribute("data-slug") || "",
       nome: card.getAttribute("data-nome") || "",
       testamento: card.getAttribute("data-testamento") || "",
       genero: card.getAttribute("data-genero") || "",
+      texto: "",
     };
   });
+
+  // Índice do conteúdo dos resumos (gerado em build por gerar-site.js),
+  // carregado à parte para a busca por nome continuar instantânea mesmo
+  // antes dele chegar — quando chega, a busca passa a alcançar também o
+  // texto dos resumos, não só o nome do livro.
+  fetch("assets/indice-busca.json")
+    .then(function (resposta) {
+      return resposta.ok ? resposta.json() : null;
+    })
+    .then(function (indice) {
+      if (!indice) return;
+      itens.forEach(function (item) {
+        item.texto = indice[item.slug] || "";
+      });
+      aplicarFiltro();
+    })
+    .catch(function () {
+      // Sem índice, a busca continua funcionando só por nome.
+    });
+
+  function normalizarBusca(texto) {
+    return texto
+      .normalize("NFD")
+      .replace(/[̀-ͯ]/g, "")
+      .toLowerCase();
+  }
 
   cards.forEach(function (card) {
     card.classList.toggle("is-lido", livrosLidos.indexOf(card.getAttribute("data-slug")) !== -1);
@@ -103,10 +131,12 @@
   function aplicarFiltro() {
     const contagemGrupo = {};
     let algumVisivel = false;
+    const termoNormalizado = normalizarBusca(termo);
 
     itens.forEach(function (item) {
       const lido = item.el.classList.contains("is-lido");
-      const bateTermo = item.nome.includes(termo);
+      const bateTermo =
+        termo === "" || item.nome.includes(termo) || (item.texto && item.texto.includes(termoNormalizado));
       const bateTestamento = testamento === "todos" || item.testamento === testamento;
       const bateGenero = genero === "todos" || item.genero === genero;
       const bateStatus = status === "todos" || (status === "lidos" && lido) || (status === "nao-lidos" && !lido);

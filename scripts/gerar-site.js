@@ -72,6 +72,21 @@ function contarPalavras(texto) {
   return matches ? matches.length : 0;
 }
 
+// Remove marcação markdown e normaliza acentos/caixa, para indexar o
+// conteúdo dos resumos para busca no navegador sem carregar HTML nem
+// distinguir maiúsculas/acentos na comparação.
+function textoBuscavel(md) {
+  const semMarcacao = md
+    .replace(/\[(.+?)\]\(.+?\)/g, "$1")
+    .replace(/[#*_>`-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return semMarcacao
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
+}
+
 function escapeHtml(text) {
   return text
     .replace(/&/g, "&amp;")
@@ -306,6 +321,8 @@ function parseBook(filePath, testamento) {
     };
   });
 
+  const textoBusca = SECTION_KEYS.map((chave) => textoBuscavel(sections[chave].body)).join(" ");
+
   return {
     slug,
     numero,
@@ -315,6 +332,7 @@ function parseBook(filePath, testamento) {
     tempoLeituraMin,
     fichaRapidaHtml: parseFichaRapida(sections.fichaRapida.body),
     blocos,
+    textoBusca,
   };
 }
 
@@ -457,7 +475,7 @@ ${cards}
       </div>
       <div class="busca-container">
         <span class="busca-icone" aria-hidden="true">${icone("search")}</span>
-        <input type="search" id="busca" class="busca" placeholder="Busque por Gênesis, Salmos, Romanos..." aria-label="Buscar livro">
+        <input type="search" id="busca" class="busca" placeholder="Busque por livro ou assunto (ex: êxodo do Egito)" aria-label="Buscar livro ou assunto dentro dos resumos">
         <button type="button" id="limpar-busca" class="limpar-busca" aria-label="Limpar busca" hidden>${icone("close")}</button>
       </div>
       <div class="barra-filtros">
@@ -609,7 +627,13 @@ function main() {
   const iconesClienteJs = `// Gerado automaticamente por scripts/gerar-site.js -- nao editar a mao.\nwindow.ICONES = ${JSON.stringify(ICONES)};\n`;
   fs.writeFileSync(path.join(OUT_DIR, "assets", "icones.js"), iconesClienteJs, "utf8");
 
-  console.log(`Gerado: docs/index.html + ${books.length} páginas em docs/livros/ + sitemap.xml + assets/icones.js`);
+  const indiceBusca = {};
+  books.forEach((b) => {
+    indiceBusca[b.slug] = b.textoBusca;
+  });
+  fs.writeFileSync(path.join(OUT_DIR, "assets", "indice-busca.json"), JSON.stringify(indiceBusca), "utf8");
+
+  console.log(`Gerado: docs/index.html + ${books.length} páginas em docs/livros/ + sitemap.xml + assets/icones.js + assets/indice-busca.json`);
 }
 
 main();
