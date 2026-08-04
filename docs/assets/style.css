@@ -605,6 +605,31 @@ main .bloco {
   border-color: var(--cor-destaque);
 }
 
+/* Modo foco: esconde tudo que não é o texto da leitura em si */
+
+.modo-foco.is-ativo {
+  color: var(--cor-fundo-elevado);
+  background: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+}
+
+:root[data-modo-foco="ativo"] .voltar,
+:root[data-modo-foco="ativo"] .acoes-livro > *:not(.modo-foco),
+:root[data-modo-foco="ativo"] .indice,
+:root[data-modo-foco="ativo"] .navegacao-livros,
+:root[data-modo-foco="ativo"] .acoes-fim-livro,
+:root[data-modo-foco="ativo"] .rodape {
+  display: none;
+}
+
+:root[data-modo-foco="ativo"] .modo-foco {
+  position: fixed;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 15;
+  box-shadow: var(--sombra);
+}
+
 /* Referências bíblicas clicáveis */
 
 .ref-biblica {

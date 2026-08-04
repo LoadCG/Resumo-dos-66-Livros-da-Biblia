@@ -191,7 +191,12 @@ não só em funcionalidade nova. Cada item explica o problema que resolve.
 
 ## Experiência de leitura
 
-- [ ] Modo foco, ocultando navegação e controles durante a leitura
+- [x] Modo foco (botão ou tecla <kbd>F</kbd>) esconde índice, navegação
+  entre livros, rodapé e os demais controles durante a leitura — só o
+  título e o texto ficam visíveis, com o próprio botão de foco flutuando
+  no canto para voltar ao normal (ou <kbd>Esc</kbd>). Intencionalmente não
+  persiste entre páginas: cada livro aberto começa com a interface
+  completa.
 - [ ] Estimativa de tempo de leitura em cada livro
 - [ ] Destaque automático da seção atual no índice fixo
 - [x] Atalhos de teclado nas páginas de livro: ← / → para livro

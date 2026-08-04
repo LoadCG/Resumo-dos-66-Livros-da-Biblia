@@ -231,6 +231,7 @@ const ICONES = {
   search: `<svg ${ICONE_ATRIBUTOS}><circle cx="10" cy="10" r="6"/><line x1="20" y1="20" x2="14.5" y2="14.5"/></svg>`,
   dice: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg>`,
   type: `<svg ${ICONE_ATRIBUTOS}><line x1="6" y1="19" x2="11" y2="5"/><line x1="16" y1="19" x2="11" y2="5"/><line x1="8" y1="14" x2="14" y2="14"/></svg>`,
+  focus: `<svg ${ICONE_ATRIBUTOS}><line x1="4" y1="4" x2="9" y2="4"/><line x1="4" y1="4" x2="4" y2="9"/><line x1="20" y1="4" x2="15" y2="4"/><line x1="20" y1="4" x2="20" y2="9"/><line x1="4" y1="20" x2="9" y2="20"/><line x1="4" y1="20" x2="4" y2="15"/><line x1="20" y1="20" x2="15" y2="20"/><line x1="20" y1="20" x2="20" y2="15"/></svg>`,
   sparkle: `<svg viewBox="0 0 24 24"><polygon points="12 2 13.6 9 21 10 13.6 11 12 18 10.4 11 3 10 10.4 9" fill="currentColor"/></svg>`,
 };
 
@@ -570,6 +571,7 @@ ${bloco.html}
         <button type="button" class="controle fonte-serifada" aria-pressed="false" aria-label="Usar fonte serifada na leitura">${icone("type")}</button>
         <button type="button" class="controle marcar-lido" data-slug="${book.slug}" aria-pressed="false">${icone("check")}<span class="rotulo-lido">Marcar como lido</span></button>
         <button type="button" class="copiar-link" data-url="${url}" data-titulo="${escapeHtml(book.nome)} — ${escapeHtml(SITE_TITLE)}">${icone("link")}<span class="rotulo-copiar">Compartilhar</span></button>
+        <button type="button" class="controle modo-foco" aria-pressed="false" aria-label="Ativar modo foco">${icone("focus")}<span class="rotulo-foco">Foco</span></button>
       </div>
     </div>
     <h1>${escapeHtml(book.nome)}</h1>
@@ -597,7 +599,7 @@ ${blocosHtml}
   <button type="button" class="voltar-topo" aria-label="Voltar ao início" title="Voltar ao início">${icone("arrow-up")}</button>
   <footer class="rodape">
     <p><a href="../index.html">${icone("arrow-left")}Voltar para todos os livros</a></p>
-    <p class="atalhos-teclado">Atalhos: <kbd>←</kbd> anterior · <kbd>→</kbd> próximo · <kbd>T</kbd> tema · <kbd>+</kbd>/<kbd>−</kbd> fonte</p>
+    <p class="atalhos-teclado">Atalhos: <kbd>←</kbd> anterior · <kbd>→</kbd> próximo · <kbd>T</kbd> tema · <kbd>+</kbd>/<kbd>−</kbd> fonte · <kbd>F</kbd> modo foco</p>
   </footer>
   <script src="../assets/preferencias.js"></script>
   <script src="../assets/referencias.js"></script>

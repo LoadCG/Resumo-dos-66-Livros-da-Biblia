@@ -85,6 +85,21 @@
     });
   }
 
+  // Modo foco esconde navegação, índice e rodapé para concentrar na
+  // leitura. É intencionalmente transitório (não persiste entre páginas):
+  // cada livro aberto começa com a interface completa visível.
+  const botaoFoco = document.querySelector(".modo-foco");
+  if (botaoFoco) {
+    botaoFoco.addEventListener("click", function () {
+      const ativo = raiz.dataset.modoFoco !== "ativo";
+      if (ativo) raiz.dataset.modoFoco = "ativo";
+      else delete raiz.dataset.modoFoco;
+      botaoFoco.classList.toggle("is-ativo", ativo);
+      botaoFoco.setAttribute("aria-pressed", String(ativo));
+      botaoFoco.setAttribute("aria-label", ativo ? "Sair do modo foco" : "Ativar modo foco");
+    });
+  }
+
   if (botoesLido.length) {
     const slug = botoesLido[0].getAttribute("data-slug");
     let lidos = window.lerArmazenamento("biblia-livros-lidos", []);
@@ -195,6 +210,13 @@
         break;
       case "-":
         if (botaoMenos) botaoMenos.click();
+        break;
+      case "f":
+      case "F":
+        if (botaoFoco) botaoFoco.click();
+        break;
+      case "Escape":
+        if (botaoFoco && raiz.dataset.modoFoco === "ativo") botaoFoco.click();
         break;
       default:
         return;
