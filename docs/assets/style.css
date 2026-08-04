@@ -582,6 +582,7 @@ main .bloco {
 .bloco p {
   margin: 0 0 1rem;
   font-size: calc(1rem * var(--escala-leitura));
+  font-family: var(--fonte-leitura, inherit);
 }
 
 .bloco ul {
@@ -591,6 +592,17 @@ main .bloco {
 .bloco li {
   margin-bottom: 0.5rem;
   font-size: calc(1rem * var(--escala-leitura));
+  font-family: var(--fonte-leitura, inherit);
+}
+
+:root[data-fonte-leitura="serifada"] {
+  --fonte-leitura: Georgia, "Times New Roman", serif;
+}
+
+.fonte-serifada.is-ativo {
+  color: var(--cor-fundo-elevado);
+  background: var(--cor-destaque);
+  border-color: var(--cor-destaque);
 }
 
 /* Referências bíblicas clicáveis */

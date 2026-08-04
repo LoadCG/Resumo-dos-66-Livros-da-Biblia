@@ -68,6 +68,23 @@
   });
   aplicarTamanho();
 
+  const botaoSerifada = document.querySelector(".fonte-serifada");
+  if (botaoSerifada) {
+    function aplicarFonteLeitura(serifada) {
+      if (serifada) raiz.dataset.fonteLeitura = "serifada";
+      else delete raiz.dataset.fonteLeitura;
+      botaoSerifada.classList.toggle("is-ativo", serifada);
+      botaoSerifada.setAttribute("aria-pressed", String(serifada));
+    }
+
+    aplicarFonteLeitura(window.lerArmazenamento("biblia-fonte-serifada", false));
+    botaoSerifada.addEventListener("click", function () {
+      const serifada = raiz.dataset.fonteLeitura !== "serifada";
+      aplicarFonteLeitura(serifada);
+      window.salvarArmazenamento("biblia-fonte-serifada", serifada);
+    });
+  }
+
   if (botoesLido.length) {
     const slug = botoesLido[0].getAttribute("data-slug");
     let lidos = window.lerArmazenamento("biblia-livros-lidos", []);

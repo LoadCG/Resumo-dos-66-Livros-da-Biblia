@@ -230,6 +230,7 @@ const ICONES = {
   close: `<svg ${ICONE_ATRIBUTOS}><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>`,
   search: `<svg ${ICONE_ATRIBUTOS}><circle cx="10" cy="10" r="6"/><line x1="20" y1="20" x2="14.5" y2="14.5"/></svg>`,
   dice: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg>`,
+  type: `<svg ${ICONE_ATRIBUTOS}><line x1="6" y1="19" x2="11" y2="5"/><line x1="16" y1="19" x2="11" y2="5"/><line x1="8" y1="14" x2="14" y2="14"/></svg>`,
   sparkle: `<svg viewBox="0 0 24 24"><polygon points="12 2 13.6 9 21 10 13.6 11 12 18 10.4 11 3 10 10.4 9" fill="currentColor"/></svg>`,
 };
 
@@ -566,6 +567,7 @@ ${bloco.html}
         <button type="button" class="controle tema-toggle" aria-label="Alternar tema"><span class="rotulo-tema">Tema</span></button>
         <button type="button" class="controle fonte-menos" aria-label="Diminuir texto">A−</button>
         <button type="button" class="controle fonte-mais" aria-label="Aumentar texto">A+</button>
+        <button type="button" class="controle fonte-serifada" aria-pressed="false" aria-label="Usar fonte serifada na leitura">${icone("type")}</button>
         <button type="button" class="controle marcar-lido" data-slug="${book.slug}" aria-pressed="false">${icone("check")}<span class="rotulo-lido">Marcar como lido</span></button>
         <button type="button" class="copiar-link" data-url="${url}" data-titulo="${escapeHtml(book.nome)} — ${escapeHtml(SITE_TITLE)}">${icone("link")}<span class="rotulo-copiar">Compartilhar</span></button>
       </div>

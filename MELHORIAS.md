@@ -199,7 +199,11 @@ não só em funcionalidade nova. Cada item explica o problema que resolve.
   ignorados com Ctrl/Alt/Cmd (que já têm significado do navegador) e
   enquanto o foco está num campo de formulário. Dica discreta no rodapé de
   cada livro para quem não sabia que existiam.
-- [ ] Opção de fonte serifada para leitura longa
+- [x] Opção de fonte serifada para leitura longa — botão "Aa" ao lado dos
+  controles de tamanho de texto, persistido por navegador, aplicado só ao
+  texto corrido dos resumos (não afeta títulos, botões nem a Ficha
+  Rápida, que continuam com a fonte padrão para não perder a hierarquia
+  visual).
 - [ ] Notas pessoais locais por livro, com exportação e importação
 - [ ] Sequência/plano de leitura personalizável
 - [ ] Conquistas discretas de progresso, sem transformar a leitura em competição
