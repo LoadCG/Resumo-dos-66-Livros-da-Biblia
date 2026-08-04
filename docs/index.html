@@ -12,6 +12,10 @@
 <meta property="og:description" content="Resumos históricos dos 66 livros da Bíblia, organizados por Antigo e Novo Testamento.">
 <meta property="og:url" content="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/">
 <meta name="twitter:card" content="summary">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8a5a2b">
+<link rel="icon" href="assets/icone.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icone.svg">
 <script>
 try {
   var temaSalvo = localStorage.getItem("biblia-tema");
@@ -734,5 +738,12 @@ try {
   <script src="assets/referencias.js"></script>
   <script src="assets/versiculo-dia.js"></script>
   <script src="assets/busca.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
 </body>
 </html>

@@ -12,6 +12,10 @@
 <meta property="og:description" content="Resumo histórico de 1 Timóteo: contexto, autoria, cronologia e conteúdo.">
 <meta property="og:url" content="https://loadcg.github.io/Resumo-dos-66-Livros-da-Biblia/livros/54-1-timoteo.html">
 <meta name="twitter:card" content="summary">
+<link rel="manifest" href="../manifest.json">
+<meta name="theme-color" content="#8a5a2b">
+<link rel="icon" href="../assets/icone.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/icone.svg">
 <script>
 try {
   var temaSalvo = localStorage.getItem("biblia-tema");
@@ -110,5 +114,12 @@ try {
   <script src="../assets/preferencias.js"></script>
   <script src="../assets/referencias.js"></script>
   <script src="../assets/livro.js"></script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("../sw.js").catch(function () {});
+  });
+}
+</script>
 </body>
 </html>

@@ -155,7 +155,17 @@ não só em funcionalidade nova. Cada item explica o problema que resolve.
 
 ## Próxima etapa — alto impacto
 
-- [ ] PWA leve: `manifest.json`, ícones e service worker para instalação e leitura offline
+- [x] PWA leve: `manifest.json`, ícone (SVG, sem dependência de gerador de
+  imagem) e service worker para instalação e leitura offline. O service
+  worker pré-armazena em cache a home e os 66 livros logo na primeira
+  visita (estratégia stale-while-revalidate: responde do cache na hora e
+  atualiza em segundo plano quando há rede) — testado desligando o
+  servidor local depois da primeira visita e confirmando que a navegação
+  entre livros continua funcionando offline. Limitação conhecida: o ícone
+  em SVG funciona para instalar em Android/desktop (Chrome, Edge,
+  Firefox), mas o Safari/iOS não usa SVG como `apple-touch-icon` — ícone
+  em PNG fica para quando houver uma forma de gerar imagem sem depender de
+  serviço externo.
 - [ ] Salvar a posição exata de leitura de cada livro, não apenas o último livro aberto
 - [ ] Adicionar favoritos e uma visualização “Meus livros”
 - [ ] Acrescentar filtro combinado por gênero, testamento e progresso na URL para permitir compartilhar uma seleção

@@ -366,6 +366,10 @@ function pageShell({ title, basePath, bodyHtml, description, url, ogType }) {
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:url" content="${url}">
 <meta name="twitter:card" content="summary">
+<link rel="manifest" href="${basePath}manifest.json">
+<meta name="theme-color" content="#8a5a2b">
+<link rel="icon" href="${basePath}assets/icone.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="${basePath}assets/icone.svg">
 <script>
 try {
   var temaSalvo = localStorage.getItem("biblia-tema");
@@ -377,6 +381,13 @@ try {
 <body>
 <script src="${basePath}assets/icones.js"></script>
 ${bodyHtml}
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("${basePath}sw.js").catch(function () {});
+  });
+}
+</script>
 </body>
 </html>
 `;
@@ -604,6 +615,89 @@ function renderSitemap(urls) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>\n`;
 }
 
+function renderManifest() {
+  return JSON.stringify(
+    {
+      name: SITE_TITLE,
+      short_name: "Resumos Bíblicos",
+      description: "Resumos históricos dos 66 livros da Bíblia, com leitura offline.",
+      lang: "pt-BR",
+      start_url: "./index.html",
+      scope: "./",
+      display: "standalone",
+      background_color: "#faf8f4",
+      theme_color: "#8a5a2b",
+      icons: [
+        { src: "assets/icone.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
+        { src: "assets/icone.svg", sizes: "any", type: "image/svg+xml", purpose: "maskable" },
+      ],
+    },
+    null,
+    2
+  );
+}
+
+// Service worker "leve": guarda em cache tudo que é necessário para ler os
+// 66 livros offline depois da primeira visita. Estratégia
+// stale-while-revalidate — responde do cache na hora (rápido e funciona
+// offline) e atualiza o cache em segundo plano quando há rede, em vez de
+// depender de uma lista fixa de rotas "críticas" por tipo de arquivo.
+function renderServiceWorker(books) {
+  const urls = [
+    "./",
+    "index.html",
+    "manifest.json",
+    "assets/style.css",
+    "assets/icones.js",
+    "assets/preferencias.js",
+    "assets/busca.js",
+    "assets/referencias.js",
+    "assets/livro.js",
+    "assets/versiculo-dia.js",
+    "assets/indice-busca.json",
+    "assets/icone.svg",
+    ...books.map((b) => `livros/${b.slug}.html`),
+  ];
+
+  return `// Gerado automaticamente por scripts/gerar-site.js -- nao editar a mao.
+const CACHE_NAME = "biblia-cache-${Date.now()}";
+const PRECACHE_URLS = ${JSON.stringify(urls)};
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS)).then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((chaves) => Promise.all(chaves.filter((chave) => chave !== CACHE_NAME).map((chave) => caches.delete(chave))))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+  event.respondWith(
+    caches.match(event.request).then((cached) => {
+      const emRede = fetch(event.request)
+        .then((resposta) => {
+          if (resposta.ok) {
+            const copia = resposta.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copia));
+          }
+          return resposta;
+        })
+        .catch(() => cached);
+      return cached || emRede;
+    })
+  );
+});
+`;
+}
+
 function main() {
   const books = loadAllBooks();
   if (books.length !== 66) {
@@ -633,7 +727,10 @@ function main() {
   });
   fs.writeFileSync(path.join(OUT_DIR, "assets", "indice-busca.json"), JSON.stringify(indiceBusca), "utf8");
 
-  console.log(`Gerado: docs/index.html + ${books.length} páginas em docs/livros/ + sitemap.xml + assets/icones.js + assets/indice-busca.json`);
+  fs.writeFileSync(path.join(OUT_DIR, "manifest.json"), renderManifest(), "utf8");
+  fs.writeFileSync(path.join(OUT_DIR, "sw.js"), renderServiceWorker(books), "utf8");
+
+  console.log(`Gerado: docs/index.html + ${books.length} páginas em docs/livros/ + sitemap.xml + assets/icones.js + assets/indice-busca.json + manifest.json + sw.js`);
 }
 
 main();
