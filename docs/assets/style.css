@@ -1012,6 +1012,39 @@ main .bloco {
   transition: width 0.35s ease;
 }
 
+.conquistas {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0 0 0.9rem;
+  padding: 0;
+  list-style: none;
+}
+
+.conquista {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--cor-fundo);
+  color: var(--cor-texto-suave);
+  opacity: 0.4;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.conquista .icone {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0;
+}
+
+.conquista.is-conquistada {
+  background: var(--cor-destaque);
+  color: var(--cor-fundo-elevado);
+  opacity: 1;
+}
+
 .continuar-leitura {
   display: inline-flex;
   align-items: center;

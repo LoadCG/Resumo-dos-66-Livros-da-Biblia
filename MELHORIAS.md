@@ -211,7 +211,13 @@ não só em funcionalidade nova. Cada item explica o problema que resolve.
   visual).
 - [ ] Notas pessoais locais por livro, com exportação e importação
 - [ ] Sequência/plano de leitura personalizável
-- [ ] Conquistas discretas de progresso, sem transformar a leitura em competição
+- [x] Conquistas discretas de progresso no painel da home — 6 selos
+  (primeiro livro, Pentateuco completo, os 4 Evangelhos, Antigo
+  Testamento completo, Novo Testamento completo, os 66 livros), ligados à
+  estrutura do cânon em vez de metas de contagem arbitrárias, para
+  reconhecer o progresso sem virar competição. Testado marcando conjuntos
+  parciais e completos de livros lidos e conferindo que só os selos
+  corretos acendem.
 
 ## Qualidade, acessibilidade e desempenho
 

@@ -67,6 +67,39 @@
     card.classList.toggle("is-lido", livrosLidos.indexOf(card.getAttribute("data-slug")) !== -1);
   });
 
+  // Conquistas discretas: marcos de leitura ligados à estrutura do cânon
+  // (Pentateuco, Evangelhos, testamentos), não a metas de contagem — o
+  // objetivo é reconhecer, não transformar a leitura em competição.
+  const conquistas = Array.from(document.querySelectorAll(".conquista"));
+  if (conquistas.length) {
+    const lidosSet = new Set(livrosLidos);
+    const todosLidos = function (slugs) {
+      return slugs.length > 0 && slugs.every(function (slug) {
+        return lidosSet.has(slug);
+      });
+    };
+    const slugsPorTestamento = function (testamento) {
+      return itens.filter(function (item) {
+        return item.testamento === testamento;
+      }).map(function (item) {
+        return item.slug;
+      });
+    };
+
+    const estado = {
+      "primeiro-livro": livrosLidos.length >= 1,
+      pentateuco: todosLidos(["01-genesis", "02-exodo", "03-levitico", "04-numeros", "05-deuteronomio"]),
+      evangelhos: todosLidos(["40-mateus", "41-marcos", "42-lucas", "43-joao"]),
+      "antigo-testamento": todosLidos(slugsPorTestamento("Antigo Testamento")),
+      "novo-testamento": todosLidos(slugsPorTestamento("Novo Testamento")),
+      "biblia-completa": livrosLidos.length >= cards.length,
+    };
+
+    conquistas.forEach(function (li) {
+      li.classList.toggle("is-conquistada", !!estado[li.getAttribute("data-conquista")]);
+    });
+  }
+
   function encontrarProximoNaoLido() {
     return cards.find(function (card) {
       return !card.classList.contains("is-lido");

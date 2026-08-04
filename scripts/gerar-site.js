@@ -469,6 +469,14 @@ ${cards}
         <div class="trilho-progresso" role="progressbar" aria-label="Livros lidos" aria-valuemin="0" aria-valuemax="66" aria-valuenow="0">
           <span id="progresso-preenchimento"></span>
         </div>
+        <ul class="conquistas" aria-label="Conquistas de leitura">
+          <li class="conquista" data-conquista="primeiro-livro" title="Primeiro livro lido">${icone("check")}</li>
+          <li class="conquista" data-conquista="pentateuco" title="Pentateuco completo (Gênesis a Deuteronômio)">${icone("landmark")}</li>
+          <li class="conquista" data-conquista="evangelhos" title="Os 4 Evangelhos completos">${icone("book")}</li>
+          <li class="conquista" data-conquista="antigo-testamento" title="Antigo Testamento completo">${icone("globe")}</li>
+          <li class="conquista" data-conquista="novo-testamento" title="Novo Testamento completo">${icone("sparkle")}</li>
+          <li class="conquista" data-conquista="biblia-completa" title="Os 66 livros lidos">${icone("target")}</li>
+        </ul>
         <a id="continuar-leitura" class="continuar-leitura" href="livros/01-genesis.html">Começar leitura${icone("arrow-right")}</a>
       </section>
     </div>
